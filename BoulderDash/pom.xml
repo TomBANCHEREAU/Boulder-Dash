@@ -25,5 +25,8 @@
   <modules>
   	<module>BoulderDash.Frame</module>
   	<module>BoulderDash.MySQLConnector</module>
+  	<module>BoulderDash.View</module>
+  	<module>BoulderDash.Model</module>
+  	<module>BoulderDash.Controller</module>
   </modules>
 </project>
