@@ -24,5 +24,6 @@
   </dependencies>
   <modules>
   	<module>BoulderDash.Frame</module>
+  	<module>BoulderDash.MySQLConnector</module>
   </modules>
 </project>
