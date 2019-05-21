@@ -12,6 +12,7 @@ public class SimplyPanel extends JPanel implements GraphicsObserver{
 	public SimplyPanel(GraphicsBuilder graphicsBuilder) {
 		setGraphicsBuilder(graphicsBuilder);
 	}
+	
 	@Override
 	protected void paintComponent(Graphics g) {
 		graphicsBuilder.draw((Graphics2D) g, this);
