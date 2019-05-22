@@ -2,12 +2,15 @@ package com.TomBAN.BoulderDash.Model;
 
 import java.awt.Image;
 
+import com.TomBAN.BoulderDash.Ressource.RessourceManager;
+
 public class Block {
 	private Image image;
 	private Map map;
 	private float x, y;
 
 	public Block(String image, int x, int y) {
+		this.image = RessourceManager.getInstance().getImage(image);
 		this.x = x;
 		this.y = y;
 	}

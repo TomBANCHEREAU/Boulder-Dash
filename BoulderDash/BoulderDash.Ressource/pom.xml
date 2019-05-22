@@ -5,13 +5,6 @@
     <artifactId>BoulderDash</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>BoulderDash.Model</artifactId>
-  <name>Model</name>
-  <dependencies>
-  	<dependency>
-  		<groupId>com.TomBAN.BoulderDash</groupId>
-  		<artifactId>BoulderDash.Ressource</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
-  	</dependency>
-  </dependencies>
+  <artifactId>BoulderDash.Ressource</artifactId>
+  <name>Ressource</name>
 </project>

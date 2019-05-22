@@ -8,7 +8,6 @@ import javax.swing.JPanel;
 public class SimplyPanel extends JPanel implements GraphicsObserver{
 	private static final long serialVersionUID = -8980161293106213468L;
 	private GraphicsBuilder graphicsBuilder;
-	
 	public SimplyPanel(GraphicsBuilder graphicsBuilder) {
 		setGraphicsBuilder(graphicsBuilder);
 	}
@@ -20,4 +19,12 @@ public class SimplyPanel extends JPanel implements GraphicsObserver{
 	public void setGraphicsBuilder(GraphicsBuilder graphicsBuilder) {
 		this.graphicsBuilder = graphicsBuilder;
 	}
+//	@Override
+//	public int getWidth() {
+//		return (int) (super.getWidth());
+//	}
+//	@Override
+//	public int getHeight() {
+//		return (int) (super.getHeight());
+//	}
 }

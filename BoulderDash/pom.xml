@@ -23,6 +23,7 @@
 		<module>BoulderDash.Controller</module>
 		<module>BoulderDash.PlayerController</module>
 		<module>BoulderDash.Main</module>
+		<module>BoulderDash.Ressource</module>
 	</modules>
 	<dependencies>
 		<dependency>

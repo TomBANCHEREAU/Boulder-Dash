@@ -1,7 +1,6 @@
 package com.TomBAN.BoulderDash.Model;
 
-import com.TomBAN.BoulderDash.Model.BlockList.Dirt;
-import com.TomBAN.BoulderDash.Model.BlockList.Rock;
+import com.TomBAN.BoulderDash.Model.BlockList.*;
 
 public class Map {
 	private final int width, height;
@@ -40,6 +39,8 @@ public class Map {
 						case '¤':
 							addBlockAt(new Rock(x, y), x, y);
 							break;
+						case ' ':
+							break;
 						default:
 							System.err.println("unknown Block" + line[y].charAt(i));
 							break;
@@ -63,7 +64,7 @@ public class Map {
 		if (x >= 0 && x < width && y >= 0 && y < height) {
 			return blocks[x][y];
 		} else {
-			return new Block(null, 0, 0);
+			return new OutOfTheMap(x, y);
 		}
 	}
 
