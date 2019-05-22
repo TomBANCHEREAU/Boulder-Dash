@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 public class Panel extends JPanel{
+	private Compteur compteur;
 	
 	/**
 	 * 
@@ -19,6 +20,7 @@ public class Panel extends JPanel{
 	private static final long serialVersionUID = 1L;
 
 	public Panel() {
+		compteur = new Compteur();
 		JButton button = new JButton ("TWICE <3");
 		
 		add(button);
@@ -26,6 +28,8 @@ public class Panel extends JPanel{
 		button.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("TWICE <3");
+				compteur.addtwice();
+				System.out.println(compteur.getTwice());
 			}
 		});
 	}

@@ -14,6 +14,7 @@ import com.TomBAN.BoulderDash.Frame.GraphicsObserver;
 import com.TomBAN.BoulderDash.Frame.SimplyPanel;
 
 public class Test extends Observable implements KeyListener {
+
 	public Test() {
 		// BoulderDashFrame frame = new BoulderDashFrame("aze", null, this, 1920, 1080);
 		// TODO
@@ -24,10 +25,12 @@ public class Test extends Observable implements KeyListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.setVisible(true);
-		Container c = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new SimplyPanel(new GA()), new SimplyPanel(new GB()));//= frame.getContentPane();
+		Container c = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new SimplyPanel(new GA()), new SimplyPanel(new GB()));// =
+																														// frame.getContentPane();
 		frame.setContentPane(new Panel());
 		frame.repaint();
 		frame.addKeyListener(this);
+
 		// TODO Auto-generated constructor stub
 	}
 
@@ -56,7 +59,7 @@ public class Test extends Observable implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
-		System.out.println(arg0.getKeyCode());
+		
 	}
 
 	@Override
@@ -70,4 +73,5 @@ public class Test extends Observable implements KeyListener {
 		// TODO Auto-generated method stub
 
 	}
+
 }
