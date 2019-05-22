@@ -3,26 +3,47 @@ package com.TomBAN.BoulderDash.PlayerController;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class KeyBoardController implements KeyListener{
-	
-	
-	public KeyBoardController(int keyUp,int keyLeft,int keyDown,int keyRight) {
-		// TODO Auto-generated constructor stub
+import com.TomBAN.BoulderDash.Model.Controllable;
+import com.TomBAN.BoulderDash.Model.MovementOrder;
+
+public class KeyBoardController implements KeyListener {
+	private int keyUp, keyLeft, keyDown, keyRight;
+	private int lastKeyPressed;
+	private Controllable controllable;
+
+	public KeyBoardController(int keyUp, int keyLeft, int keyDown, int keyRight) {
+		this.keyUp = keyUp;
+		this.keyLeft = keyLeft;
+		this.keyDown = keyDown;
+		this.keyRight = keyRight;
 	}
-	
+
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
 	}
 
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		//e.getkey
-		
+		if(e.getKeyCode() == keyUp) {
+			controllable.executeOrder(MovementOrder.GoUp);
+			lastKeyPressed = e.getKeyCode();
+		}
+		if(e.getKeyCode() == keyLeft) {
+			controllable.executeOrder(MovementOrder.GoLeft);
+			lastKeyPressed = e.getKeyCode();
+		}
+		if(e.getKeyCode() == keyDown) {
+			controllable.executeOrder(MovementOrder.GoDown);
+			lastKeyPressed = e.getKeyCode();
+		}
+		if(e.getKeyCode() == keyRight) {
+			controllable.executeOrder(MovementOrder.GoRight);
+			lastKeyPressed = e.getKeyCode();
+		}
 	}
 
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+		if(e.getKeyCode() == lastKeyPressed) {
+			 controllable.executeOrder(MovementOrder.StopMovement);
+		}
 	}
-	
+
 }

@@ -7,4 +7,11 @@
   </parent>
   <artifactId>BoulderDash.PlayerController</artifactId>
   <name>PlayerController</name>
+  <dependencies>
+  	<dependency>
+  		<groupId>com.TomBAN.BoulderDash</groupId>
+  		<artifactId>BoulderDash.Model</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  </dependencies>
 </project>
