@@ -14,7 +14,7 @@ public class BoulderDashController {
 	private static final String PASSWORD = "";
 	private BoulderDashModel model;
 	private JFrame frame;
-	public BoulderDashController(JFrame frame) {
+	public BoulderDashController(JFrame frame,GameMode gameMode) {
 		this.frame = frame;
 		loadMap(0);
 		// TODO Auto-generated constructor stub
