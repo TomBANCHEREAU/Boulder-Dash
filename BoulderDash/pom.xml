@@ -28,5 +28,6 @@
   	<module>BoulderDash.View</module>
   	<module>BoulderDash.Model</module>
   	<module>BoulderDash.Controller</module>
+  	<module>BoulderDash.PlayerController</module>
   </modules>
 </project>
