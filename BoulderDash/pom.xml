@@ -22,6 +22,7 @@
 		<module>BoulderDash.Model</module>
 		<module>BoulderDash.Controller</module>
 		<module>BoulderDash.PlayerController</module>
+		<module>BoulderDash.Main</module>
 	</modules>
 	<dependencies>
 		<dependency>

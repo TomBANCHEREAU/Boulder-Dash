@@ -5,17 +5,17 @@
     <artifactId>BoulderDash</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>BoulderDash.Controller</artifactId>
-  <name>Controller</name>
+  <artifactId>BoulderDash.Main</artifactId>
+  <name>Main</name>
   <dependencies>
   	<dependency>
   		<groupId>com.TomBAN.BoulderDash</groupId>
-  		<artifactId>BoulderDash.Model</artifactId>
+  		<artifactId>BoulderDash.Controller</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   	<dependency>
   		<groupId>com.TomBAN.BoulderDash</groupId>
-  		<artifactId>BoulderDash.MySQLConnector</artifactId>
+  		<artifactId>BoulderDash.Frame</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   </dependencies>

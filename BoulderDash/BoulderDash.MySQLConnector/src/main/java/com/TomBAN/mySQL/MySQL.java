@@ -12,8 +12,6 @@ public class MySQL {
 	private Statement statement;
 
 	private MySQL(final String url, final String user, final String password) throws SQLException{
-
-
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			connection = DriverManager.getConnection(url, user, password);

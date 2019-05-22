@@ -73,6 +73,15 @@ public class Map {
 			case Up:
 				moveBlock(b,b.getIntX(),b.getIntY()-1);
 				break;
+			case Left:
+				moveBlock(b,b.getIntX(),b.getIntY()-1);
+				break;
+			case Down:
+				moveBlock(b,b.getIntX(),b.getIntY()-1);
+				break;
+			case Right:
+				moveBlock(b,b.getIntX(),b.getIntY()-1);
+				break;
 	
 			default:
 				break;
