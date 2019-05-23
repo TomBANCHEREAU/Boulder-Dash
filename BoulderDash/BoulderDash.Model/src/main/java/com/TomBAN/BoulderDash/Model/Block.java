@@ -71,7 +71,7 @@ public class Block {
 		this.yIndex = yIndex;
 	}
 
-	public void setMap(Map map) {
+	public void bindMap(Map map) {
 		this.map = map;
 	}
 
