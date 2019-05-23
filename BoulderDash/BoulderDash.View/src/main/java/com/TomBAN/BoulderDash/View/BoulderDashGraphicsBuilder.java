@@ -8,13 +8,27 @@ import com.TomBAN.BoulderDash.Frame.GraphicsObserver;
 import com.TomBAN.BoulderDash.Model.Block;
 import com.TomBAN.BoulderDash.Model.BoulderDashModel;
 import com.TomBAN.BoulderDash.Model.Map;
+import com.TomBAN.BoulderDash.Model.BlockList.Player;
 import com.TomBAN.BoulderDash.Ressource.RessourceManager;
 
 public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 	private final BoulderDashModel model;
+	private final Player p;
+	private int currentCenterX, currentCenterY;
 
-	public BoulderDashGraphicsBuilder(BoulderDashModel model) {
+	public BoulderDashGraphicsBuilder(BoulderDashModel model, Player p) {
 		this.model = model;
+		this.p = p;
+	}
+
+	private int constrain(int val, int min, int max) {
+		if (val > max) {
+			return max;
+		}
+		if (val < min) {
+			return min;
+		}
+		return val;
 	}
 
 	@Override
@@ -22,10 +36,16 @@ public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 		final Image fond = RessourceManager.getInstance().getImage("BACKGROUND.png");
 		// TODO Auto-generated method stub
 		final int tileSize = 16;
-		final double scale = 3;
-		final int centerX = 0;
-		final int centerY = 0;
-
+		final double scale = 5;
+		
+		currentCenterX = constrain(currentCenterX,(int)( (p.getX()+0.5)*tileSize-observer.getWidth()/ scale / 6),(int)( (p.getX()+0.5)*tileSize+observer.getWidth()/ scale / 6));
+		currentCenterY = constrain(currentCenterY,(int)( (p.getY()+0.5)*tileSize-observer.getHeight()/ scale / 6),(int)( (p.getY()+0.5)*tileSize+observer.getHeight()/ scale / 6));
+		
+		
+		
+		final int centerX = (int) (currentCenterX*scale);
+		final int centerY = (int) (currentCenterY*scale);
+		
 		final int originX = (centerX - observer.getWidth() / 2);
 		final int originY = (centerY - observer.getHeight() / 2);
 
@@ -38,8 +58,8 @@ public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 		final int minX = scaledOriginX / tileSize - 1;
 		final int minY = scaledOriginY / tileSize - 1;
 
-		final int maxX = (minX + (int) (observer.getWidth() / scale) / tileSize + 2);
-		final int maxY = (minY + (int) (observer.getHeight() / scale) / tileSize + 2);
+		final int maxX = (minX + (int) (observer.getWidth() / scale) / tileSize + 3);
+		final int maxY = (minY + (int) (observer.getHeight() / scale) / tileSize + 3);
 
 		final Map map = model.getMap();
 

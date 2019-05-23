@@ -24,14 +24,13 @@ public class BoulderDashController {
 			KeyBoardController controller = new ZQSDKeyBoardController();
 			controller.setControllable(model.getPlayers().get(0));
 			frame.addKeyListener(controller);
-			frame.setContentPane(new SimplyPanel(new BoulderDashGraphicsBuilder(model)));
+			frame.setContentPane(new SimplyPanel(new BoulderDashGraphicsBuilder(model,model.getPlayers().get(0))));
 			while (true) {
 				model.gameLoop();
 				frame.repaint();
 				try {
-					Thread.sleep(100);
+					Thread.sleep(50);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

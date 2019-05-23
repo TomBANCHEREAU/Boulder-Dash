@@ -6,17 +6,24 @@ import com.TomBAN.BoulderDash.Ressource.RessourceManager;
 
 public class Block {
 	private Strategy strategy;
-	private Image image;
+	private Image[] images;
 	private Map map;
 	private float x, y;
 	private int xIndex, yIndex;
 	private int lastUpdate=0;
-	public Block(String image, int x, int y) {
-		this.image = RessourceManager.getInstance().getImage(image);
+	public Block(String[] image, int x, int y) {
+		this.images = new Image[image.length];
+		for(int i=0;i<image.length;i++) {
+			this.images[i] = RessourceManager.getInstance().getImage(image[i]);
+		}
 		this.x = x;
 		this.y = y;
 		this.xIndex=x;
 		this.yIndex=y;
+	}
+	
+	public int getImageId() {
+		return lastUpdate%images.length;
 	}
 	
 	public void setX(float x) {
@@ -45,7 +52,7 @@ public class Block {
 	}
 
 	public Image getImage() {
-		return image;
+		return images[getImageId()%images.length];
 	}
 
 	public int getxIndex() {
@@ -78,5 +85,8 @@ public class Block {
 
 	public void setStrategy(Strategy strategy) {
 		this.strategy = strategy;
+	}
+	public int getLastUpdate() {
+		return lastUpdate;
 	}
 }
