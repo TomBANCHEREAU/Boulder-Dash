@@ -53,6 +53,7 @@ public class BoulderDashController {
 		}
 
 		if (gameOption.getPlayerNumber() == 1) {
+			System.out.println("fqdfqsdfgqd");
 			frames[0].setContentPane(panels[0]);
 		} else if (gameOption.getPlayerNumber() == 2) {
 			if (!gameOption.isDualScreen()) {

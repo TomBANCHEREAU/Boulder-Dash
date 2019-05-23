@@ -2,6 +2,7 @@ package com.TomBAN.BoulderDash.View;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.util.Observable;
 
 import com.TomBAN.BoulderDash.Frame.GraphicsBuilder;
 import com.TomBAN.BoulderDash.Frame.GraphicsObserver;
@@ -12,6 +13,7 @@ import com.TomBAN.BoulderDash.Model.BlockList.Player;
 import com.TomBAN.BoulderDash.Ressource.RessourceManager;
 
 public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
+	private static final int TILE_SIZE=16;
 	private final BoulderDashModel model;
 	private final Player p;
 	private int currentCenterX, currentCenterY;
@@ -19,6 +21,8 @@ public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 	public BoulderDashGraphicsBuilder(BoulderDashModel model, Player p) {
 		this.model = model;
 		this.p = p;
+		currentCenterX=p.getxIndex()*TILE_SIZE;
+		currentCenterY=p.getyIndex()*TILE_SIZE;
 	}
 
 	private int constrain(int val, int min, int max) {
@@ -35,7 +39,7 @@ public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 	public void draw(Graphics2D graph, GraphicsObserver observer) {
 		final Image fond = RessourceManager.getInstance().getImage("BACKGROUND.png");
 		// TODO Auto-generated method stub
-		final int tileSize = 16;
+		final int tileSize = TILE_SIZE;
 		final double scale = 5;
 		
 		currentCenterX = constrain(currentCenterX,(int)( (p.getX()+0.5)*tileSize-observer.getWidth()/ scale / 6),(int)( (p.getX()+0.5)*tileSize+observer.getWidth()/ scale / 6));
@@ -89,5 +93,10 @@ public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 			}
 		}
 		return;
+	}
+
+	@Override
+	public Observable getObservable() {
+		return model;
 	}
 }

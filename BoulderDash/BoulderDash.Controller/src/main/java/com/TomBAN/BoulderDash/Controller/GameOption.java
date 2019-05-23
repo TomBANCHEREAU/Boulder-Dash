@@ -43,7 +43,7 @@ public final class GameOption {
 
 
 	public void setDualScreen(boolean dualScreen) {
-		if (gameMode == GameMode.SinglePlayer) {
+		if (gameMode == GameMode.SinglePlayer && dualScreen) {
 			throw new RuntimeException("Dual Screen is not available for the SinglePlayer Mode");
 		}
 		this.dualScreen = dualScreen;
