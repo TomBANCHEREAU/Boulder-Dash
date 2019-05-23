@@ -8,8 +8,8 @@ public class Map {
 	private final int width, height;
 	private Block[][] blocks;
 	private ArrayList<Player> players;
-	private int update=0;
-	
+	private int update = 0;
+
 	public Map(int width, int height, String map) {
 		players = new ArrayList<Player>();
 		this.width = width;
@@ -48,7 +48,7 @@ public class Map {
 							addBlockAt(new Boundary(x, y), x, y);
 							break;
 						case '¤':
-							//addBlockAt(new Rock(x, y), x, y);
+							// addBlockAt(new Rock(x, y), x, y);
 							break;
 						case ' ':
 							break;
@@ -79,27 +79,27 @@ public class Map {
 		}
 	}
 
-	public void moveBlock(Block b,Direction d) {
-		if(b instanceof MovableBlock) {
+	public void moveBlock(Block b, Direction d) {
+		if (b instanceof MovableBlock) {
 			switch (d) {
 			case Up:
-				moveBlock(b,b.getxIndex(),b.getyIndex()-1);
+				moveBlock(b, b.getxIndex(), b.getyIndex() - 1);
 				break;
 			case Left:
-				moveBlock(b,b.getxIndex(),b.getyIndex()-1);
+				moveBlock(b, b.getxIndex(), b.getyIndex() - 1);
 				break;
 			case Down:
-				moveBlock(b,b.getxIndex(),b.getyIndex()-1);
+				moveBlock(b, b.getxIndex(), b.getyIndex() - 1);
 				break;
 			case Right:
-				moveBlock(b,b.getxIndex(),b.getyIndex()-1);
+				moveBlock(b, b.getxIndex(), b.getyIndex() - 1);
 				break;
-	
+
 			default:
 				break;
 			}
 		}
-		
+
 	}
 
 	public void moveBlock(Block b, int x, int y) {
@@ -109,7 +109,7 @@ public class Map {
 			b.setxIndex(x);
 			b.setyIndex(y);
 		}
-		
+
 	}
 
 	public int getWidth() {
@@ -134,13 +134,14 @@ public class Map {
 
 	public void updateAllBlock() {
 		update++;
-		for(int y=getHeight()-1;y>=0;y--) {
-			for(int x=0;x<getWidth();x++) {
-				if(blocks[x][y]!=null) {
+		// for(int y=getHeight()-1;y>=0;y--) {
+		for (int y = 0; y < getHeight(); y++) {
+			for (int x = 0; x < getWidth(); x++) {
+				if (blocks[x][y] != null) {
 					blocks[x][y].update(update);
 				}
 			}
 		}
-		
+
 	}
 }
