@@ -39,7 +39,7 @@ public class Map {
 							players.add(a);
 							break;
 						case 'V':
-							// TODO addBlockAt(new Rock(x, y), x, y);
+							addBlockAt(new Diamond(x, y), x, y);
 							break;
 						case '#':
 							addBlockAt(new Dirt(x, y), x, y);
