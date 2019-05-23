@@ -29,7 +29,7 @@ public class BoulderDashController {
 				model.gameLoop();
 				frame.repaint();
 				try {
-					Thread.sleep(50);
+					Thread.sleep(500);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -55,7 +55,7 @@ public class BoulderDashController {
 //		}
 		//TODO 
 
-		return new Map(100, 24, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n" + 
+		return new Map(128, 24, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n" + 
 				"@                                                                                                                              @\n" + 
 				"@          ###########O################                                                                                        @\n" + 
 				"@                     #                                                                                                        @\n" + 
