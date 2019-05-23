@@ -1,10 +1,11 @@
 package com.TomBAN.BoulderDash.Model;
 
 import java.util.ArrayList;
+import java.util.Observable;
 
 import com.TomBAN.BoulderDash.Model.BlockList.Player;
 
-public class BoulderDashModel {
+public class BoulderDashModel extends Observable{
 	private Map map;
 
 	public BoulderDashModel(Map map) {
@@ -18,6 +19,9 @@ public class BoulderDashModel {
 	
 	public void gameLoop() {
 		map.updateAllBlock();
+	}
+	public boolean isFinished() {
+		return false;
 	}
 	public Map getMap() {
 		return map;

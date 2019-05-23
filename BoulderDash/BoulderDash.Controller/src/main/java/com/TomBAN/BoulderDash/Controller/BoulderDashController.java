@@ -18,18 +18,20 @@ public class BoulderDashController {
 	private static final String USER = "root";
 	private static final String PASSWORD = "";
 	private BoulderDashModel model;
+	private KeyBoardController[] controllers;
 	private JFrame frame;
-	public BoulderDashController(JFrame frame,GameMode gameMode) {
+	public BoulderDashController(JFrame frame,GameOption gameOption) {
 		this.frame = frame;
 		//loadMap(0);
-		switch (gameMode) {
+		switch (gameOption.getGameMode()) {
 		case SinglePlayer:
 			model = new BoulderDashModel(loadMap(0));
-			KeyBoardController controller = new ZQSDKeyBoardController();
-			controller.setControllable(model.getPlayers().get(0));
-			frame.addKeyListener(controller);
+			controllers = new KeyBoardController[1];
+			controllers[0] = new ZQSDKeyBoardController();
+			controllers[0].setControllable(model.getPlayers().get(0));
+			frame.addKeyListener(controllers[0]);
 			frame.setContentPane(new SimplyPanel(new BoulderDashGraphicsBuilder(model,model.getPlayers().get(0))));
-			while (true) {
+			while (!model.isFinished()) {
 				model.gameLoop();
 				frame.repaint();
 				try {
@@ -38,10 +40,10 @@ public class BoulderDashController {
 					e.printStackTrace();
 				}
 			}
-			//break;
-		case SingleCoop:
+			break;
+		case MultiCoop:
 			model = new BoulderDashModel(loadMap(0));
-			KeyBoardController[] controllers = new KeyBoardController[4];
+			controllers = new KeyBoardController[4];
 			controllers[0] = new ZQSDKeyBoardController();
 			controllers[1] = new IJKLKeyBoardController();
 			controllers[2] = new NumPKeyBoardController();
@@ -53,7 +55,7 @@ public class BoulderDashController {
 			frame.setContentPane(new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 					new JSplitPane(JSplitPane.VERTICAL_SPLIT, new SimplyPanel(new BoulderDashGraphicsBuilder(model,model.getPlayers().get(0))),new SimplyPanel(new BoulderDashGraphicsBuilder(model,model.getPlayers().get(1)))),
 					new JSplitPane(JSplitPane.VERTICAL_SPLIT, new SimplyPanel(new BoulderDashGraphicsBuilder(model,model.getPlayers().get(2))),new SimplyPanel(new BoulderDashGraphicsBuilder(model,model.getPlayers().get(3))))));
-			while (true) {
+			while (!model.isFinished()) {
 				model.gameLoop();
 				frame.repaint();
 				try {
@@ -62,10 +64,11 @@ public class BoulderDashController {
 					e.printStackTrace();
 				}
 			}
-		case MultiPlayer:
+			break;
+		case MultiPlayerRace:
 			
 			break;
-		case MultiCoop:
+		case MultiCoopRace:
 			
 			break;
 		}
