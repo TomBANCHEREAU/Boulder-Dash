@@ -26,5 +26,10 @@ public class BoulderDashModel extends Observable{
 	public Map getMap() {
 		return map;
 	}
+
+	public void start() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

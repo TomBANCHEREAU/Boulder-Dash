@@ -1,89 +1,123 @@
 package com.TomBAN.BoulderDash.Controller;
 
-import javax.swing.JFrame;
+import java.awt.Container;
+import java.util.ArrayList;
 
+import javax.swing.JFrame;
+import javax.swing.JSplitPane;
+
+import com.TomBAN.BoulderDash.Frame.SimplyPanel;
 import com.TomBAN.BoulderDash.Model.BoulderDashModel;
-import com.TomBAN.BoulderDash.Model.Map;
 import com.TomBAN.BoulderDash.Model.StringMap;
+import com.TomBAN.BoulderDash.Model.BlockList.Player;
 import com.TomBAN.BoulderDash.PlayerController.ArroKeyBoardController;
 import com.TomBAN.BoulderDash.PlayerController.IJKLKeyBoardController;
 import com.TomBAN.BoulderDash.PlayerController.KeyBoardController;
 import com.TomBAN.BoulderDash.PlayerController.NumPKeyBoardController;
 import com.TomBAN.BoulderDash.PlayerController.ZQSDKeyBoardController;
+import com.TomBAN.BoulderDash.View.BoulderDashGraphicsBuilder;
 
 public class BoulderDashController {
 	private static final String URL = "jdbc:mysql://localhost:3306/a1-project5?useSSL=false&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC";
 	private static final String USER = "root";
 	private static final String PASSWORD = "";
-	private BoulderDashModel[] model;
+	private BoulderDashModel[] models;
 	private KeyBoardController[] controllers;
-	private final JFrame frame;
+	private final JFrame[] frames;
 	private final GameOption gameOption;
 
 	public BoulderDashController(JFrame frame, GameOption gameOption) {
-		this.frame = frame;
+		this.frames = new JFrame[(gameOption.isDualScreen()) ? 2 : 1];
+		frames[0] = frame;
+		if (gameOption.isDualScreen()) {
+			frames[1] = new JFrame();
+		}
 		this.gameOption = gameOption;
-		this.model = new BoulderDashModel[gameOption.getModelNumber()];
 
-//		switch (gameOption.getGameMode()) {
-//		case SinglePlayer:
-//			model = new BoulderDashModel(loadMap(0));
-//			controllers = new KeyBoardController[1];
-//			controllers[0] = new ZQSDKeyBoardController();
-//			controllers[0].setControllable(model.getPlayers().get(0));
-//			frame.addKeyListener(controllers[0]);
-//			frame.setContentPane(new SimplyPanel(new BoulderDashGraphicsBuilder(model,model.getPlayers().get(0))));
-//			while (!model.isFinished()) {
-//				model.gameLoop();
-//				frame.repaint();
-//				try {
-//					Thread.sleep(50);
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//			break;
-//		case MultiCoop:
-//			model = new BoulderDashModel(loadMap(0));
-//			controllers = new KeyBoardController[4];
-//			controllers[0] = new ZQSDKeyBoardController();
-//			controllers[1] = new IJKLKeyBoardController();
-//			controllers[2] = new NumPKeyBoardController();
-//			controllers[3] = new ArroKeyBoardController();
-//			for (int i = 0; i < controllers.length; i++) {
-//				controllers[i].setControllable(model.getPlayers().get(i));
-//				frame.addKeyListener(controllers[i]);
-//			}
-//			frame.setContentPane(new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-//					new JSplitPane(JSplitPane.VERTICAL_SPLIT, new SimplyPanel(new BoulderDashGraphicsBuilder(model,model.getPlayers().get(0))),new SimplyPanel(new BoulderDashGraphicsBuilder(model,model.getPlayers().get(1)))),
-//					new JSplitPane(JSplitPane.VERTICAL_SPLIT, new SimplyPanel(new BoulderDashGraphicsBuilder(model,model.getPlayers().get(2))),new SimplyPanel(new BoulderDashGraphicsBuilder(model,model.getPlayers().get(3))))));
-//			while (!model.isFinished()) {
-//				model.gameLoop();
-//				frame.repaint();
-//				try {
-//					Thread.sleep(50);
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//			break;
-//		case MultiPlayerRace:
-//			
-//			break;
-//		case MultiCoopRace:
-//			
-//			break;
-//		}
+		this.models = new BoulderDashModel[gameOption.getModelNumber()];
+		final StringMap srtMap = getStringMap(0);
+		for (int i = 0; i < models.length; i++) {
+			models[i] = new BoulderDashModel(srtMap.toRealMap());
+		}
+
+		setUpControllers();
+		bindPlayerToControllers();
+		bindControllersToFrames();
+
+		final SimplyPanel[] panels = new SimplyPanel[gameOption.getPlayerNumber()];
+		final ArrayList<Player> players = getAllPlayers();
+
+		for (int i = 0; i < panels.length; i++) {
+			panels[i] = new SimplyPanel(new BoulderDashGraphicsBuilder(
+					models[i * gameOption.getModelNumber() / gameOption.getPlayerNumber()], players.get(i)));
+		}
+
+		if (gameOption.getPlayerNumber() == 1) {
+			frames[0].setContentPane(panels[0]);
+		} else if (gameOption.getPlayerNumber() == 2) {
+			if (!gameOption.isDualScreen()) {
+				final Container splitedScreen = new JSplitPane(JSplitPane.VERTICAL_SPLIT, panels[0], panels[1]);
+				frames[0].setContentPane(splitedScreen);
+			} else {
+				frames[0].setContentPane(panels[0]);
+				frames[1].setContentPane(panels[1]);
+			}
+		} else {
+			final Container[] splitedScreen = { new JSplitPane(JSplitPane.VERTICAL_SPLIT, panels[0], panels[1]),
+					new JSplitPane(JSplitPane.VERTICAL_SPLIT, panels[2], panels[3]) };
+
+			if (!gameOption.isDualScreen()) {
+				final Container splitedsplitedScreen = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, splitedScreen[0], splitedScreen[1]);
+				frames[0].setContentPane(splitedsplitedScreen);
+			} else {
+				frames[0].setContentPane(splitedScreen[0]);
+				frames[1].setContentPane(splitedScreen[1]);
+			}
+		}
+
+		for (BoulderDashModel model : models) {
+			model.start();
+		}
+		for (JFrame framse : frames) {
+			framse.repaint();
+		}
 		// TODO Auto-generated constructor stub
+	}
+
+	private void bindControllersToFrames() {
+		for (JFrame frame : frames) {
+			for (KeyBoardController controller : controllers) {
+				frame.addKeyListener(controller);
+			}
+		}
+	}
+
+	private ArrayList<Player> getAllPlayers() {
+		final ArrayList<Player> players = new ArrayList<Player>();
+		for (int i = 0; i < models.length; i++) {
+			players.addAll(models[i].getPlayers());
+		}
+		return players;
+	}
+
+	private void bindPlayerToControllers() {
+		final ArrayList<Player> players = getAllPlayers();
+		for (int i = 0; i < controllers.length; i++) {
+			controllers[i].bindControllable(players.get(i));
+		}
 	}
 
 	private void setUpControllers() {
 		this.controllers = new KeyBoardController[gameOption.getPlayerNumber()];
 		switch (gameOption.getPlayerNumber()) {
-		case 4:controllers[3] = new NumPKeyBoardController();
-		case 3:controllers[2] = new IJKLKeyBoardController();
-		case 2:controllers[1] = new ArroKeyBoardController();
-		case 1:controllers[0] = new ZQSDKeyBoardController();
+		case 4:
+			controllers[3] = new NumPKeyBoardController();
+		case 3:
+			controllers[2] = new IJKLKeyBoardController();
+		case 2:
+			controllers[1] = new ArroKeyBoardController();
+		case 1:
+			controllers[0] = new ZQSDKeyBoardController();
 		}
 	}
 
@@ -94,16 +128,15 @@ public class BoulderDashController {
 //			e.printStackTrace();
 //		}
 		// TODO
-
-		return new StringMap(76, 9, 2,0,
+		return new StringMap(76, 9, 2, 2,
 				"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n"
 						+ "@######O########@###O   ##O O  ##@O@O@@@@@@@V########### O####O#########O#V@\n"
 						+ "@#A####V########@###@## #O# #@ @###@##VVVVVV@@@@@@@@@@@@ ######   O#####O#V@\n"
 						+ "@###################@########@V@##V@#@@@@@@@@O#####O###@ ###O##O##V#####O#V@\n"
 						+ "@@@@@@@ @@@@@@@@@@@@@@@@@@@@@@@@#@@@#@##O#########OV#### #####O#  ######V##@\n"
-						+ "@O      ######@#####OV@##    V#@#####@  #         #####@O#####V  # ##### #O@\n"
+						+ "@O      ######@#####OV@##    V#@#####@  #   A  A  #####@O#####V  # ##### #O@\n"
 						+ "@# ####O#@@@@@@#######@##     #@@@@@@@ # ####V####O ########O##O##V##### O#@\n"
-						+ "@VO####O#######################O        VO########OVO##@O############### ¤#@\n"
+						+ "@VO####O#######################O     A  VO########OVO##@O############### ¤#@\n"
 						+ "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
 	}
