@@ -13,5 +13,10 @@
   		<artifactId>BoulderDash.Ressource</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
+  	<dependency>
+  		<groupId>com.TomBAN.BoulderDash</groupId>
+  		<artifactId>BoulderDash.Ticker</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
   </dependencies>
 </project>
