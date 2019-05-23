@@ -10,16 +10,29 @@ public class Block {
 	private Map map;
 	private float x, y;
 	private int xIndex, yIndex;
-
+	private int lastUpdate=0;
 	public Block(String image, int x, int y) {
 		this.image = RessourceManager.getInstance().getImage(image);
 		this.x = x;
 		this.y = y;
+		this.xIndex=x;
+		this.yIndex=y;
 	}
 	
-	public void update() {
+	public void setX(float x) {
+		this.x = x;
+	}
+
+	public void setY(float y) {
+		this.y = y;
+	}
+
+	public void update(int update) {
 		if(strategy!=null) {
-			strategy.strategy(this);
+			if(lastUpdate!=update) {				
+				strategy.strategy(this);
+			}
+			lastUpdate = update;
 		}
 	}
 

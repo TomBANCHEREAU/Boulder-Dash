@@ -1,14 +1,13 @@
 package com.TomBAN.BoulderDash.Controller;
 
-import java.sql.SQLException;
-
 import javax.swing.JFrame;
 
 import com.TomBAN.BoulderDash.Frame.SimplyPanel;
 import com.TomBAN.BoulderDash.Model.BoulderDashModel;
 import com.TomBAN.BoulderDash.Model.Map;
+import com.TomBAN.BoulderDash.PlayerController.KeyBoardController;
+import com.TomBAN.BoulderDash.PlayerController.ZQSDKeyBoardController;
 import com.TomBAN.BoulderDash.View.BoulderDashGraphicsBuilder;
-import com.TomBAN.mySQL.MySQL;
 
 public class BoulderDashController {
 	private static final String URL = "jdbc:mysql://localhost:3306/a1-project5?useSSL=false&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC";
@@ -21,10 +20,22 @@ public class BoulderDashController {
 		//loadMap(0);
 		switch (gameMode) {
 		case SinglePlayer:
-			
-			frame.setContentPane(new SimplyPanel(new BoulderDashGraphicsBuilder(new BoulderDashModel(loadMap(0)))));
-			frame.repaint();
-			break;
+			model = new BoulderDashModel(loadMap(0));
+			KeyBoardController controller = new ZQSDKeyBoardController();
+			controller.setControllable(model.getPlayers().get(0));
+			frame.addKeyListener(controller);
+			frame.setContentPane(new SimplyPanel(new BoulderDashGraphicsBuilder(model)));
+			while (true) {
+				model.gameLoop();
+				frame.repaint();
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			//break;
 		case SingleCoop:
 			
 			break;
@@ -44,6 +55,11 @@ public class BoulderDashController {
 //			e.printStackTrace();
 //		}
 		//TODO 
-		return new Map(5, 5, "@@@@@\n@   @\n@   @\n@   @\n@@@@@");
+		return new Map(5, 5, "@@@@@\n@## @\n@ A @\n@   @\n@@@@@");
 	}
+	
+	
+	
+	
+	
 }

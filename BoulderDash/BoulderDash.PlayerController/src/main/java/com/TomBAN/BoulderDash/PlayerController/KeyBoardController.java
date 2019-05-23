@@ -17,7 +17,9 @@ public class KeyBoardController implements KeyListener {
 		this.keyDown = keyDown;
 		this.keyRight = keyRight;
 	}
-
+	public void setControllable(Controllable controllable) {
+		this.controllable = controllable;
+	}
 	public void keyTyped(KeyEvent e) {
 	}
 

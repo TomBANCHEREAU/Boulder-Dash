@@ -24,6 +24,7 @@
 		<module>BoulderDash.PlayerController</module>
 		<module>BoulderDash.Main</module>
 		<module>BoulderDash.Ressource</module>
+		<module>BoulderDash.Ticker</module>
 	</modules>
 	<dependencies>
 		<dependency>
