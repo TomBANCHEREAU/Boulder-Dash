@@ -16,7 +16,9 @@ public class RessourceManager {
 	private ArrayList<String> language;
 	private ArrayList<String> languageCode;
 	private RessourceManager() {
-		// TODO Auto-generated constructor stub
+		language = new ArrayList<String>();
+		languageCode = new ArrayList<String>();
+		images = new HashMap<String, Image>();
 	}
 
 	public static RessourceManager getInstance() {
@@ -27,7 +29,6 @@ public class RessourceManager {
 	}
 
 	public void loadImages(String directory) {
-		images = new HashMap<String, Image>();
 		try {
 			BufferedReader buff = new BufferedReader(new FileReader(new File("data/Images.index")));
 			String line = buff.readLine();
@@ -40,8 +41,6 @@ public class RessourceManager {
 		}
 	}
 	public void loadLanguageList() {
-		language = new ArrayList<String>();
-		languageCode = new ArrayList<String>();
 		try {
 			BufferedReader buff = new BufferedReader(new FileReader(new File("data/Language.index")));
 			String line = buff.readLine();

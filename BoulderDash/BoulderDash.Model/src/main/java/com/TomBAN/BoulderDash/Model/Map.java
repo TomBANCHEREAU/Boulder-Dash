@@ -20,7 +20,9 @@ public class Map {
 	private void bindMapToBlocks() {
 		for(Block[] blockList : blocks) {
 			for(Block block : blockList) {
-				block.bindMap(this);
+				if(block!=null) {
+					block.bindMap(this);
+				}
 			}
 		}
 	}
