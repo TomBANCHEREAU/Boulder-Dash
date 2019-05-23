@@ -47,7 +47,6 @@ public class PlayerStrategy implements Strategy {
 
 	private void moveTo(Player this_, int xGoal, int yGoal) {
 		this_.getMap().moveBlock(this_, xGoal, yGoal);
-		this_.setX(xGoal);
-		this_.setY(yGoal);
+		this_.setStrategy(new AnimationStrategy(this, xGoal, yGoal, 4));
 	}
 }
