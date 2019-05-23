@@ -72,16 +72,16 @@ public class Map {
 		if(b instanceof MovableBlock) {
 			switch (d) {
 			case Up:
-				moveBlock(b,b.getIntX(),b.getIntY()-1);
+				moveBlock(b,b.getxIndex(),b.getyIndex()-1);
 				break;
 			case Left:
-				moveBlock(b,b.getIntX(),b.getIntY()-1);
+				moveBlock(b,b.getxIndex(),b.getyIndex()-1);
 				break;
 			case Down:
-				moveBlock(b,b.getIntX(),b.getIntY()-1);
+				moveBlock(b,b.getxIndex(),b.getyIndex()-1);
 				break;
 			case Right:
-				moveBlock(b,b.getIntX(),b.getIntY()-1);
+				moveBlock(b,b.getxIndex(),b.getyIndex()-1);
 				break;
 	
 			default:
@@ -93,7 +93,7 @@ public class Map {
 
 	private void moveBlock(Block b, int x, int y) {
 		if (x >= 0 && x < width && y >= 0 && y < height) {
-			blocks[b.getIntX()][b.getIntY()] = null;
+			blocks[b.getxIndex()][b.getyIndex()] = null;
 			blocks[x][y] = b;
 		}
 		
@@ -114,8 +114,8 @@ public class Map {
 	}
 
 	public void removeBlock(Block b) {
-		if (blocks[b.getIntX()][b.getIntY()] == b) {
-			blocks[b.getIntX()][b.getIntY()] = null;
+		if (blocks[b.getxIndex()][b.getyIndex()] == b) {
+			blocks[b.getxIndex()][b.getyIndex()] = null;
 		}
 	}
 }
