@@ -12,7 +12,7 @@ public class BoulderDash {
 		//System.out.println("안녕");
 		RessourceManager.getInstance().loadImages("images");
 		
-		BoulderDashController controller = new BoulderDashController(new BoulderDashFrame(1280,720),GameMode.SinglePlayer);
+		BoulderDashController controller = new BoulderDashController(new BoulderDashFrame(1920,1080),GameMode.SingleCoop);
 	}
 
 }

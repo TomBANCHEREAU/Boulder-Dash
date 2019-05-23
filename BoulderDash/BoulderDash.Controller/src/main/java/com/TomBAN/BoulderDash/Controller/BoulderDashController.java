@@ -1,11 +1,15 @@
 package com.TomBAN.BoulderDash.Controller;
 
 import javax.swing.JFrame;
+import javax.swing.JSplitPane;
 
 import com.TomBAN.BoulderDash.Frame.SimplyPanel;
 import com.TomBAN.BoulderDash.Model.BoulderDashModel;
 import com.TomBAN.BoulderDash.Model.Map;
+import com.TomBAN.BoulderDash.PlayerController.ArroKeyBoardController;
+import com.TomBAN.BoulderDash.PlayerController.IJKLKeyBoardController;
 import com.TomBAN.BoulderDash.PlayerController.KeyBoardController;
+import com.TomBAN.BoulderDash.PlayerController.NumPKeyBoardController;
 import com.TomBAN.BoulderDash.PlayerController.ZQSDKeyBoardController;
 import com.TomBAN.BoulderDash.View.BoulderDashGraphicsBuilder;
 
@@ -36,8 +40,28 @@ public class BoulderDashController {
 			}
 			//break;
 		case SingleCoop:
-			
-			break;
+			model = new BoulderDashModel(loadMap(0));
+			KeyBoardController[] controllers = new KeyBoardController[4];
+			controllers[0] = new ZQSDKeyBoardController();
+			controllers[1] = new IJKLKeyBoardController();
+			controllers[2] = new NumPKeyBoardController();
+			controllers[3] = new ArroKeyBoardController();
+			for (int i = 0; i < controllers.length; i++) {
+				controllers[i].setControllable(model.getPlayers().get(i));
+				frame.addKeyListener(controllers[i]);
+			}
+			frame.setContentPane(new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+					new JSplitPane(JSplitPane.VERTICAL_SPLIT, new SimplyPanel(new BoulderDashGraphicsBuilder(model,model.getPlayers().get(0))),new SimplyPanel(new BoulderDashGraphicsBuilder(model,model.getPlayers().get(1)))),
+					new JSplitPane(JSplitPane.VERTICAL_SPLIT, new SimplyPanel(new BoulderDashGraphicsBuilder(model,model.getPlayers().get(2))),new SimplyPanel(new BoulderDashGraphicsBuilder(model,model.getPlayers().get(3))))));
+			while (true) {
+				model.gameLoop();
+				frame.repaint();
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 		case MultiPlayer:
 			
 			break;
@@ -68,9 +92,9 @@ public class BoulderDashController {
 				"@       ###O# #       @                @#   O# @A@  O##  @             @              @ O#             @####          # #      @\n" + 
 				"@       # ##  #       @                @  OO#  @ @  #   O@             @              @¤#O             @@@@@@@@       # #      @\n" + 
 				"@       # #   #       @                 @ ##  @   @  O #@              @              @ O              @OO            # #      @\n" + 
-				"@       # #   #       @                  @ O @     @ O#@               @               @#              @V             # #      @\n" + 
-				"@       # #   #       @                   @V@       @V@                @                @@@            @OO            # #      @\n" + 
-				"@       # #   #       @                    @         @           @@@@@@@@@@@@@             @@@@@       @@@@@@@@@@@    # #      @\n" + 
+				"@       # #   #       @                  @ O @  A  @ O#@               @               @#              @V             # #      @\n" + 
+				"@       # #   #       @                   @V@   A   @V@                @                @@@            @OO            # #      @\n" + 
+				"@       # #   #       @                    @    A    @           @@@@@@@@@@@@@             @@@@@       @@@@@@@@@@@    # #      @\n" + 
 				"@       # #   ##############################                                                                          # #      @\n" + 
 				"@       # #                                           O                                                               # #      @\n" + 
 				"@       # ############################################################################################################# #      @\n" + 
