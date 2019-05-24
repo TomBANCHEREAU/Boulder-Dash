@@ -56,22 +56,35 @@ public class BoulderDashController {
 			frames[0].setContentPane(panels[0]);
 		} else if (gameOption.getPlayerNumber() == 2) {
 			if (!gameOption.isDualScreen()) {
-				final Container splitedScreen = new JSplitPane(JSplitPane.VERTICAL_SPLIT, panels[0], panels[1]);
+				final JSplitPane splitedScreen = new JSplitPane(JSplitPane.VERTICAL_SPLIT, panels[0], panels[1]);
+				splitedScreen.setDividerLocation(0.5);
+//				splitedScreen.setDividerSize(0);
 				frames[0].setContentPane(splitedScreen);
+				splitedScreen.setDividerLocation(0.5);
 			} else {
 				frames[0].setContentPane(panels[0]);
 				frames[1].setContentPane(panels[1]);
 			}
 		} else {
-			final Container[] splitedScreen = { new JSplitPane(JSplitPane.VERTICAL_SPLIT, panels[0], panels[1]),
+			final JSplitPane[] splitedScreen = { new JSplitPane(JSplitPane.VERTICAL_SPLIT, panels[0], panels[1]),
 					new JSplitPane(JSplitPane.VERTICAL_SPLIT, panels[2], panels[3]) };
 
+			splitedScreen[0].setDividerLocation(0.5);
+			splitedScreen[1].setDividerLocation(0.5);
+			
 			if (!gameOption.isDualScreen()) {
-				final Container splitedsplitedScreen = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, splitedScreen[0], splitedScreen[1]);
+				final JSplitPane splitedsplitedScreen = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, splitedScreen[0], splitedScreen[1]);
 				frames[0].setContentPane(splitedsplitedScreen);
+				splitedsplitedScreen.setDividerLocation(0.5);
+
+				splitedScreen[0].setDividerLocation(0.5);
+				splitedScreen[1].setDividerLocation(0.5);
 			} else {
 				frames[0].setContentPane(splitedScreen[0]);
 				frames[1].setContentPane(splitedScreen[1]);
+
+				splitedScreen[0].setDividerLocation(0.5);
+				splitedScreen[1].setDividerLocation(0.5);
 			}
 		}
 

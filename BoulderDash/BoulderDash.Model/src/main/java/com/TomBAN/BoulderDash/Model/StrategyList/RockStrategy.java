@@ -47,10 +47,10 @@ public class RockStrategy implements Strategy {
 					wasFalling=true;
 					return;
 				}
-				wasFalling=false;
 				
 			}
 		}
+		wasFalling=false;
 	}
 
 }
