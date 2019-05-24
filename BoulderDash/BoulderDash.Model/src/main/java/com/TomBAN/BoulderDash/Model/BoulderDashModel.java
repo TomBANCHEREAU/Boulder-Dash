@@ -31,7 +31,7 @@ public class BoulderDashModel extends Observable implements Tickable{
 
 	public void start() {
 		TickerManager.addTicker(this);
-		TickerManager.get(this).setTickRate(20);
+		TickerManager.get(this).setTickRate(1);
 		TickerManager.start(this);
 	}
 
