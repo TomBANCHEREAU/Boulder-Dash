@@ -25,7 +25,6 @@ public class Test extends Observable implements KeyListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.setVisible(true);
-		Container c = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new SimplyPanel(new GA()), new SimplyPanel(new GB()));// =
 																														// frame.getContentPane();
 		frame.setContentPane(new Panel());
 		frame.repaint();
@@ -36,25 +35,6 @@ public class Test extends Observable implements KeyListener {
 
 	public static void main(String[] args) {
 		new Test();
-	}
-
-	public class GA implements GraphicsBuilder {
-
-		public void draw(Graphics2D graph, GraphicsObserver observer) {
-			// TODO Auto-generated method stub
-			graph.fillRect(0, 0, observer.getWidth() / 2, 20);
-		}
-
-	}
-
-	public class GB implements GraphicsBuilder {
-
-		public void draw(Graphics2D graph, GraphicsObserver observer) {
-			// TODO Auto-generated method stub
-			graph.setBackground(Color.WHITE);
-
-		}
-
 	}
 
 	@Override
