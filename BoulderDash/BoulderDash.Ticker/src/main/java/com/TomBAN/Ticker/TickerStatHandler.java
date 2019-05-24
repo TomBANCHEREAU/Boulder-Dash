@@ -7,6 +7,7 @@ public interface TickerStatHandler {
 	public long getNanoSecPerTick();
 	public int getMilliSecPerTick();
 	public boolean isRunning();
+	public long getMillisSinceStart();
 //	public boolean isPaused();
 //	public void pause();
 //	public void unpause();

@@ -12,6 +12,7 @@ class Ticker implements Runnable, TickerStatHandler {
 	private Tickable ticker;
 	private ArrayList<Long> NSPTs;
 	private ArrayList<Long> ticks;
+	private long startMillis;
 	private int ID;
 	{
 		thread = new Thread(this);
@@ -43,6 +44,7 @@ class Ticker implements Runnable, TickerStatHandler {
 		synchronized (syncKey) {
 			if (!thread.isAlive()) {
 				thread.start();
+				startMillis = System.currentTimeMillis();
 				return;
 			}
 			System.err.println("Thread\"" + thread.getName() + "\" already started");
@@ -147,5 +149,12 @@ class Ticker implements Runnable, TickerStatHandler {
 
 	public int getID() {
 		return ID;
+	}
+
+	@Override
+	public long getMillisSinceStart() {
+		synchronized (syncKey) {
+			return System.currentTimeMillis()-startMillis;
+		}
 	}
 }
