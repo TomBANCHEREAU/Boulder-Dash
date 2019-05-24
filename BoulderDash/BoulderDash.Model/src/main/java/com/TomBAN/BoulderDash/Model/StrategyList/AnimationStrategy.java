@@ -27,6 +27,8 @@ public class AnimationStrategy implements Strategy {
 		time--;
 		if(time==0) {
 			this_.setStrategy(next);
+			this_.setX(this_.getxIndex());
+			this_.setY(this_.getyIndex());
 			next.strategy(this_);
 		}
 	}
