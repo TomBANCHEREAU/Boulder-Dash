@@ -96,11 +96,11 @@ public class StringMap {
 					case '@':
 						blocks[x][y] = new Boundary(x, y);
 						break;
-					case '¤':
+					case '$':
 						// TODO
 						break;
 					default:
-						System.err.println("unknown Block : (char:'" + 'a' + "',int: " + (int)'a' + ",hex: " +Integer.toHexString('a') + ")");
+						System.err.println("unknown Block : (char:'" + stringMap[y].charAt(i) + "',int: " + (int)stringMap[y].charAt(i) + ",hex: " +Integer.toHexString(stringMap[y].charAt(i)) + ")");
 					case ' ':
 						blocks[x][y] = null;
 					}
