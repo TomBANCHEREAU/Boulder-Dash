@@ -5,7 +5,9 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
+import javax.swing.SwingUtilities;
 
+import com.TomBAN.BoulderDash.Frame.BoulderDashFrame;
 import com.TomBAN.BoulderDash.Frame.SimplyPanel;
 import com.TomBAN.BoulderDash.Model.BoulderDashModel;
 import com.TomBAN.BoulderDash.Model.StringMap;
@@ -23,14 +25,14 @@ public class BoulderDashController {
 	private static final String PASSWORD = "";
 	private BoulderDashModel[] models;
 	private KeyBoardController[] controllers;
-	private final JFrame[] frames;
+	private final BoulderDashFrame[] frames;
 	private final GameOption gameOption;
 
-	public BoulderDashController(JFrame frame, GameOption gameOption) {
-		this.frames = new JFrame[(gameOption.isDualScreen()) ? 2 : 1];
+	public BoulderDashController(BoulderDashFrame frame, GameOption gameOption) {
+		this.frames = new BoulderDashFrame[(gameOption.isDualScreen()) ? 2 : 1];
 		frames[0] = frame;
 		if (gameOption.isDualScreen()) {
-			frames[1] = new JFrame();
+			frames[1] = new BoulderDashFrame(1280,720);
 		}
 		this.gameOption = gameOption;
 
@@ -59,14 +61,15 @@ public class BoulderDashController {
 			if (!gameOption.isDualScreen()) {
 				final JSplitPane splitedScreen = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 				splitedScreen.setSize(frames[0].getContentPane().getWidth(), frames[0].getContentPane().getHeight());
-//				panels[0].setSize(frames[0].getContentPane().getWidth(), frames[0].getContentPane().getHeight()/2);
-//				panels[1].setSize(frames[0].getContentPane().getWidth(), frames[0].getContentPane().getHeight()/2);
+				System.out.println(splitedScreen.getSize());
+				frames[0].setContentPane(splitedScreen);
+				splitedScreen.setDividerLocation(0.5);
+//				splitedScreen.setDividerLocation(0.5);
 //				//, panels[0], panels[1]
 				splitedScreen.setTopComponent(panels[0]);
-				splitedScreen.setBottomComponent(panels[0]);
+				splitedScreen.setBottomComponent(panels[1]);
+//				frame.pack();
 //				splitedScreen.setDividerSize(0);
-				frames[0].setContentPane(splitedScreen);
-//				splitedScreen.setDividerLocation(0.5);
 			} else {
 				panels[0].setSize(frames[0].getContentPane().getWidth(), frames[0].getContentPane().getHeight());
 				panels[1].setSize(frames[1].getContentPane().getWidth(), frames[1].getContentPane().getHeight());
@@ -82,12 +85,15 @@ public class BoulderDashController {
 			
 			if (!gameOption.isDualScreen()) {
 				final JSplitPane splitedsplitedScreen = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, splitedScreen[0], splitedScreen[1]);
+				splitedsplitedScreen.setSize(frames[0].getContentPane().getWidth(), frames[0].getContentPane().getHeight());
 				frames[0].setContentPane(splitedsplitedScreen);
 				splitedsplitedScreen.setDividerLocation(0.5);
 
 				splitedScreen[0].setDividerLocation(0.5);
 				splitedScreen[1].setDividerLocation(0.5);
 			} else {
+				splitedScreen[0].setSize(frames[0].getContentPane().getWidth(), frames[0].getContentPane().getHeight());
+				splitedScreen[1].setSize(frames[0].getContentPane().getWidth(), frames[0].getContentPane().getHeight());
 				frames[0].setContentPane(splitedScreen[0]);
 				frames[1].setContentPane(splitedScreen[1]);
 
@@ -155,9 +161,9 @@ public class BoulderDashController {
 						+ "@#A####V########@###@## #O# #@ @###@##VVVVVV@@@@@@@@@@@@ ######   O#####O#V@\n"
 						+ "@###################@########@V@##V@#@@@@@@@@O#####O###@ ###O##O##V#####O#V@\n"
 						+ "@@@@@@@ @@@@@@@@@@@@@@@@@@@@@@@@#@@@#@##O#########OV#### #####O#  ######V##@\n"
-						+ "@O      ######@#####OV@##    V#@#####@  #   A  A  #####@O#####V  # ##### #O@\n"
+						+ "@O      ######@#####OV@##    V#@#####@  #         #####@O#####V  # ##### #O@\n"
 						+ "@# ####O#@@@@@@#######@##     #@@@@@@@ # ####V####O ########O##O##V##### O#@\n"
-						+ "@VO####O#######################O     A  VO########OVO##@O############### ¤#@\n"
+						+ "@VO####O#######################O        VO########OVO##@O############### ¤#@\n"
 						+ "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
 	}
