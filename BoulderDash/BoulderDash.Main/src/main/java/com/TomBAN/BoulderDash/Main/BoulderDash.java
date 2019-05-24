@@ -14,7 +14,7 @@ public class BoulderDash {
 		RessourceManager.getInstance().loadImages("Default");
 		RessourceManager.getInstance().loadLanguageList();
 		//System.out.println("qsd");
-		new BoulderDashController(new BoulderDashFrame(1920, 1080), new GameOption(1,GameMode.SinglePlayer,"en"));
+		new BoulderDashController(new BoulderDashFrame(1280, 720), new GameOption(2,GameMode.MultiCoop,"en"));
 		//BoulderDashController controller = new BoulderDashController(new BoulderDashFrame(1920,1080),GameMode.SingleCoop);
 	}
 
