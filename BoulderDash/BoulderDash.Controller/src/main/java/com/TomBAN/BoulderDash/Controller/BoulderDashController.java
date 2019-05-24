@@ -40,7 +40,7 @@ public class BoulderDashController {
 		this.models = new BoulderDashModel[gameOption.getModelNumber()];
 		final StringMap srtMap = getStringMap(0);
 		for (int i = 0; i < models.length; i++) {
-			models[i] = new BoulderDashModel(srtMap.toRealMap());
+			models[i] = new BoulderDashModel(srtMap);
 		}
 
 		setUpControllers();
@@ -65,12 +65,8 @@ public class BoulderDashController {
 				System.out.println(splitedScreen.getSize());
 				frames[0].setContentPane(splitedScreen);
 				splitedScreen.setDividerLocation(0.5);
-//				splitedScreen.setDividerLocation(0.5);
-//				//, panels[0], panels[1]
 				splitedScreen.setTopComponent(panels[0]);
 				splitedScreen.setBottomComponent(panels[1]);
-//				frame.pack();
-//				splitedScreen.setDividerSize(0);
 			} else {
 				panels[0].setSize(frames[0].getContentPane().getWidth(), frames[0].getContentPane().getHeight());
 				panels[1].setSize(frames[1].getContentPane().getWidth(), frames[1].getContentPane().getHeight());
@@ -105,9 +101,6 @@ public class BoulderDashController {
 
 		for (BoulderDashModel model : models) {
 			model.start();
-		}
-		for (JFrame framse : frames) {
-			framse.repaint();
 		}
 		// TODO Auto-generated constructor stub
 	}
@@ -152,7 +145,7 @@ public class BoulderDashController {
 	public StringMap getStringMap(int id) {
 		try {
 			MySQL.Connect(URL, USER, PASSWORD);
-			ResultSet result = MySQL.getInstance().querySelect("call getMapFromId("+1+")");
+			ResultSet result = MySQL.getInstance().querySelect("call getMapFromId("+4+")");
 			result.next();
 			System.out.println(result.getString("Content"));
 			return new StringMap(result.getInt("Width"), result.getInt("Height"), result.getInt("DiamondsNeeded"), result.getInt("PlayerNumber"), result.getString("Content"));
@@ -160,32 +153,6 @@ public class BoulderDashController {
 			e.printStackTrace();
 		}
 		return null;
-		// TODO
-//		return new StringMap(128, 24, 2, 2,
-//				"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n" + 
-//				"@O#######################################################################################        @ O    O  O   O    O O   OOOOO@\n" + 
-//				"@          ###########O##########################  #######O####### M#####################        @ # O  # O# O # O #OO#   #####@\n" + 
-//				"@                     #                ########## M###############  #####################            #   O   #O  #  ##       @V@\n" + 
-//				"@V         ## ######## ##################################################################        @  O   O#   O#    O     ####O#@\n" + 
-//				"@           # ######OO OO                                                                        @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n" + 
-//				"@           # #####OOOVOOO                                                                                             O      O@\n" + 
-//				"@           # #@@@@@@@@@@@@@@@        @ O   #  O@         @      @@@@@@@@@@@@@             @@@@@       @@@@@@@@@@@    O##     #@\n" + 
-//				"@           # #       @               @ #   #O##@  O    O @      OOOOOO@OOOOOO          @@@            @      O       # #      @\n" + 
-//				"@        O  # #       @   O#O#O#O#    @   #  O# @  # OO # @      ######@######         @ O             @C #####       # #      @\n" + 
-//				"@       ###O# #       @   #O#O#O#O     @#   O# @ @  O##  @       OOOOOO@OOOOOO        @ O#             @####          # #      @\n" + 
-//				"@       # ##  #       @   O#O#O#O#     @  OO#  @ @  #   O@       ######@######        @¤#O             @@@@@@@@       #L#      @\n" + 
-//				"@       # #   #       @   #O#OVO#O      @ ##  @   @  O #@        OOOOOO@OOOOOO        @ O#             @OO            # #      @\n" + 
-//				"@       # #   #       @   O#O#O#O#       @ O @     @#O#@         #####O@######         @#              @VP            # #      @\n" + 
-//				"@       # #   #       @   #O#O#O#O        @V@       @V@  OO   OO ###OPV@COOOOO          @@@            @OO            # #      @\n" + 
-//				"@       # #   #       @   O#O#O#O#         @         @###OO###OO#@@@@@@@@@@@@@   ####      @@@@@       @@@@@@@@@@@    # #      @\n" + 
-//				"@       # #   ##############################          ###########                # M#                                 # #      @\n" + 
-//				"@       # ######################                      O                          ####                                 # #     #@\n" + 
-//				"@       #    L                 ############################################################O########################### #    OV@\n" + 
-//				"@       ###################### ###O############O######O#########O#######   ###OO#O###O##  ####O#####################@@@@@@@@@@@@\n" + 
-//				"@           ###################################O################O##O##### ##O####O#  O##O##############O@@@@@@@@@@@@@####      @\n" + 
-//				"@ F  A  F   ################O #####       O   OO    ###    O ##############O##  ############O#######   ##################     #@\n" + 
-//				"@           ########################  O  # ####   O        # ######      ############     ####O#####   #               L#    OV@\n" + 
-//				"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
 	}
 

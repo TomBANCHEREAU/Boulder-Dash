@@ -9,10 +9,10 @@ import com.TomBAN.Ticker.TickerManager;
 
 public class BoulderDashModel extends Observable implements Tickable{
 	private Map map;
-
-	public BoulderDashModel(Map map) {
+	private int diamond=0;
+	public BoulderDashModel(StringMap srtMap) {
 		// TODO Auto-generated constructor stub
-		this.map = map;
+		this.map = srtMap.toRealMap();
 	}
 	
 	public ArrayList<Player> getPlayers() {
@@ -38,8 +38,36 @@ public class BoulderDashModel extends Observable implements Tickable{
 	@Override
 	public void tick() {
 		gameLoop();
+		if(won()) {
+			System.out.println("WON !!!!!!");
+			TickerManager.stop(this);
+		}else if(loose()) {
+
+			System.out.println("LOOSE !!!!!!");
+		}
 		setChanged();
 		notifyObservers();
+//		System.out.println("time : "+TickerManager.get(this).getMillisSinceStart()/10/100.0);
+	}
+	
+	public boolean won() {
+		for(Player p : map.getPlayers()) {
+			if(!p.hasWin()) {
+				return false;
+			}
+		}
+		return true;
+	}
+	public boolean loose() {
+		for(Player p : map.getPlayers()) {
+			if(p.isDead()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	public void addDiamond() {
+		diamond++;
 	}
 	
 }

@@ -44,7 +44,6 @@ class Ticker implements Runnable, TickerStatHandler {
 		synchronized (syncKey) {
 			if (!thread.isAlive()) {
 				thread.start();
-				startMillis = System.currentTimeMillis();
 				return;
 			}
 			System.err.println("Thread\"" + thread.getName() + "\" already started");
@@ -82,6 +81,7 @@ class Ticker implements Runnable, TickerStatHandler {
 		}
 		boolean done = false;
 		double LastTickStartTime = System.nanoTime();
+		startMillis = System.currentTimeMillis();
 		while (!done) {
 			synchronized (syncKey) {
 				if (stoping) {

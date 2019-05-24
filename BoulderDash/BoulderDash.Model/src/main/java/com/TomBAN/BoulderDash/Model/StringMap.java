@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.TomBAN.BoulderDash.Model.BlockList.Boundary;
 import com.TomBAN.BoulderDash.Model.BlockList.Diamond;
 import com.TomBAN.BoulderDash.Model.BlockList.Dirt;
+import com.TomBAN.BoulderDash.Model.BlockList.Exit;
 import com.TomBAN.BoulderDash.Model.BlockList.Player;
 import com.TomBAN.BoulderDash.Model.BlockList.Rock;
 
@@ -97,7 +98,7 @@ public class StringMap {
 						blocks[x][y] = new Boundary(x, y);
 						break;
 					case '$':
-						// TODO
+						blocks[x][y] = new Exit(x, y);
 						break;
 					default:
 						System.err.println("unknown Block : (char:'" + stringMap[y].charAt(i) + "',int: " + (int)stringMap[y].charAt(i) + ",hex: " +Integer.toHexString(stringMap[y].charAt(i)) + ")");

@@ -1,7 +1,5 @@
 package com.TomBAN.BoulderDash.Model.BlockList;
 
-import java.awt.Image;
-
 import com.TomBAN.BoulderDash.Model.Controllable;
 import com.TomBAN.BoulderDash.Model.Direction;
 import com.TomBAN.BoulderDash.Model.Killable;
@@ -21,6 +19,8 @@ public class Player extends MovableBlock implements Killable,Controllable{
 //											,{"Player/DOWN_0.png","Player/DOWN_1.png"}
 											,{"Player/RIGHT_0.png","Player/RIGHT_1.png"}};
 	private MovementOrder currentOrder = MovementOrder.StopMovement;
+	private boolean win = false;
+	private boolean dead = false;
 	public Player(int x, int y) {
 		super(IMAGE, x, y);
 		setStrategy(new PlayerStrategy());
@@ -29,6 +29,7 @@ public class Player extends MovableBlock implements Killable,Controllable{
 	@Override
 	public void getKilled() {
 		// TODO Auto-generated method stub
+		setDead();
 		getMap().removeBlock(this);
 	}
 
@@ -46,5 +47,18 @@ public class Player extends MovableBlock implements Killable,Controllable{
 
 	public void setCurrentOrder(MovementOrder currentOrder) {
 		this.currentOrder = currentOrder;
+	}
+	public boolean hasWin() {
+		return this.win ;
+	}
+	public void setWin() {
+		this.win=true;
+	}
+	public boolean isDead() {
+		return dead;
+	}
+
+	public void setDead() {
+		this.dead = true;
 	}
 }

@@ -72,7 +72,7 @@ public final class TickerManager {
 
 			i++;
 			if (i >= allTickers.size()) {
-				i = 0;
+				return;
 			}
 		}
 	}

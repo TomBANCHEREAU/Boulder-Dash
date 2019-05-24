@@ -41,8 +41,8 @@ public class PlayerStrategy implements Strategy {
 				this_.move(Direction.values()[this_.getCurrentOrder().ordinal()],4);
 			}else {
 				if(goal instanceof Breakable) {
-					((Breakable) goal).getBroken();
 					this_.move(Direction.values()[this_.getCurrentOrder().ordinal()],4);
+					((Breakable) goal).getBroken();
 				}else if (goal instanceof Pushable) {
 
 					final Block nextBlock = this_.getMap().getBlockAt(xGoal*2 - this_.getxIndex(), yGoal*2 - this_.getyIndex());
