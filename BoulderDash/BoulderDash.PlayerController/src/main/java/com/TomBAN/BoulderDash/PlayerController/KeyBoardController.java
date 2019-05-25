@@ -4,10 +4,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import com.TomBAN.BoulderDash.Model.Controllable;
+import com.TomBAN.BoulderDash.Model.ControllableController;
 import com.TomBAN.BoulderDash.Model.MovementOrder;
 import com.TomBAN.BoulderDash.Model.BlockList.Player;
 
-public class KeyBoardController implements KeyListener {
+public class KeyBoardController implements KeyListener,ControllableController{
 	private int keyUp, keyLeft, keyDown, keyRight;
 	private int lastKeyPressed;
 	private Controllable controllable;
@@ -18,6 +19,7 @@ public class KeyBoardController implements KeyListener {
 		this.keyDown = keyDown;
 		this.keyRight = keyRight;
 	}
+	@Override
 	public void bindControllable(Controllable controllable) {
 		this.controllable = controllable;
 	}

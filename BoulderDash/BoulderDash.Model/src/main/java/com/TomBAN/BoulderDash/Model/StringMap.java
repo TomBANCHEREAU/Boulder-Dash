@@ -73,7 +73,7 @@ public class StringMap {
 		this.playerCount = playerCount;
 	}
 
-	public Map toRealMap() {
+	public Map toRealMap(ArrayList<ControllableController> controllers) {
 		final Block[][] blocks = new Block[width][height];
 		final ArrayList<Player> players = new ArrayList<Player>();
 		for (int y = 0; y < height; y++) {
@@ -109,6 +109,9 @@ public class StringMap {
 //			} else {
 //				throw new RuntimeException("invalid map width " + line[y].length() + " != " + width);// TODO
 //			}
+		}
+		for(int i=0;i<controllers.size();i++) {
+			controllers.get(i).bindControllable(players.get(i));
 		}
 		return new Map(width, height, blocks, players);
 

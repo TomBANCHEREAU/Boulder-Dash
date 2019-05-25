@@ -37,22 +37,22 @@ public class BoulderDashController {
 		}
 		this.gameOption = gameOption;
 
+		setUpControllers();
+		bindControllersToFrames();
+		
 		this.models = new BoulderDashModel[gameOption.getModelNumber()];
 		final StringMap srtMap = getStringMap(0);
 		for (int i = 0; i < models.length; i++) {
 			models[i] = new BoulderDashModel(srtMap);
+			for(int j=i*gameOption.getPlayerNumberPerMap();j<(i+1)*gameOption.getPlayerNumberPerMap();j++) {
+				models[i].addController(controllers[j]);
+			}
 		}
 
-		setUpControllers();
-		bindPlayerToControllers();
-		bindControllersToFrames();
-
 		final SimplyPanel[] panels = new SimplyPanel[gameOption.getPlayerNumber()];
-		final ArrayList<Player> players = getAllPlayers();
-
 		for (int i = 0; i < panels.length; i++) {
 			panels[i] = new SimplyPanel(new BoulderDashGraphicsBuilder(
-					models[i * gameOption.getModelNumber() / gameOption.getPlayerNumber()], players.get(i)));
+					models[i / gameOption.getPlayerNumberPerMap()], i%gameOption.getPlayerNumberPerMap()));
 		}
 
 		if (gameOption.getPlayerNumber() == 1) {
@@ -112,21 +112,21 @@ public class BoulderDashController {
 			}
 		}
 	}
-
-	private ArrayList<Player> getAllPlayers() {
-		final ArrayList<Player> players = new ArrayList<Player>();
-		for (int i = 0; i < models.length; i++) {
-			players.addAll(models[i].getPlayers());
-		}
-		return players;
-	}
-
-	private void bindPlayerToControllers() {
-		final ArrayList<Player> players = getAllPlayers();
-		for (int i = 0; i < controllers.length; i++) {
-			controllers[i].bindControllable(players.get(i));
-		}
-	}
+//
+//	private ArrayList<Player> getAllPlayers() {
+//		final ArrayList<Player> players = new ArrayList<Player>();
+//		for (int i = 0; i < models.length; i++) {
+//			players.addAll(models[i].getPlayers());
+//		}
+//		return players;
+//	}
+//
+//	private void bindPlayerToControllers() {
+//		final ArrayList<Player> players = getAllPlayers();
+//		for (int i = 0; i < controllers.length; i++) {
+//			controllers[i].bindControllable(players.get(i));
+//		}
+//	}
 
 	private void setUpControllers() {
 		this.controllers = new KeyBoardController[gameOption.getPlayerNumber()];

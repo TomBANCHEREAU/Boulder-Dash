@@ -15,40 +15,53 @@ import com.TomBAN.BoulderDash.Ressource.RessourceManager;
 public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 	private static final int TILE_SIZE=16;
 	private final BoulderDashModel model;
-	private final Player p;
+	private final int playerId;
 	private int currentCenterX, currentCenterY;
-
-	public BoulderDashGraphicsBuilder(BoulderDashModel model, Player p) {
+	private double currentScale =0;
+	private int timeSinceWin;
+	public BoulderDashGraphicsBuilder(BoulderDashModel model, int i) {
 		this.model = model;
-		this.p = p;
-		currentCenterX=p.getxIndex()*TILE_SIZE;
-		currentCenterY=p.getyIndex()*TILE_SIZE;
+		this.playerId = i;
+//		currentCenterX=i.getxIndex()*TILE_SIZE;
+//		currentCenterY=i.getyIndex()*TILE_SIZE;
 	}
 
-	private int constrain(int val, int min, int max) {
-		if (val > max) {
-			return max;
-		}
-		if (val < min) {
-			return min;
-		}
-		return val;
-	}
 
 	@Override
 	public void draw(Graphics2D graph, GraphicsObserver observer) {
-		final Image fond = RessourceManager.getInstance().getImage("BACKGROUND.png");
 		// TODO Auto-generated method stub
-		final int tileSize = TILE_SIZE;
-		final double scale = 5;
+		if(model.getMap()==null) {
+			return;
+		}
+		Player p = model.getPlayers().get(playerId);
+		if (currentScale==0) {
+			currentScale = observer.getWidth()/(16*TILE_SIZE);
+		}
+		if(p.hasWin()) {
+			if(timeSinceWin<30) {
+				timeSinceWin++;
+			}
+			currentScale =  currentScale*(30-timeSinceWin)/30.0 + min((observer.getWidth()/(model.getMap().getWidth()*TILE_SIZE+4))*timeSinceWin/30.0,(observer.getHeight()/(model.getMap().getHeight()*TILE_SIZE+4))*timeSinceWin/30.0);
+			currentCenterX = (int) (currentCenterX*(30-timeSinceWin)/30.0 + (model.getMap().getWidth()+2)*TILE_SIZE/2*timeSinceWin/30.0);
+			currentCenterY = (int) (currentCenterY*(30-timeSinceWin)/30.0 + (model.getMap().getHeight()+2)*TILE_SIZE/2*timeSinceWin/30.0);
+		}else {
+			timeSinceWin=0;
+			currentScale = observer.getWidth()/(16*TILE_SIZE);
+			currentCenterX = constrain(currentCenterX,(int)( (p.getX()+0.5)*TILE_SIZE-observer.getWidth()/ currentScale / 6),(int)( (p.getX()+0.5)*TILE_SIZE+observer.getWidth()/ currentScale / 6));
+			currentCenterY = constrain(currentCenterY,(int)( (p.getY()+0.5)*TILE_SIZE-observer.getHeight()/ currentScale / 6),(int)( (p.getY()+0.5)*TILE_SIZE+observer.getHeight()/ currentScale / 6));
+		}
 		
-		currentCenterX = constrain(currentCenterX,(int)( (p.getX()+0.5)*tileSize-observer.getWidth()/ scale / 6),(int)( (p.getX()+0.5)*tileSize+observer.getWidth()/ scale / 6));
-		currentCenterY = constrain(currentCenterY,(int)( (p.getY()+0.5)*tileSize-observer.getHeight()/ scale / 6),(int)( (p.getY()+0.5)*tileSize+observer.getHeight()/ scale / 6));
+//		currentScale = constrain(currentScale, min, max)
 		
 		
-		
+		final double scale = currentScale;
+	
 		final int centerX = (int) (currentCenterX*scale);
 		final int centerY = (int) (currentCenterY*scale);
+		drawMap(graph, observer, model.getMap(), centerX, centerY, scale);
+		return;
+	}
+	private static void drawMap(Graphics2D graph, GraphicsObserver observer,Map map,final int centerX,final int centerY,final double scale) {
 		
 		final int originX = (centerX - observer.getWidth() / 2);
 		final int originY = (centerY - observer.getHeight() / 2);
@@ -59,19 +72,15 @@ public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 		final int scaledOriginX = (int) ((centerX - observer.getWidth() / 2) / scale);
 		final int scaledOriginY = (int) ((centerY - observer.getHeight() / 2) / scale);
 
-		final int minX = scaledOriginX / tileSize - 1;
-		final int minY = scaledOriginY / tileSize - 1;
+		final int minX = scaledOriginX / TILE_SIZE - 2;
+		final int minY = scaledOriginY / TILE_SIZE - 2;
 
-		final int maxX = (minX + (int) (observer.getWidth() / scale) / tileSize + 3);
-		final int maxY = (minY + (int) (observer.getHeight() / scale) / tileSize + 3);
-
-		final Map map = model.getMap();
+		final int maxX = (minX + (int) (observer.getWidth() / scale) / TILE_SIZE + 4);
+		final int maxY = (minY + (int) (observer.getHeight() / scale) / TILE_SIZE + 4);
 
 		for (int x = minX; x < maxX; x++) {
 			for (int y = minY; y < maxY; y++) {
-
-				graph.drawImage(fond, x * tileSize, y * tileSize, observer);
-
+				graph.drawImage(map.getBackgroundImage(), x * TILE_SIZE, y * TILE_SIZE, observer);
 			}
 		}
 		for (int x = minX; x < maxX; x++) {
@@ -82,21 +91,37 @@ public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 					final float by = b.getY();
 					final Image image = b.getImage();
 					if (image != null) {
-						final int Xpos = (int) (bx * tileSize + tileSize / 2 - image.getWidth(observer) / 2);
-						final int Ypos = (int) (by * tileSize + tileSize / 2 - image.getHeight(observer) / 2);
+						final int Xpos = (int) (bx * TILE_SIZE + TILE_SIZE / 2 - image.getWidth(observer) / 2);
+						final int Ypos = (int) (by * TILE_SIZE + TILE_SIZE / 2 - image.getHeight(observer) / 2);
 						graph.drawImage(image, Xpos, Ypos, observer);
 					} else {
-						graph.drawRect((int) (bx * tileSize), (int) (by * tileSize), tileSize, tileSize);
+						graph.drawRect((int) (bx * TILE_SIZE), (int) (by * TILE_SIZE), TILE_SIZE, TILE_SIZE);
 					}
 				}
 
 			}
 		}
-		return;
+		graph.scale(1/scale, 1/scale);
+		graph.translate(+originX, +originY);
 	}
-
 	@Override
 	public Observable getObservable() {
 		return model;
+	}
+
+	private static int constrain(int val, int min, int max) {
+		if (val > max) {
+			return max;
+		}
+		if (val < min) {
+			return min;
+		}
+		return val;
+	}
+	private static double min(double a, double b) {
+		if (a < b) {
+			return a;
+		}
+		return b;
 	}
 }

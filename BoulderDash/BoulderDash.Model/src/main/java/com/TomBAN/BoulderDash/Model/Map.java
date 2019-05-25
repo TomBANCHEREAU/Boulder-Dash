@@ -1,14 +1,17 @@
 package com.TomBAN.BoulderDash.Model;
 
+import java.awt.Image;
 import java.util.ArrayList;
 
 import com.TomBAN.BoulderDash.Model.BlockList.*;
+import com.TomBAN.BoulderDash.Ressource.RessourceManager;
 
 public class Map {
 	private final int width, height;
 	private Block[][] blocks;
 	private ArrayList<Player> players;
 	private int update = 0;
+	private Image background = RessourceManager.getInstance().getImage("BACKGROUND.png");
 
 	public Map(int width, int height, Block[][] blocks, ArrayList<Player> players) {
 		this.width = width;
@@ -99,5 +102,8 @@ public class Map {
 	}
 	public int getHeight() {
 		return height;
+	}
+	public Image getBackgroundImage() {
+		return background;
 	}
 }
