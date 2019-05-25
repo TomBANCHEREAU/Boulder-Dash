@@ -3,10 +3,10 @@ package com.TomBAN.BoulderDash.PlayerController;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import com.TomBAN.BoulderDash.Model.Controllable;
-import com.TomBAN.BoulderDash.Model.ControllableController;
-import com.TomBAN.BoulderDash.Model.MovementOrder;
-import com.TomBAN.BoulderDash.Model.BlockList.Player;
+import com.TomBAN.BoulderDash.Game.Model.Controllable;
+import com.TomBAN.BoulderDash.Game.Model.ControllableController;
+import com.TomBAN.BoulderDash.Game.Model.MovementOrder;
+import com.TomBAN.BoulderDash.Game.Model.BlockList.Player;
 
 public class KeyBoardController implements KeyListener,ControllableController{
 	private int keyUp, keyLeft, keyDown, keyRight;

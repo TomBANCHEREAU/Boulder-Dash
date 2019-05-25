@@ -45,8 +45,8 @@ public class RessourceManager {
 			BufferedReader buff = new BufferedReader(new FileReader(new File("data/Language.index")));
 			String line = buff.readLine();
 			while(line!=null) {
-				language.add(line.split(";")[0]);
-				languageCode.add(line.split(";")[1]);
+				language.add(line.split(";")[1]);
+				languageCode.add(line.split(";")[0]);
 				line = buff.readLine();
 			}
 		} catch (IOException e) {

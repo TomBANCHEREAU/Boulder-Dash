@@ -6,4 +6,5 @@ import java.util.Observable;
 public interface GraphicsBuilder {
 	public void draw(final Graphics2D graph,final GraphicsObserver observer);
 	public Observable getObservable();
+	public void setPanel(SimplyPanel panel);
 }
