@@ -123,6 +123,7 @@ public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 		graph.scale(1/scale, 1/scale);
 		graph.translate(+originX, +originY);
 	}
+	
 	@Override
 	public Observable getObservable() {
 		return model;

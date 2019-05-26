@@ -18,12 +18,12 @@ public class FallingBlockStrategy extends Strategy<MovableBlock> {
 	public void strategy() {
 		final Block under = block.getMap().getBlockAt(block.getxIndex(), block.getyIndex() + 1);
 		if (under == null) {
-			((MovableBlock) block).move(Direction.Down, 4);
+			block.move(Direction.Down, 4);
 			wasFalling = true;
 			return;
 		} else if (wasFalling && under instanceof Killable) {
 			((Killable) under).getKilled();
-			((MovableBlock) block).move(Direction.Down, 4);
+			block.move(Direction.Down, 4);
 			return;
 		} else if (under instanceof Instable) {
 			final Block left = block.getMap().getBlockAt(block.getxIndex() - 1, block.getyIndex());
@@ -32,7 +32,7 @@ public class FallingBlockStrategy extends Strategy<MovableBlock> {
 				block.getMap().moveBlock(block, block.getxIndex() - 1, block.getyIndex());
 				block.setX(block.getxIndex());
 				block.setY(block.getyIndex());
-				((MovableBlock) block).move(Direction.Down, 4);
+				block.move(Direction.Down, 4);
 				wasFalling = true;
 				return;
 			}
