@@ -1,2 +1,6 @@
 player;플레이어
 players;플레이어
+SinglePlayer;싱글플레이 모드 
+MultiPlayerRace;멀티플레이 경기 모드
+MultiCoop;멀티플레이 coop 모드
+MultiCoopRace;멀티플레이 coop 경기 모드
