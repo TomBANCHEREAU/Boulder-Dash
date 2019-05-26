@@ -46,6 +46,28 @@ public class MovableBlock extends Block{
 		getMap().moveBlock(this, xGoal, yGoal);
 		this.setStrategy(new AnimationStrategy(this,getStrategy(), xGoal, yGoal, speed));
 	}
+	public Block getNextBlock(Direction d) {
+		int xGoal=this.getxIndex(),yGoal=this.getyIndex();
+		switch (d) {
+		case Up:
+			yGoal-=1;
+			break;
+		case Left:
+			xGoal-=1;
+			break;
+		case Down:
+			yGoal+=1;
+			break;
+		case Right:
+			xGoal+=1;
+			break;
+		}
+		return getMap().getBlockAt(xGoal, yGoal);
+	}
+	
+	public Block getBlockAtFront() {
+		return getNextBlock(getDirection());
+	}
 	
 	public Direction getDirection() {
 		return direction;

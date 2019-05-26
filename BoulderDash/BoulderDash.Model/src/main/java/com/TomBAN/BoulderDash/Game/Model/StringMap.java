@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.TomBAN.BoulderDash.Game.Model.BlockList.Boundary;
 import com.TomBAN.BoulderDash.Game.Model.BlockList.Diamond;
 import com.TomBAN.BoulderDash.Game.Model.BlockList.Dirt;
+import com.TomBAN.BoulderDash.Game.Model.BlockList.Ennemy;
 import com.TomBAN.BoulderDash.Game.Model.BlockList.Exit;
 import com.TomBAN.BoulderDash.Game.Model.BlockList.Player;
 import com.TomBAN.BoulderDash.Game.Model.BlockList.Rock;
@@ -24,6 +25,60 @@ public class StringMap {
 		setPlayerCount(playerCount);
 	}
 
+	public Map toRealMap(ArrayList<ControllableController> controllers) {
+		final Block[][] blocks = new Block[width][height];
+		final ArrayList<Player> players = new ArrayList<Player>();
+		for (int y = 0; y < height; y++) {
+//			if (stringMap[y].length() >= width) {// TODO
+				for (int x = 0, i = 0; x < width && i < stringMap[y].length(); x++, i++) {
+					switch (stringMap[y].charAt(i)) {
+					case 'O':
+						blocks[x][y] = new Rock(x, y);
+						break;
+					case 'A':
+						final Player player = new Player(x, y);
+						blocks[x][y] = player;
+						players.add(player);
+						break;
+					case 'V':
+						blocks[x][y] = new Diamond(x, y);
+						break;
+					case '#':
+						blocks[x][y] = new Dirt(x, y);
+						break;
+					case '@':
+						blocks[x][y] = new Boundary(x, y);
+						break;
+					case '$':
+						blocks[x][y] = new Exit(x, y);
+						break;
+					case 'L':
+						blocks[x][y] = new Ennemy(x, y,'L');
+						break;
+					case 'U':
+						blocks[x][y] = new Ennemy(x, y,'U');
+						break;
+					case 'M':
+						blocks[x][y] = new Ennemy(x, y,'C');
+						break;
+					default:
+						System.err.println("unknown Block : (char:'" + stringMap[y].charAt(i) + "',int: " + (int)stringMap[y].charAt(i) + ",hex: " +Integer.toHexString(stringMap[y].charAt(i)) + ")");
+					case ' ':
+						blocks[x][y] = null;
+					}
+				}
+//			} else {
+//				throw new RuntimeException("invalid map width " + line[y].length() + " != " + width);// TODO
+//			}
+		}
+		for(int i=0;i<controllers.size();i++) {
+			controllers.get(i).bindControllable(players.get(i));
+		}
+		return new Map(width, height, blocks, players,diamondNeeded);
+
+	}
+	
+	
 	public StringMap(int width, int height, int diamondNeeded, int playerCount, String stringMap) {
 		this(width, height, diamondNeeded, playerCount, stringMap.split("\n"));
 	}
@@ -73,49 +128,7 @@ public class StringMap {
 		this.playerCount = playerCount;
 	}
 
-	public Map toRealMap(ArrayList<ControllableController> controllers) {
-		final Block[][] blocks = new Block[width][height];
-		final ArrayList<Player> players = new ArrayList<Player>();
-		for (int y = 0; y < height; y++) {
-//			if (stringMap[y].length() >= width) {// TODO
-				for (int x = 0, i = 0; x < width && i < stringMap[y].length(); x++, i++) {
-					switch (stringMap[y].charAt(i)) {
-					case 'O':
-						blocks[x][y] = new Rock(x, y);
-						break;
-					case 'A':
-						final Player player = new Player(x, y);
-						blocks[x][y] = player;
-						players.add(player);
-						break;
-					case 'V':
-						blocks[x][y] = new Diamond(x, y);
-						break;
-					case '#':
-						blocks[x][y] = new Dirt(x, y);
-						break;
-					case '@':
-						blocks[x][y] = new Boundary(x, y);
-						break;
-					case '$':
-						blocks[x][y] = new Exit(x, y);
-						break;
-					default:
-						System.err.println("unknown Block : (char:'" + stringMap[y].charAt(i) + "',int: " + (int)stringMap[y].charAt(i) + ",hex: " +Integer.toHexString(stringMap[y].charAt(i)) + ")");
-					case ' ':
-						blocks[x][y] = null;
-					}
-				}
-//			} else {
-//				throw new RuntimeException("invalid map width " + line[y].length() + " != " + width);// TODO
-//			}
-		}
-		for(int i=0;i<controllers.size();i++) {
-			controllers.get(i).bindControllable(players.get(i));
-		}
-		return new Map(width, height, blocks, players,diamondNeeded);
 
-	}
 
 	public int getDiamondNeeded() {
 		return diamondNeeded;

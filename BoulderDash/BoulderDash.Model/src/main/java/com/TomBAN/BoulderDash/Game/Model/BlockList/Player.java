@@ -27,7 +27,6 @@ public class Player extends MovableBlock implements Killable,Controllable{
 
 	@Override
 	public void getKilled() {
-		// TODO Auto-generated method stub
 		setDead();
 		getMap().removeBlock(this);
 	}
