@@ -1,0 +1,6 @@
+player;joueur
+players;joueurs
+SinglePlayer;Mode un joueur
+MultiPlayerRace;Mode course multijoueur 
+MultiCoop;Mode multijoueur en coopération
+MultiCoopRace;Mode course multijoueur en coopération
