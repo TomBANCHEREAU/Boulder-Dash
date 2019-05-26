@@ -145,7 +145,7 @@ public class BoulderDashController {
 	public StringMap getStringMap(int id) {
 		try {
 			MySQL.Connect(URL, USER, PASSWORD);
-			ResultSet result = MySQL.getInstance().querySelect("call getMapFromId("+1+")");
+			ResultSet result = MySQL.getInstance().querySelect("call getMapFromId("+4+")");
 			result.next();
 			System.out.println(result.getString("Content"));
 			return new StringMap(result.getInt("Width"), result.getInt("Height"), result.getInt("DiamondsNeeded"), result.getInt("PlayerNumber"), result.getString("Content"));

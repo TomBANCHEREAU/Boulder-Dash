@@ -14,11 +14,13 @@ public class RessourceManager {
 	private static RessourceManager currentInstance;
 	private HashMap<String, Image> images;
 	private ArrayList<String> language;
+	private HashMap<String, String> texts;
 	private ArrayList<String> languageCode;
 	private RessourceManager() {
 		language = new ArrayList<String>();
 		languageCode = new ArrayList<String>();
 		images = new HashMap<String, Image>();
+		texts = new HashMap<String, String>();
 	}
 
 	public static RessourceManager getInstance() {
@@ -36,10 +38,28 @@ public class RessourceManager {
 				images.put(line, ImageIO.read(new File("data/"+directory+"/"+line)));
 				line = buff.readLine();
 			}	
+			buff.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	public void loadLanguages(String langCode) {
+		try {
+			texts = new HashMap<String, String>();
+			BufferedReader buff = new BufferedReader(new FileReader(new File("data/"+ langCode +".lang")));
+			String line = buff.readLine();
+			while(line!=null) {
+				texts.put(line.split(";")[0], line.split(";")[1]);
+				line = buff.readLine();
+			}
+			buff.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void loadLanguageList() {
 		try {
 			BufferedReader buff = new BufferedReader(new FileReader(new File("data/Language.index")));
@@ -49,6 +69,7 @@ public class RessourceManager {
 				languageCode.add(line.split(";")[0]);
 				line = buff.readLine();
 			}
+			buff.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -57,6 +78,12 @@ public class RessourceManager {
 	public Image getImage(String name) {
 		if(images.containsKey(name)) {
 			return images.get(name);
+		}
+		return null;
+	}
+	public String getText(String name) {
+		if(texts.containsKey(name)) {
+			return texts.get(name);
 		}
 		return null;
 	}

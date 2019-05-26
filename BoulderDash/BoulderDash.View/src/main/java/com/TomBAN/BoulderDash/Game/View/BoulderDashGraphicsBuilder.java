@@ -35,6 +35,8 @@ public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 	@Override
 	public void draw(Graphics2D graph, GraphicsObserver observer) {
 		// TODO Auto-generated method stub
+		final double time =30; 
+		
 		if(model.getModelStatut()==ModelStatut.WaitingStart) {
 			graph.setColor(Color.BLACK);
 			graph.fillRect(0, 0, observer.getWidth(), observer.getHeight());
@@ -45,12 +47,12 @@ public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 			currentScale = observer.getWidth()/(16*TILE_SIZE);
 		}
 		if(p.hasWin()) {
-			if(timeSinceWin<30) {
+			if(timeSinceWin<time) {
 				timeSinceWin++;
 			}
-			currentScale =  currentScale*(30-timeSinceWin)/30.0 + Math.min((observer.getWidth()/(model.getMap().getWidth()*TILE_SIZE+4))*timeSinceWin/30.0,(observer.getHeight()/(model.getMap().getHeight()*TILE_SIZE+4))*timeSinceWin/30.0);
-			currentCenterX = (int) (currentCenterX*(30-timeSinceWin)/30.0 + (model.getMap().getWidth()/2)*TILE_SIZE*timeSinceWin/30.0);
-			currentCenterY = (int) (currentCenterY*(30-timeSinceWin)/30.0 + (model.getMap().getHeight()/2)*TILE_SIZE*timeSinceWin/30.0);
+			currentScale =  currentScale*(time-timeSinceWin)/time + Math.min((observer.getWidth()/(model.getMap().getWidth()*TILE_SIZE+4))*timeSinceWin/time,(observer.getHeight()/(model.getMap().getHeight()*TILE_SIZE+4))*timeSinceWin/time);
+			currentCenterX = (int) (currentCenterX*(time-timeSinceWin)/time + (model.getMap().getWidth()/2)*TILE_SIZE*timeSinceWin/time);
+			currentCenterY = (int) (currentCenterY*(time-timeSinceWin)/time + (model.getMap().getHeight()/2)*TILE_SIZE*timeSinceWin/time);
 		}else {
 			timeSinceWin=0;
 			currentScale = observer.getWidth()/(16*TILE_SIZE);
@@ -74,6 +76,10 @@ public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 		graph.drawString(model.getChrono().getTimeSinceStart()/10/100.0+"", 10, 50);
 		return;
 	}
+	
+	
+	
+	
 	private static void drawMap(Graphics2D graph, GraphicsObserver observer,Map map,final int centerX,final int centerY,final double scale) {
 		
 		final int originX = (centerX - observer.getWidth() / 2);

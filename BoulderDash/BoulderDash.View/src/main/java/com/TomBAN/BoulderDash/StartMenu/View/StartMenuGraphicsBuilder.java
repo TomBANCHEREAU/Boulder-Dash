@@ -19,9 +19,11 @@ public class StartMenuGraphicsBuilder implements GraphicsBuilder {
 	public void draw(Graphics2D graph, GraphicsObserver observer) {
 		graph.setColor(Color.BLACK);
 		graph.fillRect(0, 0, observer.getWidth(), observer.getHeight());
-		graph.setColor(Color.white);
-		graph.drawString(model.getSelectors().get(0).getSelectedString(), 100, 100);
-		
+		for(int i=0;i<model.getSelectorNumber();i++) {
+			graph.setColor(Color.white);
+			graph.drawString(model.getSelectors().get(i).getSelectedString()+"", 100, i*100+100);
+			
+		}
 	}
 
 	@Override

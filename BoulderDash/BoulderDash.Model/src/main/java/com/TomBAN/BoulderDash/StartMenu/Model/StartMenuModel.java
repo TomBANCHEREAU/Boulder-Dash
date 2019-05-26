@@ -32,11 +32,16 @@ public class StartMenuModel extends Observable implements Controllable {
 				selectors.remove(selectors.size() - 1);
 			}
 		}
-		setChanged();
 		notifyObservers();
 
 	}
 
+	@Override
+	public void notifyObservers() {
+		setChanged();
+		super.notifyObservers();
+	}
+	
 	public int getSelectorNumber() {
 		return selectors.size();
 	}

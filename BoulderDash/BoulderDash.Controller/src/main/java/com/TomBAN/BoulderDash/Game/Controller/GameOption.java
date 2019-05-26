@@ -9,6 +9,10 @@ public final class GameOption {
 	private final static HashMap<GameMode, ArrayList<Integer>> POSSIBLE_PLAYER_NUMBER_PER_GAMEMODE;
 	static {
 		POSSIBLE_PLAYER_NUMBER_PER_GAMEMODE = new HashMap<GameMode, ArrayList<Integer>>();
+		POSSIBLE_PLAYER_NUMBER_PER_GAMEMODE.put(null, new ArrayList<Integer>());
+		POSSIBLE_PLAYER_NUMBER_PER_GAMEMODE.get(null).add(1);
+		POSSIBLE_PLAYER_NUMBER_PER_GAMEMODE.get(null).add(2);
+		POSSIBLE_PLAYER_NUMBER_PER_GAMEMODE.get(null).add(4);
 		POSSIBLE_PLAYER_NUMBER_PER_GAMEMODE.put(GameMode.SinglePlayer, new ArrayList<Integer>());
 		POSSIBLE_PLAYER_NUMBER_PER_GAMEMODE.get(GameMode.SinglePlayer).add(1);
 		POSSIBLE_PLAYER_NUMBER_PER_GAMEMODE.put(GameMode.MultiPlayerRace, new ArrayList<Integer>());
@@ -62,7 +66,7 @@ public final class GameOption {
 	}
 
 	private void setLanguage(String language) {
-		if (RessourceManager.getInstance().getLanguageList().contains(language)) {
+		if (RessourceManager.getInstance().getLanguageCodeList().contains(language)) {
 			this.language = language;
 		} else {
 			throw new RuntimeException("Unknown Language : \"" + language + "\"");

@@ -17,7 +17,7 @@ public class BoulderDash {
 		RessourceManager.getInstance().loadImages("Default");
 		RessourceManager.getInstance().loadLanguageList();
 		JFrame frame = new BoulderDashFrame(1280, 720);
-		GameOption gameOption= StartMenuController.getGameOption(frame);
+		GameOption gameOption = StartMenuController.getGameOption(frame);
 		//System.out.println("qsd");
 		new BoulderDashController(frame, gameOption);
 		//BoulderDashController controller = new BoulderDashController(new BoulderDashFrame(1920,1080),GameMode.SingleCoop);

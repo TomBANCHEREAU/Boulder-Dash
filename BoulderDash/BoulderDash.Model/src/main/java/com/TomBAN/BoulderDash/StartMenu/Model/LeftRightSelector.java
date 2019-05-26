@@ -18,6 +18,9 @@ public class LeftRightSelector<T> {
 	public String getSelectedString() {
 		return names[selected];
 	}
+	public T getSelectedValue() {
+		return vals[selected];
+	}
 	public void left() {
 		selected=(selected-1+vals.length)%vals.length;
 	}
