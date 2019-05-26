@@ -27,21 +27,23 @@ public class KeyBoardController implements KeyListener,ControllableController{
 	}
 
 	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode() == keyUp) {
-			controllable.executeOrder(MovementOrder.GoUp);
-			lastKeyPressed = e.getKeyCode();
-		}
-		if(e.getKeyCode() == keyLeft) {
-			controllable.executeOrder(MovementOrder.GoLeft);
-			lastKeyPressed = e.getKeyCode();
-		}
-		if(e.getKeyCode() == keyDown) {
-			controllable.executeOrder(MovementOrder.GoDown);
-			lastKeyPressed = e.getKeyCode();
-		}
-		if(e.getKeyCode() == keyRight) {
-			controllable.executeOrder(MovementOrder.GoRight);
-			lastKeyPressed = e.getKeyCode();
+		if(controllable!=null) {
+			if(e.getKeyCode() == keyUp) {
+				controllable.executeOrder(MovementOrder.GoUp);
+				lastKeyPressed = e.getKeyCode();
+			}
+			if(e.getKeyCode() == keyLeft) {
+				controllable.executeOrder(MovementOrder.GoLeft);
+				lastKeyPressed = e.getKeyCode();
+			}
+			if(e.getKeyCode() == keyDown) {
+				controllable.executeOrder(MovementOrder.GoDown);
+				lastKeyPressed = e.getKeyCode();
+			}
+			if(e.getKeyCode() == keyRight) {
+				controllable.executeOrder(MovementOrder.GoRight);
+				lastKeyPressed = e.getKeyCode();
+			}
 		}
 	}
 

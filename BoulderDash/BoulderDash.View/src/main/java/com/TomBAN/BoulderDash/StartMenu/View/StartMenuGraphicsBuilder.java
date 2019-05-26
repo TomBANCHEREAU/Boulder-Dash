@@ -1,6 +1,7 @@
 package com.TomBAN.BoulderDash.StartMenu.View;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.Observable;
 
@@ -20,9 +21,31 @@ public class StartMenuGraphicsBuilder implements GraphicsBuilder {
 		graph.setColor(Color.BLACK);
 		graph.fillRect(0, 0, observer.getWidth(), observer.getHeight());
 		for(int i=0;i<model.getSelectorNumber();i++) {
+			String str=model.getSelectors().get(i).getSelectedString();
+			final int y=200+i*100;
+			graph.setFont(new Font("", 0, 25));
+			if(i==model.getSelectorNumber()-1) {
+				str="< "+str+" >";
+			}
+			final int w=graph.getFontMetrics().stringWidth(str);
 			graph.setColor(Color.white);
-			graph.drawString(model.getSelectors().get(i).getSelectedString()+"", 100, i*100+100);
-			
+			graph.drawString(str, observer.getWidth()/2-w/2, y);
+			if(i==model.getSelectorNumber()-1) {
+				graph.setFont(new Font("", 0, 15));
+				final String strL=model.getSelectors().get(i).getLeftString()+"";
+				final String strR=model.getSelectors().get(i).getRightString()+"";
+				
+				final int wL = graph.getFontMetrics().stringWidth(strL);
+				final int wR = graph.getFontMetrics().stringWidth(strR);
+				
+				final int maxW=Math.max(wL,wR);
+				final int xL = observer.getWidth()/2 - w/2 - maxW/2 -50 - wL/2;
+				final int xR = observer.getWidth()/2 + w/2 + maxW/2 +50 - wR/2;
+				graph.setColor(Color.gray);
+				graph.drawString(strR, xR, y);
+				graph.drawString(strL, xL, y);
+				
+			}
 		}
 	}
 

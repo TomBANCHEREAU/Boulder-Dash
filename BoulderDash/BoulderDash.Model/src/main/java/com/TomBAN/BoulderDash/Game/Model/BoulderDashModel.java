@@ -64,7 +64,9 @@ public class BoulderDashModel extends Observable implements Tickable {
 			// System.out.println("WON !!!!!!");
 			// TickerManager.stop(this);
 		} else if (loose()) {
+			chrono.stop();
 			this.map = strMap.toRealMap(controllers);
+			chrono.start();
 			life--;
 			// System.out.println("LOOSE !!!!!!");
 		}

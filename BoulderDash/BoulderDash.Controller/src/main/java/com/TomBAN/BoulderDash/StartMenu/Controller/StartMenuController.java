@@ -24,6 +24,7 @@ public class StartMenuController implements Controllable {
 		this.object = object;
 		model = new StartMenuModel();
 		frame.setContentPane(new SimplyPanel(new StartMenuGraphicsBuilder(model)));
+		frame.getContentPane().setSize(frame.getWidth(), frame.getHeight());
 		controller = new ZQSDKeyBoardController();
 		controller.bindControllable(this);
 		frame.addKeyListener(controller);
@@ -61,19 +62,20 @@ public class StartMenuController implements Controllable {
 				model.notifyObservers();
 				break;
 			case 2:
-				GameMode[] possible = GameOption.getPossibleGameMode((int) model.getSelectors().get(1).getSelectedValue()).toArray(new GameMode[1]);
-				names = new String[possible.length];
-				for(int i=0;i<names.length;i++) {
-					names[i] = RessourceManager.getInstance().getText(possible[i].toString());
+				if((Integer)model.getSelectors().get(1).getSelectedValue() == 1) {
+					setGameOption(new GameOption((int)model.getSelectors().get(1).getSelectedValue(), GameMode.SinglePlayer, (String)model.getSelectors().get(0).getSelectedValue()));
+				}else {
+					GameMode[] possible = GameOption.getPossibleGameMode((int) model.getSelectors().get(1).getSelectedValue()).toArray(new GameMode[1]);
+					names = new String[possible.length];
+					for(int i=0;i<names.length;i++) {
+						names[i] = RessourceManager.getInstance().getText(possible[i].toString());
+					}
+					model.addSelector(new LeftRightSelector<GameMode>(names,possible));
+					model.notifyObservers();
 				}
-				model.addSelector(new LeftRightSelector<GameMode>(names,possible));
-				model.notifyObservers();
 				break;
 			case 3:
-				gameOption = new GameOption((int)model.getSelectors().get(1).getSelectedValue(), (GameMode)model.getSelectors().get(2).getSelectedValue(), (String)model.getSelectors().get(0).getSelectedValue());
-				synchronized (object) {
-					object.notify();
-				}
+				setGameOption(new GameOption((int)model.getSelectors().get(1).getSelectedValue(), (GameMode)model.getSelectors().get(2).getSelectedValue(), (String)model.getSelectors().get(0).getSelectedValue()));
 				break;
 			default:
 				break;
@@ -85,5 +87,11 @@ public class StartMenuController implements Controllable {
 			model.executeOrder(order);
 		}
 
+	}
+	public void setGameOption(GameOption gameOption) {
+		StartMenuController.gameOption = gameOption;
+		synchronized (object) {
+			object.notify();
+		}
 	}
 }
