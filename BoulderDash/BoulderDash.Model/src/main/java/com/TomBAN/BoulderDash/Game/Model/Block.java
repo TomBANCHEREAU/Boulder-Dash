@@ -37,7 +37,7 @@ public class Block {
 	public void update(int update) {
 		if(strategy!=null) {
 			if(lastUpdate!=update) {				
-				strategy.strategy(this);
+				strategy.strategy();
 			}
 			lastUpdate = update;
 		}

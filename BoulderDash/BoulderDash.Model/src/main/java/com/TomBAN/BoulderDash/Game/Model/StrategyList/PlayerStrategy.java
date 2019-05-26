@@ -10,16 +10,19 @@ import com.TomBAN.BoulderDash.Game.Model.Strategy;
 import com.TomBAN.BoulderDash.Game.Model.BlockList.Exit;
 import com.TomBAN.BoulderDash.Game.Model.BlockList.Player;
 
-public class PlayerStrategy implements Strategy {
+public class PlayerStrategy extends Strategy<Player> {
+
+	public PlayerStrategy(Player block) {
+		super(block);
+	}
 
 	@Override
-	public void strategy(Block this__) {
-		if(this__ instanceof Player) {
+	public void strategy() {
+		if(block instanceof Player) {
 			
-			Player this_ = (Player)(this__);
-			int xGoal=this_.getxIndex(),yGoal=this_.getyIndex();
+			int xGoal=block.getxIndex(),yGoal=block.getyIndex();
 			
-			switch (this_.getCurrentOrder()) {
+			switch (block.getCurrentOrder()) {
 			case GoUp:
 				yGoal-=1;
 				break;
@@ -35,28 +38,29 @@ public class PlayerStrategy implements Strategy {
 			case StopMovement:return;
 			}
 			
-			final Block goal = this_.getMap().getBlockAt(xGoal, yGoal);
+			final Block goal = block.getMap().getBlockAt(xGoal, yGoal);
 //			System.out.println(goal+"\n"+xGoal+"\n"+yGoal);
 			
 			if(goal == null) {
-				this_.move(Direction.values()[this_.getCurrentOrder().ordinal()],4);
+				block.move(Direction.values()[block.getCurrentOrder().ordinal()],4);
 			}else {
 				if(goal instanceof Breakable) {
-					this_.move(Direction.values()[this_.getCurrentOrder().ordinal()],4);
+					block.move(Direction.values()[block.getCurrentOrder().ordinal()],4);
 					((Breakable) goal).getBroken();
 				}else if (goal instanceof Pushable) {
 
-					final Block nextBlock = this_.getMap().getBlockAt(xGoal*2 - this_.getxIndex(), yGoal*2 - this_.getyIndex());
-					if(nextBlock==null && (this_.getCurrentOrder() == MovementOrder.GoLeft || this_.getCurrentOrder() == MovementOrder.GoRight)) {
-						((MovableBlock) goal).move(Direction.values()[this_.getCurrentOrder().ordinal()],4);
-						this_.move(Direction.values()[this_.getCurrentOrder().ordinal()],4);
+					final Block nextBlock = block.getMap().getBlockAt(xGoal*2 - block.getxIndex(), yGoal*2 - block.getyIndex());
+					if(nextBlock==null && (block.getCurrentOrder() == MovementOrder.GoLeft || block.getCurrentOrder() == MovementOrder.GoRight)) {
+						((MovableBlock) goal).move(Direction.values()[block.getCurrentOrder().ordinal()],4);
+						block.move(Direction.values()[block.getCurrentOrder().ordinal()],4);
 					}
 				}else if(goal instanceof Exit) {
-					((Exit) goal).GoOut(this_);
+					((Exit) goal).GoOut(block);
 				}
 			}
 		
 		}
+		
 	}
 
 

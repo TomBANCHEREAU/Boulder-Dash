@@ -16,14 +16,13 @@ public class Player extends MovableBlock implements Killable,Controllable{
 											,{"Player/UP_0.png","Player/UP_1.png"}
 											,{"Player/LEFT_0.png","Player/LEFT_1.png"}
 											,{"Player/UP_0.png","Player/UP_1.png"}
-//											,{"Player/DOWN_0.png","Player/DOWN_1.png"}
 											,{"Player/RIGHT_0.png","Player/RIGHT_1.png"}};
 	private MovementOrder currentOrder = MovementOrder.StopMovement;
 	private boolean win = false;
 	private boolean dead = false;
 	public Player(int x, int y) {
 		super(IMAGE, x, y);
-		setStrategy(new PlayerStrategy());
+		setStrategy(new PlayerStrategy(this));
 	}
 
 	@Override
@@ -36,7 +35,7 @@ public class Player extends MovableBlock implements Killable,Controllable{
 	@Override
 	public void executeOrder(MovementOrder order) {
 		setCurrentOrder(order);
-		if(order!=MovementOrder.StopMovement && !(getStrategy()instanceof AnimationStrategy) ) {
+		if(order!=MovementOrder.StopMovement && !(getStrategy() instanceof AnimationStrategy) ) {
 			setDirection(Direction.values()[order.ordinal()]);
 		}
 	}

@@ -44,7 +44,7 @@ public class MovableBlock extends Block{
 			xGoal+=1;
 		}
 		getMap().moveBlock(this, xGoal, yGoal);
-		this.setStrategy(new AnimationStrategy(getStrategy(), xGoal, yGoal, 4));
+		this.setStrategy(new AnimationStrategy(this,getStrategy(), xGoal, yGoal, speed));
 	}
 	
 	public Direction getDirection() {

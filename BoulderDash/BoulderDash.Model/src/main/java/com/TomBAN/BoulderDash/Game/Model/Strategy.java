@@ -1,5 +1,16 @@
 package com.TomBAN.BoulderDash.Game.Model;
 
-public interface Strategy {
-	public void strategy(Block this_);
+public abstract class Strategy<T extends Block> {
+	protected T block;
+	public Strategy(T block) {
+		this.block = block;
+	}
+
+
+	public abstract void strategy();
+
+//	public T getBlock() {
+//		return block;
+//	}
+
 }
