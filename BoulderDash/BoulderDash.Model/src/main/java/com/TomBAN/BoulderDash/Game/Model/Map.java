@@ -101,6 +101,27 @@ public class Map {
 			return new OutOfTheMap(x, y);
 		}
 	}
+	
+	
+	public boolean won() {
+		for (Player p : getPlayers()) {
+			if (!p.hasWin()) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public boolean loose() {
+		for (Player p : getPlayers()) {
+			if (p.isDead()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
 	public int getWidth() {
 		return width;
 	}

@@ -58,8 +58,11 @@ public class StringMap {
 					case 'U':
 						blocks[x][y] = new Ennemy(x, y,'U');
 						break;
-					case 'M':
+					case 'C':
 						blocks[x][y] = new Ennemy(x, y,'C');
+						break;
+					case 'D':
+						blocks[x][y] = new Ennemy(x, y,'D');
 						break;
 					default:
 						System.err.println("unknown Block : (char:'" + stringMap[y].charAt(i) + "',int: " + (int)stringMap[y].charAt(i) + ",hex: " +Integer.toHexString(stringMap[y].charAt(i)) + ")");

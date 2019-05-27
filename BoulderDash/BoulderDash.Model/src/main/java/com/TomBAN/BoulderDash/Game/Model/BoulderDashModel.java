@@ -2,6 +2,7 @@ package com.TomBAN.BoulderDash.Game.Model;
 
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Observer;
 
 import com.TomBAN.BoulderDash.Game.Model.BlockList.Player;
 import com.TomBAN.Ticker.Tickable;
@@ -11,19 +12,36 @@ public class BoulderDashModel extends Observable implements Tickable {
 	private StringMap strMap;
 	private Map map;
 	private ArrayList<ControllableController> controllers;
+	private Observable controller;
 	private int life = 3;
-
-	private ModelStatut modelStatut = ModelStatut.WaitingStart;
+	
+	private ModelStatut modelStatut;
 	private int statutAvancement = 0;
 	private Chrono chrono;
 
-	public BoulderDashModel(StringMap strMap) {
+	public BoulderDashModel(Observer observer,int life) {
+		controller = new Observable() {
+			@Override
+			public void notifyObservers() {
+				setChanged();
+				super.notifyObservers();
+			}
+		};
+		controller.addObserver(observer);
 		// TODO Auto-generated constructor stub
-		this.strMap = strMap;
+		this.life = life;
 		controllers = new ArrayList<ControllableController>();
 		chrono = new Chrono();
 	}
 
+	public void nextMap(StringMap strMap) {
+		while(TickerManager.get(this)!=null) {
+			TickerManager.kill(this);
+		}
+		this.strMap = strMap;
+		start();
+	}
+	
 	public void addController(ControllableController controller) {
 		controllers.add(controller);
 	}
@@ -35,11 +53,7 @@ public class BoulderDashModel extends Observable implements Tickable {
 	public void gameLoop() {
 		map.updateAllBlock();
 	}
-
-	public boolean isFinished() {
-		return false;
-	}
-
+	
 	public Map getMap() {
 		return map;
 	}
@@ -48,6 +62,8 @@ public class BoulderDashModel extends Observable implements Tickable {
 		this.map = strMap.toRealMap(controllers);
 		TickerManager.addTicker(this);
 		TickerManager.get(this).setTickRate(20);
+		modelStatut = ModelStatut.WaitingStart;
+		//Waiting
 		TickerManager.start(this);
 		modelStatut = ModelStatut.Playing;
 		chrono.start();
@@ -56,43 +72,28 @@ public class BoulderDashModel extends Observable implements Tickable {
 	public Chrono getChrono() {
 		return chrono;
 	}
-
+	public boolean loose() {
+		return 0>=life;
+	}
 	@Override
 	public void tick() {
-		if (won()) {
+		if (map.won()) {
 			chrono.stop();
-			// System.out.println("WON !!!!!!");
-			// TickerManager.stop(this);
-		} else if (loose()) {
+			modelStatut = ModelStatut.WaitingNextMap;
+			controller.notifyObservers();
+		} else if (map.loose()) {
 			chrono.stop();
 			this.map = strMap.toRealMap(controllers);
 			chrono.start();
 			life--;
-			// System.out.println("LOOSE !!!!!!");
+			controller.notifyObservers();
 		}
 		gameLoop();
 		setChanged();
 		notifyObservers();
-//		System.out.println("time : "+TickerManager.get(this).getMillisSinceStart()/10/100.0);
 	}
 
-	public boolean won() {
-		for (Player p : map.getPlayers()) {
-			if (!p.hasWin()) {
-				return false;
-			}
-		}
-		return true;
-	}
 
-	public boolean loose() {
-		for (Player p : map.getPlayers()) {
-			if (p.isDead()) {
-				return true;
-			}
-		}
-		return false;
-	}
 
 	public ModelStatut getModelStatut() {
 		return modelStatut;

@@ -17,13 +17,14 @@ import com.TomBAN.BoulderDash.Game.Model.BlockList.Player;
 import com.TomBAN.BoulderDash.Ressource.RessourceManager;
 
 public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
-	private static final int TILE_SIZE=16;
+	private static final int TILE_SIZE = 16;
 	private SimplyPanel panel;
 	private final BoulderDashModel model;
 	private final int playerId;
 	private int currentCenterX, currentCenterY;
-	private double currentScale =0;
+	private double currentScale = 0;
 	private int timeSinceWin;
+
 	public BoulderDashGraphicsBuilder(BoulderDashModel model, int i) {
 		this.model = model;
 		this.playerId = i;
@@ -31,57 +32,71 @@ public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 //		currentCenterY=i.getyIndex()*TILE_SIZE;
 	}
 
-
 	@Override
 	public void draw(Graphics2D graph, GraphicsObserver observer) {
-		// TODO Auto-generated method stub
-		final double time =30; 
-		
-		if(model.getModelStatut()==ModelStatut.WaitingStart) {
-			graph.setColor(Color.BLACK);
-			graph.fillRect(0, 0, observer.getWidth(), observer.getHeight());
+
+		if (model.getMap() == null) {
+			drawLoadingScreen(graph, observer);
 			return;
 		}
+		// TODO Auto-generated method stub
+		final double time = 30;
 		Player p = model.getPlayers().get(playerId);
-		if (currentScale==0) {
-			currentScale = observer.getWidth()/(16*TILE_SIZE);
+		if (currentScale == 0) {
+			currentScale = observer.getWidth() / (16 * TILE_SIZE);
 		}
-		if(p.hasWin()) {
-			if(timeSinceWin<time) {
+		if (p.hasWin()) {
+			if (timeSinceWin < time) {
 				timeSinceWin++;
 			}
-			currentScale =  currentScale*(time-timeSinceWin)/time + Math.min((observer.getWidth()/(model.getMap().getWidth()*TILE_SIZE+4))*timeSinceWin/time,(observer.getHeight()/(model.getMap().getHeight()*TILE_SIZE+4))*timeSinceWin/time);
-			currentCenterX = (int) (currentCenterX*(time-timeSinceWin)/time + (model.getMap().getWidth()/2)*TILE_SIZE*timeSinceWin/time);
-			currentCenterY = (int) (currentCenterY*(time-timeSinceWin)/time + (model.getMap().getHeight()/2)*TILE_SIZE*timeSinceWin/time);
-		}else {
-			timeSinceWin=0;
-			currentScale = observer.getWidth()/(16*TILE_SIZE);
-			currentCenterX = constrain(currentCenterX,(int)( (p.getX()+0.5)*TILE_SIZE-observer.getWidth()/ currentScale / 6),(int)( (p.getX()+0.5)*TILE_SIZE+observer.getWidth()/ currentScale / 6));
-			currentCenterY = constrain(currentCenterY,(int)( (p.getY()+0.5)*TILE_SIZE-observer.getHeight()/ currentScale / 6),(int)( (p.getY()+0.5)*TILE_SIZE+observer.getHeight()/ currentScale / 6));
+			currentScale = currentScale * (time - timeSinceWin) / time + Math.min(
+					(observer.getWidth() / (model.getMap().getWidth() * TILE_SIZE + 4)) * timeSinceWin / time,
+					(observer.getHeight() / (model.getMap().getHeight() * TILE_SIZE + 4)) * timeSinceWin / time);
+			currentCenterX = (int) (currentCenterX * (time - timeSinceWin) / time
+					+ (model.getMap().getWidth() / 2) * TILE_SIZE * timeSinceWin / time);
+			currentCenterY = (int) (currentCenterY * (time - timeSinceWin) / time
+					+ (model.getMap().getHeight() / 2) * TILE_SIZE * timeSinceWin / time);
+		} else {
+			timeSinceWin = 0;
+			currentScale = observer.getWidth() / (16 * TILE_SIZE);
+			currentCenterX = constrain(currentCenterX,
+					(int) ((p.getX() + 0.5) * TILE_SIZE - observer.getWidth() / currentScale / 6),
+					(int) ((p.getX() + 0.5) * TILE_SIZE + observer.getWidth() / currentScale / 6));
+			currentCenterY = constrain(currentCenterY,
+					(int) ((p.getY() + 0.5) * TILE_SIZE - observer.getHeight() / currentScale / 6),
+					(int) ((p.getY() + 0.5) * TILE_SIZE + observer.getHeight() / currentScale / 6));
 		}
-		
+
 //		currentScale = constrain(currentScale, min, max)
-		
-		
+
 		final double scale = currentScale;
-	
-		final int centerX = (int) (currentCenterX*scale);
-		final int centerY = (int) (currentCenterY*scale);
+		final int centerX = (int) (currentCenterX * scale);
+		final int centerY = (int) (currentCenterY * scale);
 		drawMap(graph, observer, model.getMap(), centerX, centerY, scale);
 
 		graph.setColor(Color.WHITE);
-		graph.fillRect(10, 10, 100, 50);
+		graph.fillRect(10, 10, 100, 100);
 		graph.setColor(Color.BLACK);
 		graph.setFont(new Font("", Font.BOLD, 30));
-		graph.drawString(model.getChrono().getTimeSinceStart()/10/100.0+"", 10, 50);
+		graph.drawString(model.getChrono().getTimeSinceStart() / 10 / 100.0 + "", 10, 50);
+		graph.drawString(model.getLife()+"", 10, 100);
 		return;
 	}
-	
-	
-	
-	
-	private static void drawMap(Graphics2D graph, GraphicsObserver observer,Map map,final int centerX,final int centerY,final double scale) {
+
+	private void drawLoadingScreen(Graphics2D graph, GraphicsObserver observer) {
+		graph.setColor(Color.BLACK);
+		graph.fillRect(0, 0, observer.getWidth(), observer.getHeight());
+		graph.setFont(new Font("", Font.BOLD, 30));
+		graph.setColor(Color.WHITE);
+		final String str = RessourceManager.getInstance().getText("Loading")+"";
+		final int w = graph.getFontMetrics().stringWidth(str);
+		graph.drawString(str, observer.getWidth()/2-w/2, observer.getHeight()/2);
 		
+	}
+
+	private static void drawMap(Graphics2D graph, GraphicsObserver observer, Map map, final int centerX,
+			final int centerY, final double scale) {
+
 		final int originX = (centerX - observer.getWidth() / 2);
 		final int originY = (centerY - observer.getHeight() / 2);
 
@@ -120,10 +135,10 @@ public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 
 			}
 		}
-		graph.scale(1/scale, 1/scale);
+		graph.scale(1 / scale, 1 / scale);
 		graph.translate(+originX, +originY);
 	}
-	
+
 	@Override
 	public Observable getObservable() {
 		return model;

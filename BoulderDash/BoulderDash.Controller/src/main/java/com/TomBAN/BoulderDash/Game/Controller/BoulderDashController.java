@@ -3,6 +3,8 @@ package com.TomBAN.BoulderDash.Game.Controller;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
@@ -10,6 +12,7 @@ import javax.swing.JSplitPane;
 import com.TomBAN.BoulderDash.Frame.BoulderDashFrame;
 import com.TomBAN.BoulderDash.Frame.SimplyPanel;
 import com.TomBAN.BoulderDash.Game.Model.BoulderDashModel;
+import com.TomBAN.BoulderDash.Game.Model.ModelStatut;
 import com.TomBAN.BoulderDash.Game.Model.StringMap;
 import com.TomBAN.BoulderDash.Game.Model.BlockList.Player;
 import com.TomBAN.BoulderDash.Game.View.BoulderDashGraphicsBuilder;
@@ -20,39 +23,41 @@ import com.TomBAN.BoulderDash.PlayerController.NumPKeyBoardController;
 import com.TomBAN.BoulderDash.PlayerController.ZQSDKeyBoardController;
 import com.TomBAN.mySQL.MySQL;
 
-public class BoulderDashController {
+public class BoulderDashController implements Observer {
 	private static final String URL = "jdbc:mysql://localhost:3306/a1-project5?useSSL=false&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC";
 	private static final String USER = "root";
 	private static final String PASSWORD = "";
 	private BoulderDashModel[] models;
 	private KeyBoardController[] controllers;
 	private final JFrame[] frames;
+	private final ArrayList<StringMap> strMap;
 	private final GameOption gameOption;
+	private int NextMapNumber = 0;
 
 	public BoulderDashController(JFrame frame, GameOption gameOption) {
 		this.frames = new BoulderDashFrame[(gameOption.isDualScreen()) ? 2 : 1];
 		frames[0] = frame;
 		if (gameOption.isDualScreen()) {
-			frames[1] = new BoulderDashFrame(1280,720);
+			frames[1] = new BoulderDashFrame(1280, 720);
 		}
 		this.gameOption = gameOption;
 
 		setUpControllers();
 		bindControllersToFrames();
-		
+
 		this.models = new BoulderDashModel[gameOption.getModelNumber()];
-		final StringMap srtMap = getStringMap(0);
 		for (int i = 0; i < models.length; i++) {
-			models[i] = new BoulderDashModel(srtMap);
-			for(int j=i*gameOption.getPlayerNumberPerMap();j<(i+1)*gameOption.getPlayerNumberPerMap();j++) {
+			models[i] = new BoulderDashModel(this, 5);
+			for (int j = i * gameOption.getPlayerNumberPerMap(); j < (i + 1)
+					* gameOption.getPlayerNumberPerMap(); j++) {
 				models[i].addController(controllers[j]);
 			}
 		}
 
 		final SimplyPanel[] panels = new SimplyPanel[gameOption.getPlayerNumber()];
 		for (int i = 0; i < panels.length; i++) {
-			panels[i] = new SimplyPanel(new BoulderDashGraphicsBuilder(
-					models[i / gameOption.getPlayerNumberPerMap()], i%gameOption.getPlayerNumberPerMap()));
+			panels[i] = new SimplyPanel(new BoulderDashGraphicsBuilder(models[i / gameOption.getPlayerNumberPerMap()],
+					i % gameOption.getPlayerNumberPerMap()));
 		}
 
 		if (gameOption.getPlayerNumber() == 1) {
@@ -79,10 +84,12 @@ public class BoulderDashController {
 
 			splitedScreen[0].setDividerLocation(0.5);
 			splitedScreen[1].setDividerLocation(0.5);
-			
+
 			if (!gameOption.isDualScreen()) {
-				final JSplitPane splitedsplitedScreen = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, splitedScreen[0], splitedScreen[1]);
-				splitedsplitedScreen.setSize(frames[0].getContentPane().getWidth(), frames[0].getContentPane().getHeight());
+				final JSplitPane splitedsplitedScreen = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, splitedScreen[0],
+						splitedScreen[1]);
+				splitedsplitedScreen.setSize(frames[0].getContentPane().getWidth(),
+						frames[0].getContentPane().getHeight());
 				frames[0].setContentPane(splitedsplitedScreen);
 				splitedsplitedScreen.setDividerLocation(0.5);
 
@@ -99,10 +106,72 @@ public class BoulderDashController {
 			}
 		}
 
-		for (BoulderDashModel model : models) {
-			model.start();
-		}
+		strMap = loadMapList(gameOption.getPlayerNumberPerMap());
+		nextMap();
 		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		if (AllWaiting()) {
+			if (AllLoose()) {
+			}
+			nextMap();
+		}
+	}
+
+	private void nextMap() {
+		if (NextMapNumber < strMap.size()) {
+			for (BoulderDashModel model : models) {
+				model.nextMap(strMap.get(NextMapNumber));
+			}
+			// TODO
+
+			NextMapNumber++;
+		} else {
+			endScreen();
+		}
+	}
+
+	private void endScreen() {
+		// TODO Auto-generated method stub
+		System.out.println("endSreen");
+	}
+
+	private ArrayList<StringMap> loadMapList(int playerPerMap) {
+		ArrayList<StringMap> out = new ArrayList<StringMap>();
+		try {
+			MySQL.Connect(URL, USER, PASSWORD);
+			ResultSet result = MySQL.getInstance().querySelect("call getMapFromId(" + 1 + ")");
+			while (result.next()) {
+				out.add(new StringMap(result.getInt("Width"), result.getInt("Height"), result.getInt("DiamondsNeeded"),
+						result.getInt("PlayerNumber"), result.getString("Content")));
+			}
+			return out;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			MySQL.closeConnection();
+		}
+		return null;
+	}
+
+	private boolean AllWaiting() {
+		for (BoulderDashModel model : models) {
+			if (model.getModelStatut() != ModelStatut.WaitingNextMap && !model.loose()) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private boolean AllLoose() {
+		for (BoulderDashModel model : models) {
+			if (!model.loose()) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private void bindControllersToFrames() {
@@ -112,21 +181,6 @@ public class BoulderDashController {
 			}
 		}
 	}
-//
-//	private ArrayList<Player> getAllPlayers() {
-//		final ArrayList<Player> players = new ArrayList<Player>();
-//		for (int i = 0; i < models.length; i++) {
-//			players.addAll(models[i].getPlayers());
-//		}
-//		return players;
-//	}
-//
-//	private void bindPlayerToControllers() {
-//		final ArrayList<Player> players = getAllPlayers();
-//		for (int i = 0; i < controllers.length; i++) {
-//			controllers[i].bindControllable(players.get(i));
-//		}
-//	}
 
 	private void setUpControllers() {
 		this.controllers = new KeyBoardController[gameOption.getPlayerNumber()];
@@ -141,19 +195,4 @@ public class BoulderDashController {
 			controllers[0] = new ZQSDKeyBoardController();
 		}
 	}
-
-	public StringMap getStringMap(int id) {
-		try {
-			MySQL.Connect(URL, USER, PASSWORD);
-			ResultSet result = MySQL.getInstance().querySelect("call getMapFromId("+4+")");
-			result.next();
-//			System.out.println(result.getString("Content"));
-			return new StringMap(result.getInt("Width"), result.getInt("Height"), result.getInt("DiamondsNeeded"), result.getInt("PlayerNumber"), result.getString("Content"));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-
-	}
-
 }

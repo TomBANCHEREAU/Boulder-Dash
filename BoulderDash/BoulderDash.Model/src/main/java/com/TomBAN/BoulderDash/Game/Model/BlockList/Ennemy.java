@@ -24,9 +24,13 @@ public class Ennemy extends MovableBlock implements Killable {
 			setDirection(Direction.Up);
 			setStrategy(new RoundTripEnnemyStrategy(this, getDirection()));
 			break;
-		case 'C':
+		case 'D':
 			setDirection(Direction.Up);
 			setStrategy(new ClockwiseEnnemyStrategy(this, false));
+			break;
+		case 'C':
+			setDirection(Direction.Up);
+			setStrategy(new ClockwiseEnnemyStrategy(this, true));
 			break;
 		}
 	}
