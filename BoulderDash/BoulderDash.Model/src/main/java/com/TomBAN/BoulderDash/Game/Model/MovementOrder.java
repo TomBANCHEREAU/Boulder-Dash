@@ -5,5 +5,6 @@ public enum MovementOrder {
 	GoLeft,
 	GoDown,
 	GoRight,
-	StopMovement
+	StopMovement,
+	Reset
 }

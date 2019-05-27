@@ -9,12 +9,11 @@ import com.TomBAN.BoulderDash.Game.Model.StrategyList.RoundTripEnnemyStrategy;
 public class Ennemy extends MovableBlock implements Killable {
 
 	private static final String[][] IMAGE = {
-			{ "Player/FACING_UP.png", "Player/FACING_LEFT.png", "Player/FACING_DOWN.png", "Player/FACING_RIGHT.png" },
-			{ "Player/UP_0.png", "Player/UP_1.png" }, { "Player/LEFT_0.png", "Player/LEFT_1.png" },
-			{ "Player/UP_0.png", "Player/UP_1.png" }, { "Player/RIGHT_0.png", "Player/RIGHT_1.png" } };
+			{ "EnemyA/ENEMY_0.png", "EnemyA/ENEMY_1.png", "EnemyA/ENEMY_2.png", "EnemyA/ENEMY_3.png" },
+			{ "EnemyB/ENEMY_0.png", "EnemyB/ENEMY_1.png", "EnemyB/ENEMY_2.png", "EnemyB/ENEMY_3.png" } };
 
 	public Ennemy(int x, int y, char type) {
-		super(IMAGE, x, y);
+		super(getImage(type), x, y);
 		switch (type) {
 		case 'L':
 			setDirection(Direction.Left);
@@ -33,6 +32,22 @@ public class Ennemy extends MovableBlock implements Killable {
 			setStrategy(new ClockwiseEnnemyStrategy(this, true));
 			break;
 		}
+	}
+
+	public static String[] getImage(char type) {
+		switch (type) {
+		case 'L':return IMAGE[0];
+		case 'U':return IMAGE[0];
+		case 'D':return IMAGE[1];
+		case 'C':return IMAGE[1];
+		}
+		return null;
+	}
+
+	@Override
+	public int getImageId() {
+		// TODO Auto-generated method stub
+		return getLastUpdate() % IMAGE[0].length;
 	}
 
 	@Override

@@ -14,12 +14,12 @@ public class BoulderDashModel extends Observable implements Tickable {
 	private ArrayList<ControllableController> controllers;
 	private Observable controller;
 	private int life = 3;
-	
+
 	private ModelStatut modelStatut;
 	private int statutAvancement = 0;
 	private Chrono chrono;
 
-	public BoulderDashModel(Observer observer,int life) {
+	public BoulderDashModel(Observer observer, int life) {
 		controller = new Observable() {
 			@Override
 			public void notifyObservers() {
@@ -35,13 +35,10 @@ public class BoulderDashModel extends Observable implements Tickable {
 	}
 
 	public void nextMap(StringMap strMap) {
-		while(TickerManager.get(this)!=null) {
-			TickerManager.kill(this);
-		}
 		this.strMap = strMap;
 		start();
 	}
-	
+
 	public void addController(ControllableController controller) {
 		controllers.add(controller);
 	}
@@ -53,18 +50,19 @@ public class BoulderDashModel extends Observable implements Tickable {
 	public void gameLoop() {
 		map.updateAllBlock();
 	}
-	
+
 	public Map getMap() {
 		return map;
 	}
 
 	public void start() {
+		if(TickerManager.get(this)==null) {
+			TickerManager.addTicker(this);
+			TickerManager.get(this).setTickRate(20);
+			TickerManager.start(this);
+		}
 		this.map = strMap.toRealMap(controllers);
-		TickerManager.addTicker(this);
-		TickerManager.get(this).setTickRate(20);
 		modelStatut = ModelStatut.WaitingStart;
-		//Waiting
-		TickerManager.start(this);
 		modelStatut = ModelStatut.Playing;
 		chrono.start();
 	}
@@ -72,9 +70,11 @@ public class BoulderDashModel extends Observable implements Tickable {
 	public Chrono getChrono() {
 		return chrono;
 	}
+
 	public boolean loose() {
-		return 0>=life;
+		return 0 >= life;
 	}
+
 	@Override
 	public void tick() {
 		if (map.won()) {
@@ -92,8 +92,6 @@ public class BoulderDashModel extends Observable implements Tickable {
 		setChanged();
 		notifyObservers();
 	}
-
-
 
 	public ModelStatut getModelStatut() {
 		return modelStatut;

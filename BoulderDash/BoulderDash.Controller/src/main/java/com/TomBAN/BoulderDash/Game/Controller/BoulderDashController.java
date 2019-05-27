@@ -21,6 +21,7 @@ import com.TomBAN.BoulderDash.PlayerController.IJKLKeyBoardController;
 import com.TomBAN.BoulderDash.PlayerController.KeyBoardController;
 import com.TomBAN.BoulderDash.PlayerController.NumPKeyBoardController;
 import com.TomBAN.BoulderDash.PlayerController.ZQSDKeyBoardController;
+import com.TomBAN.BoulderDash.Ressource.RessourceManager;
 import com.TomBAN.mySQL.MySQL;
 
 public class BoulderDashController implements Observer {
@@ -115,6 +116,7 @@ public class BoulderDashController implements Observer {
 	public void update(Observable arg0, Object arg1) {
 		if (AllWaiting()) {
 			if (AllLoose()) {
+				endScreen();
 			}
 			nextMap();
 		}
@@ -123,6 +125,17 @@ public class BoulderDashController implements Observer {
 	private void nextMap() {
 		if (NextMapNumber < strMap.size()) {
 			for (BoulderDashModel model : models) {
+				switch (strMap.get(NextMapNumber).getWorld()) {
+				case 1:
+					RessourceManager.getInstance().loadImages("Default");
+					break;
+				case 2:
+					RessourceManager.getInstance().loadImages("World2");
+					break;
+
+				default:
+					break;
+				}
 				model.nextMap(strMap.get(NextMapNumber));
 			}
 			// TODO
@@ -142,10 +155,10 @@ public class BoulderDashController implements Observer {
 		ArrayList<StringMap> out = new ArrayList<StringMap>();
 		try {
 			MySQL.Connect(URL, USER, PASSWORD);
-			ResultSet result = MySQL.getInstance().querySelect("call getMapFromId(" + 1 + ")");
+			ResultSet result = MySQL.getInstance().querySelect("call getMapListFromPlayerNumber(" + playerPerMap + ")");
 			while (result.next()) {
 				out.add(new StringMap(result.getInt("Width"), result.getInt("Height"), result.getInt("DiamondsNeeded"),
-						result.getInt("PlayerNumber"), result.getString("Content")));
+						result.getInt("PlayerNumber"), result.getString("Content"), result.getInt("WorldNumber")));
 			}
 			return out;
 		} catch (SQLException e) {

@@ -16,15 +16,21 @@ public class StringMap {
 	private String[] stringMap;
 	private int diamondNeeded;
 	private int playerCount;
-
-	public StringMap(int width, int height, int diamondNeeded, int playerCount, String[] stringMap) {
+	private int world;
+	public StringMap(int width, int height, int diamondNeeded, int playerCount, String[] stringMap,int world) {
 		setWidth(width);
 		setHeight(height);
 		setStringMap(stringMap);
 		setDiamondNeeded(diamondNeeded);
 		setPlayerCount(playerCount);
+		this.world=world;
 	}
-
+	public StringMap(int width, int height, int diamondNeeded, int playerCount, String stringMap,int world) {
+		this(width, height, diamondNeeded, playerCount, stringMap.split("\n"),world);
+	}
+	public int getWorld() {
+		return world;
+	}
 	public Map toRealMap(ArrayList<ControllableController> controllers) {
 		final Block[][] blocks = new Block[width][height];
 		final ArrayList<Player> players = new ArrayList<Player>();
@@ -82,9 +88,7 @@ public class StringMap {
 	}
 	
 	
-	public StringMap(int width, int height, int diamondNeeded, int playerCount, String stringMap) {
-		this(width, height, diamondNeeded, playerCount, stringMap.split("\n"));
-	}
+
 
 	private void setWidth(int width) {
 		if (width <= 0) {
@@ -152,4 +156,5 @@ public class StringMap {
 	public String[] getStringMap() {
 		return stringMap;
 	}
+
 }

@@ -18,50 +18,48 @@ public class PlayerStrategy extends Strategy<Player> {
 
 	@Override
 	public void strategy() {
-		if(block instanceof Player) {
-			
-			int xGoal=block.getxIndex(),yGoal=block.getyIndex();
-			
-			switch (block.getCurrentOrder()) {
-			case GoUp:
-				yGoal-=1;
-				break;
-			case GoLeft:
-				xGoal-=1;
-				break;
-			case GoDown:
-				yGoal+=1;
-				break;
-			case GoRight:
-				xGoal+=1;
-				break;
-			case StopMovement:return;
-			}
-			
-			final Block goal = block.getMap().getBlockAt(xGoal, yGoal);
-//			System.out.println(goal+"\n"+xGoal+"\n"+yGoal);
-			
-			if(goal == null) {
-				block.move(Direction.values()[block.getCurrentOrder().ordinal()],4);
-			}else {
-				if(goal instanceof Breakable) {
-					block.move(Direction.values()[block.getCurrentOrder().ordinal()],4);
-					((Breakable) goal).getBroken();
-				}else if (goal instanceof Pushable) {
 
-					final Block nextBlock = block.getMap().getBlockAt(xGoal*2 - block.getxIndex(), yGoal*2 - block.getyIndex());
-					if(nextBlock==null && (block.getCurrentOrder() == MovementOrder.GoLeft || block.getCurrentOrder() == MovementOrder.GoRight)) {
-						((MovableBlock) goal).move(Direction.values()[block.getCurrentOrder().ordinal()],4);
-						block.move(Direction.values()[block.getCurrentOrder().ordinal()],4);
-					}
-				}else if(goal instanceof Exit) {
-					((Exit) goal).GoOut(block);
-				}
-			}
-		
+		int xGoal = block.getxIndex(), yGoal = block.getyIndex();
+
+		switch (block.getCurrentOrder()) {
+		case GoUp:
+			yGoal -= 1;
+			break;
+		case GoLeft:
+			xGoal -= 1;
+			break;
+		case GoDown:
+			yGoal += 1;
+			break;
+		case GoRight:
+			xGoal += 1;
+			break;
+		case StopMovement:
+			return;
 		}
-		
-	}
 
+		final Block goal = block.getMap().getBlockAt(xGoal, yGoal);
+
+		if (goal == null) {
+			block.move(Direction.values()[block.getCurrentOrder().ordinal()], 4);
+		} else {
+			if (goal instanceof Breakable) {
+				block.move(Direction.values()[block.getCurrentOrder().ordinal()], 4);
+				((Breakable) goal).getBroken();
+			} else if (goal instanceof Pushable) {
+
+				final Block nextBlock = block.getMap().getBlockAt(xGoal * 2 - block.getxIndex(),
+						yGoal * 2 - block.getyIndex());
+				if (nextBlock == null && (block.getCurrentOrder() == MovementOrder.GoLeft
+						|| block.getCurrentOrder() == MovementOrder.GoRight)) {
+					((MovableBlock) goal).move(Direction.values()[block.getCurrentOrder().ordinal()], 4);
+					block.move(Direction.values()[block.getCurrentOrder().ordinal()], 4);
+				}
+			} else if (goal instanceof Exit) {
+				((Exit) goal).GoOut(block);
+			}
+		}
+
+	}
 
 }

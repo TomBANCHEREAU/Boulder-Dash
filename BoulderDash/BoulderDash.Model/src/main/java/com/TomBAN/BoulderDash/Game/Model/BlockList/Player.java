@@ -34,8 +34,11 @@ public class Player extends MovableBlock implements Killable,Controllable{
 	@Override
 	public void executeOrder(MovementOrder order) {
 		setCurrentOrder(order);
-		if(order!=MovementOrder.StopMovement && !(getStrategy() instanceof AnimationStrategy) ) {
+		if(order!=MovementOrder.StopMovement && order!=MovementOrder.Reset && !(getStrategy() instanceof AnimationStrategy) ) {
 			setDirection(Direction.values()[order.ordinal()]);
+		}
+		if(order==MovementOrder.Reset) {
+			getKilled();
 		}
 	}
 

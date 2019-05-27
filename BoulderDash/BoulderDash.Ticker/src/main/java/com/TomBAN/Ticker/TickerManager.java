@@ -51,11 +51,23 @@ public final class TickerManager {
 			t.start();
 		}
 	}
-
+	public static void join(Tickable a) {
+		Ticker t = getTicker(a);
+		if (t != null) {
+			try {
+				t.getThread().join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	}
 	public synchronized static void stop(Tickable a) {
 		Ticker t = getTicker(a);
 		if (t != null) {
 			t.stop();
+			join(a);
 		}
 	}
 
@@ -81,6 +93,7 @@ public final class TickerManager {
 		Ticker t = getTicker(a);
 		if (t != null) {
 			t.getThread().interrupt();
+			t.getThread().stop();
 			allTickers.remove(t);
 		}
 	}
