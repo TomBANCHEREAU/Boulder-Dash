@@ -16,6 +16,7 @@ public class Map {
 	private int diamondNeeded;
 
 
+
 	public Map(int width, int height, Block[][] blocks, ArrayList<Player> players,int diamondNeeded) {
 		this.width = width;
 		this.height = height;
@@ -49,28 +50,28 @@ public class Map {
 	}
 	
 	
-	public void moveBlock(Block b, Direction d) {
-		if (b instanceof MovableBlock) {
-			switch (d) {
-			case Up:
-				moveBlock(b, b.getxIndex(), b.getyIndex() - 1);
-				break;
-			case Left:
-				moveBlock(b, b.getxIndex(), b.getyIndex() - 1);
-				break;
-			case Down:
-				moveBlock(b, b.getxIndex(), b.getyIndex() - 1);
-				break;
-			case Right:
-				moveBlock(b, b.getxIndex(), b.getyIndex() - 1);
-				break;
-
-			default:
-				break;
-			}
-		}
-
-	}
+//	public void moveBlock(Block b, Direction d) {
+//		if (b instanceof MovableBlock) {
+//			switch (d) {
+//			case Up:
+//				moveBlock(b, b.getxIndex(), b.getyIndex() - 1);
+//				break;
+//			case Left:
+//				moveBlock(b, b.getxIndex(), b.getyIndex() - 1);
+//				break;
+//			case Down:
+//				moveBlock(b, b.getxIndex(), b.getyIndex() - 1);
+//				break;
+//			case Right:
+//				moveBlock(b, b.getxIndex(), b.getyIndex() - 1);
+//				break;
+//
+//			default:
+//				break;
+//			}
+//		}
+//
+//	}
 
 	public void moveBlock(Block b, int x, int y) {
 		if (x >= 0 && x < width && y >= 0 && y < height) {
@@ -121,7 +122,7 @@ public class Map {
 		return false;
 	}
 	
-	
+	//Getters
 	public int getWidth() {
 		return width;
 	}
@@ -139,9 +140,5 @@ public class Map {
 	}
 	public int getDiamondNeeded() {
 		return diamondNeeded;
-	}
-	public int getScore() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 }

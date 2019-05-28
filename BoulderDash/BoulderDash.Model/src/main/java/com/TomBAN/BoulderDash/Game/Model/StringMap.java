@@ -17,11 +17,12 @@ public class StringMap {
 	private int diamondNeeded;
 	private int playerCount;
 	private int world, level;
-	private int[] highScore;
+	private Score[] highScore;
 	private int id;
+	private int timeToFinish;
 
 	public StringMap(int width, int height, int diamondNeeded, int playerCount, String[] stringMap, int world,
-			int level,int[] score,int id) {
+			int level,Score[] score,int time,int id) {
 		setWidth(width);
 		setHeight(height);
 		setStringMap(stringMap);
@@ -31,11 +32,13 @@ public class StringMap {
 		this.level = level;
 		this.highScore =score;
 		this.id = id;
+		this.timeToFinish=time;
 	}
 
+
 	public StringMap(int width, int height, int diamondNeeded, int playerCount, String stringMap, int world,
-			int level,int[] score, int id) {
-		this(width, height, diamondNeeded, playerCount, stringMap.split("\n"), world, level,score,id);
+			int level,Score[] score,int time, int id) {
+		this(width, height, diamondNeeded, playerCount, stringMap.split("\n"), world, level,score,time,id);
 	}
 
 	public int getWorld() {
@@ -100,6 +103,10 @@ public class StringMap {
 
 	}
 
+	public int getTimeToFinish() {
+		return timeToFinish;
+	}
+	
 	public int getLevel() {
 		return level;
 	}
@@ -137,7 +144,6 @@ public class StringMap {
 		}
 		// TODO
 		// TODO
-
 		this.diamondNeeded = diamondNeeded;
 	}
 
@@ -175,4 +181,14 @@ public class StringMap {
 		return id;
 	}
 
+
+	public void addScore(Score newScore) {
+		for(int i=0;i<highScore.length;i++) {
+			if(newScore.getScore() > highScore[i].getScore()) {
+				Score tmp = highScore[i];
+				highScore[i] = newScore;
+				newScore = tmp;
+			}
+		}
+	}
 }

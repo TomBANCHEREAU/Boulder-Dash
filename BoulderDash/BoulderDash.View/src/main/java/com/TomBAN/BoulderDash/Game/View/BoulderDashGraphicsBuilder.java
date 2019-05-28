@@ -11,7 +11,6 @@ import com.TomBAN.BoulderDash.Frame.GraphicsObserver;
 import com.TomBAN.BoulderDash.Frame.SimplyPanel;
 import com.TomBAN.BoulderDash.Game.Model.Block;
 import com.TomBAN.BoulderDash.Game.Model.BoulderDashModel;
-import com.TomBAN.BoulderDash.Game.Model.Map;
 import com.TomBAN.BoulderDash.Game.Model.ModelStatut;
 import com.TomBAN.BoulderDash.Game.Model.BlockList.Player;
 import com.TomBAN.BoulderDash.Ressource.RessourceManager;
@@ -58,7 +57,7 @@ public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 					+ (model.getMap().getHeight() / 2) * TILE_SIZE * timeSinceWin / time);
 		} else {
 			timeSinceWin = 0;
-			currentScale = observer.getWidth() / (16 * TILE_SIZE);
+			currentScale = Math.min(observer.getWidth() / (24F * TILE_SIZE), observer.getHeight() / (12F * TILE_SIZE));
 			currentCenterX = constrain(currentCenterX,
 					(int) ((p.getX() + 0.5) * TILE_SIZE - observer.getWidth() / currentScale / 6),
 					(int) ((p.getX() + 0.5) * TILE_SIZE + observer.getWidth() / currentScale / 6));
@@ -82,26 +81,26 @@ public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 	}
 
 	private void drawScoreScreen(Graphics2D graph, GraphicsObserver observer) {
-		final int HighScoreX = observer.getWidth()/20;
-		final int HighScoreH = observer.getWidth()/4;
+		final int HighScoreW = observer.getHeight()*8/10;
+		final int HighScoreH = observer.getHeight()/2;
+		final int HighScoreX = observer.getHeight()/10;
 		final int HighScoreY = observer.getHeight()-HighScoreX-HighScoreH;
-		final int HighScoreW = observer.getWidth()*9/20;
 		
-		graph.setColor(new Color(255, 255, 255, 200));
+		graph.setColor(new Color(255, 255, 255, 128));
 		graph.fillRoundRect(HighScoreX, HighScoreY, HighScoreW, HighScoreH, 10, 10);
 		graph.setColor(new Color(0, 0, 0));
 		graph.drawRoundRect(HighScoreX, HighScoreY, HighScoreW, HighScoreH, 10, 10);
 		
+
+		final int MyScoreW = HighScoreW;
+		final int MyScoreH = HighScoreH;
+		final int MyScoreX = observer.getWidth() - HighScoreX - MyScoreW;
+		final int MyScoreY = HighScoreY;
 		
-		final int ScoreX = observer.getWidth()/20;
-		final int ScoreH = observer.getWidth()/4;
-		final int ScoreY = observer.getHeight()-ScoreX-ScoreH;
-		final int ScoreW = observer.getWidth()*9/20;
-		
-		graph.setColor(new Color(255, 255, 255, 200));
-		graph.fillRoundRect(ScoreX, ScoreY, ScoreW, ScoreH, 10, 10);
+		graph.setColor(new Color(255, 255, 255, 128));
+		graph.fillRoundRect(MyScoreX, MyScoreY, MyScoreW, MyScoreH, 10, 10);
 		graph.setColor(new Color(0, 0, 0));
-		graph.drawRoundRect(ScoreX, ScoreY, ScoreW, ScoreH, 10, 10);
+		graph.drawRoundRect(MyScoreX, MyScoreY, MyScoreW, MyScoreH, 10, 10);
 	}
 
 	private void showGUI(Graphics2D graph, GraphicsObserver observer) {

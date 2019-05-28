@@ -14,6 +14,8 @@ import com.TomBAN.BoulderDash.Frame.BoulderDashFrame;
 import com.TomBAN.BoulderDash.Frame.SimplyPanel;
 import com.TomBAN.BoulderDash.Game.Model.BoulderDashModel;
 import com.TomBAN.BoulderDash.Game.Model.ModelStatut;
+import com.TomBAN.BoulderDash.Game.Model.NewHighScoreListenner;
+import com.TomBAN.BoulderDash.Game.Model.Score;
 import com.TomBAN.BoulderDash.Game.Model.StringMap;
 import com.TomBAN.BoulderDash.Game.View.BoulderDashGraphicsBuilder;
 import com.TomBAN.BoulderDash.PlayerController.ArroKeyBoardController;
@@ -24,7 +26,7 @@ import com.TomBAN.BoulderDash.PlayerController.ZQSDKeyBoardController;
 import com.TomBAN.BoulderDash.Ressource.RessourceManager;
 import com.TomBAN.mySQL.MySQL;
 
-public class BoulderDashController implements Observer {
+public class BoulderDashController implements Observer, NewHighScoreListenner {
 	private static final String URL = "jdbc:mysql://localhost:3306/a1-project5?useSSL=false&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC";
 	private static final String USER = "root";
 	private static final String PASSWORD = "";
@@ -48,7 +50,7 @@ public class BoulderDashController implements Observer {
 		this.models = new BoulderDashModel[gameOption.getModelNumber()];
 		for (int i = 0; i < models.length; i++) {
 			models[i] = new BoulderDashModel(this, 5,
-					JOptionPane.showInputDialog(RessourceManager.getInstance().getText("Name"+i)));
+					JOptionPane.showInputDialog(RessourceManager.getInstance().getText("Name" + i)),this);
 			for (int j = i * gameOption.getPlayerNumberPerMap(); j < (i + 1)
 					* gameOption.getPlayerNumberPerMap(); j++) {
 				models[i].addController(controllers[j]);
@@ -68,7 +70,6 @@ public class BoulderDashController implements Observer {
 			if (!gameOption.isDualScreen()) {
 				final JSplitPane splitedScreen = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 				splitedScreen.setSize(frames[0].getContentPane().getWidth(), frames[0].getContentPane().getHeight());
-				System.out.println(splitedScreen.getSize());
 				frames[0].setContentPane(splitedScreen);
 				splitedScreen.setDividerLocation(0.5);
 				splitedScreen.setTopComponent(panels[0]);
@@ -124,7 +125,6 @@ public class BoulderDashController implements Observer {
 	}
 
 	private void nextMap() {
-		AddHighScore();
 		if (NextMapNumber < strMap.size()) {
 			for (BoulderDashModel model : models) {
 				switch (strMap.get(NextMapNumber).getWorld()) {
@@ -152,23 +152,43 @@ public class BoulderDashController implements Observer {
 		System.out.println("endScreen");
 	}
 
-	private void AddHighScore() {
-		if (NextMapNumber > 0) {
-			for (BoulderDashModel model : models) {
-				if (!model.loose()) {
-					StringMap str = strMap.get(NextMapNumber-1);
-					try {
-						MySQL.Connect(URL, USER, PASSWORD);
-						MySQL.getInstance().queryUpdate("call addScore("+str.getMapID()+","+model.getMap().getScore()+",'"+model.getPlayerName()+"')");
-					} catch (SQLException e) {
-						e.printStackTrace();
-					} finally {
-						MySQL.closeConnection();
-					}
+	@Override
+	public void NewHighScoreEvent(Score score) {
+		if (score != null) {
+			if(score.isNew()==true) {
+				try {
+					System.out.println("call addScore(" + score.getStringMap().getMapID()+ ","
+							+ score.getScore() + ",'" + score.getName() + "')");
+					MySQL.Connect(URL, USER, PASSWORD);
+					MySQL.getInstance().queryUpdate("call addScore(" + score.getStringMap().getMapID()+ ","
+							+ score.getScore() + ",'" + score.getName() + "')");
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} finally {
+					MySQL.closeConnection();
 				}
 			}
 		}
 	}
+
+//	private void AddHighScore() {
+//		if (NextMapNumber > 0) {
+//			for (BoulderDashModel model : models) {
+//				if (!model.loose()) {
+//					StringMap str = strMap.get(NextMapNumber - 1);
+//					try {
+//						MySQL.Connect(URL, USER, PASSWORD);
+//						MySQL.getInstance().queryUpdate("call addScore(" + str.getMapID() + ","
+//								+ model.getMap().getScore() + ",'" + model.getPlayerName() + "')");
+//					} catch (SQLException e) {
+//						e.printStackTrace();
+//					} finally {
+//						MySQL.closeConnection();
+//					}
+//				}
+//			}
+//		}
+//	}
 
 	private ArrayList<StringMap> loadMapList(int playerPerMap) {
 		ArrayList<StringMap> out = new ArrayList<StringMap>();
@@ -179,18 +199,18 @@ public class BoulderDashController implements Observer {
 
 				ResultSet highScore = MySQL.getInstance()
 						.querySelect("call getHighScore(" + result.getInt("MapID") + ")");
-				ArrayList<Integer> hs = new ArrayList<Integer>();
+				ArrayList<Score> hs = new ArrayList<Score>();
 				while (highScore.next()) {
-					hs.add(highScore.getInt("Score"));
+					hs.add(new Score(highScore.getInt("Score"), highScore.getString("PlayerName")));
 				}
-				int[] sharray = new int[hs.size()];
+				Score[] sharray = new Score[hs.size()];
 				for (int i = 0; i < hs.size(); i++) {
-					sharray[i] = hs.get(i).intValue();
+					sharray[i] = hs.get(i);
 				}
 
 				out.add(new StringMap(result.getInt("Width"), result.getInt("Height"), result.getInt("DiamondsNeeded"),
 						result.getInt("PlayerNumber"), result.getString("Content"), result.getInt("WorldNumber"),
-						result.getInt("LevelNumber"), sharray, result.getInt("MapID")));
+						result.getInt("LevelNumber"), sharray, result.getInt("TimeToFinish"), result.getInt("MapID")));
 			}
 			return out;
 		} catch (SQLException e) {
@@ -240,4 +260,5 @@ public class BoulderDashController implements Observer {
 			controllers[0] = new ZQSDKeyBoardController();
 		}
 	}
+
 }

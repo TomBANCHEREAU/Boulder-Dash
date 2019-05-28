@@ -14,13 +14,14 @@ public class BoulderDashModel extends Observable implements Tickable {
 	private ArrayList<ControllableController> controllers;
 	private Observable controller;
 	private int life = 3;
-
+	private NewHighScoreListenner highScoreListenner;
 	private ModelStatut modelStatut = ModelStatut.WaitingStart;
 	private int statutAvancement = 0;
 	private Chrono chrono;
 	private String playerName;
-	
-	public BoulderDashModel(Observer observer, int life,String playerName) {
+	private int totalScore = 0;
+
+	public BoulderDashModel(Observer observer, int life, String playerName, NewHighScoreListenner highScoreListenner) {
 		controller = new Observable() {
 			@Override
 			public void notifyObservers() {
@@ -28,12 +29,13 @@ public class BoulderDashModel extends Observable implements Tickable {
 				super.notifyObservers();
 			}
 		};
-		this.playerName=playerName;
+		this.playerName = playerName;
 		controller.addObserver(observer);
 		// TODO Auto-generated constructor stub
 		this.life = life;
 		controllers = new ArrayList<ControllableController>();
 		chrono = new Chrono();
+		this.highScoreListenner = highScoreListenner;
 	}
 
 	public void nextMap(StringMap strMap) {
@@ -45,16 +47,8 @@ public class BoulderDashModel extends Observable implements Tickable {
 		controllers.add(controller);
 	}
 
-	public ArrayList<Player> getPlayers() {
-		return map.getPlayers();
-	}
-
-	public void gameLoop() {
+	private void gameLoop() {
 		map.updateAllBlock();
-	}
-
-	public Map getMap() {
-		return map;
 	}
 
 	public void start() {
@@ -67,12 +61,8 @@ public class BoulderDashModel extends Observable implements Tickable {
 		}
 	}
 
-	public Chrono getChrono() {
-		return chrono;
-	}
-
 	public boolean loose() {
-		return 0 >= life;
+		return life < 0;
 	}
 
 	private void setStatut(ModelStatut statut) {
@@ -97,6 +87,7 @@ public class BoulderDashModel extends Observable implements Tickable {
 				chrono.stop();
 				life += getMap().getDiamond() - getMap().getDiamondNeeded();
 				setStatut(ModelStatut.EndMapScreen);
+				sendScore();
 			} else if (map.loose()) {
 				chrono.stop();
 				this.map = strMap.toRealMap(controllers);
@@ -108,12 +99,30 @@ public class BoulderDashModel extends Observable implements Tickable {
 		if (modelStatut == ModelStatut.EndMapScreen && statutAvancement >= 200) {
 			setStatut(ModelStatut.WaitingNextMap);
 		}
-		if (modelStatut == ModelStatut.EndMapScreen || modelStatut == ModelStatut.WaitingNextMap || modelStatut == ModelStatut.Playing) {
+		if (modelStatut == ModelStatut.EndMapScreen || modelStatut == ModelStatut.WaitingNextMap
+				|| modelStatut == ModelStatut.Playing) {
 			gameLoop();
 		}
 		setChanged();
 		notifyObservers();
 	}
+
+	private void sendScore() {
+		final int Diamond = getMap().getDiamond();
+//		final int bonusDiamond = getMap().getDiamond() - getMap().getDiamondNeeded();
+		final long time = getChrono().getTimeSinceStart();
+//		final long timeRemaining = getStrMap().getTimeToFinish() * 1000 - time;
+		final int world = getStrMap().getWorld();
+		// final int score = (int) (timeRemaining/10)+1000*Diamond;
+		final int score = world * 1000 * Diamond - (int) (time / 10);
+		totalScore += score;
+		final Score newScore = new Score(score, getPlayerName(), getStrMap(), true);
+		getStrMap().addScore(newScore);
+		highScoreListenner.NewHighScoreEvent(newScore);
+
+	}
+
+	// Getters
 
 	public StringMap getStrMap() {
 		return strMap;
@@ -126,11 +135,24 @@ public class BoulderDashModel extends Observable implements Tickable {
 	public int getLife() {
 		return life;
 	}
+
 	public String getPlayerName() {
 		return playerName;
 	}
 
 	public int getStatutAvancement() {
 		return statutAvancement;
+	}
+
+	public ArrayList<Player> getPlayers() {
+		return map.getPlayers();
+	}
+
+	public Map getMap() {
+		return map;
+	}
+
+	public Chrono getChrono() {
+		return chrono;
 	}
 }

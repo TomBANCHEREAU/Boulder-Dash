@@ -11,7 +11,6 @@ import com.TomBAN.BoulderDash.StartMenu.Controller.StartMenuController;
 public class BoulderDash {
 
 	public static void main(String[] args) {
-		RessourceManager.getInstance().loadImages("Default");
 		RessourceManager.getInstance().loadLanguageList();
 		JFrame frame = new BoulderDashFrame(1280, 720);
 		GameOption gameOption = StartMenuController.getGameOption(frame);
