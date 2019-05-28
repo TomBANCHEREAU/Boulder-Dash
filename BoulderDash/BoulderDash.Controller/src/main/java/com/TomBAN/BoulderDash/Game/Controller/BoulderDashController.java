@@ -117,8 +117,9 @@ public class BoulderDashController implements Observer {
 		if (AllWaiting()) {
 			if (AllLoose()) {
 				endScreen();
+			}else {
+				nextMap();
 			}
-			nextMap();
 		}
 	}
 
@@ -158,7 +159,7 @@ public class BoulderDashController implements Observer {
 			ResultSet result = MySQL.getInstance().querySelect("call getMapListFromPlayerNumber(" + playerPerMap + ")");
 			while (result.next()) {
 				out.add(new StringMap(result.getInt("Width"), result.getInt("Height"), result.getInt("DiamondsNeeded"),
-						result.getInt("PlayerNumber"), result.getString("Content"), result.getInt("WorldNumber")));
+						result.getInt("PlayerNumber"), result.getString("Content"), result.getInt("WorldNumber"), result.getInt("LevelNumber")));
 			}
 			return out;
 		} catch (SQLException e) {

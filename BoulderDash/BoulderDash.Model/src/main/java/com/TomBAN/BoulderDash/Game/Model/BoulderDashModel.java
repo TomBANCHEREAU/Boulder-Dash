@@ -15,7 +15,7 @@ public class BoulderDashModel extends Observable implements Tickable {
 	private Observable controller;
 	private int life = 3;
 
-	private ModelStatut modelStatut;
+	private ModelStatut modelStatut = ModelStatut.WaitingStart;
 	private int statutAvancement = 0;
 	private Chrono chrono;
 
@@ -56,15 +56,13 @@ public class BoulderDashModel extends Observable implements Tickable {
 	}
 
 	public void start() {
-		if(TickerManager.get(this)==null) {
+		this.map = strMap.toRealMap(controllers);
+		setStatut(ModelStatut.StartLevelScreen);
+		if (TickerManager.get(this) == null) {
 			TickerManager.addTicker(this);
 			TickerManager.get(this).setTickRate(20);
 			TickerManager.start(this);
 		}
-		this.map = strMap.toRealMap(controllers);
-		modelStatut = ModelStatut.WaitingStart;
-		modelStatut = ModelStatut.Playing;
-		chrono.start();
 	}
 
 	public Chrono getChrono() {
@@ -74,23 +72,45 @@ public class BoulderDashModel extends Observable implements Tickable {
 	public boolean loose() {
 		return 0 >= life;
 	}
-
+	private void setStatut(ModelStatut statut) {
+		this.modelStatut = statut;
+		this.statutAvancement = 0;
+		controller.notifyObservers();
+	}
 	@Override
 	public void tick() {
-		if (map.won()) {
-			chrono.stop();
-			modelStatut = ModelStatut.WaitingNextMap;
-			controller.notifyObservers();
-		} else if (map.loose()) {
-			chrono.stop();
-			this.map = strMap.toRealMap(controllers);
+		statutAvancement++;
+		if (modelStatut == ModelStatut.StartLevelScreen && statutAvancement >= 50) {
+			setStatut(ModelStatut.Playing);
 			chrono.start();
-			life--;
-			controller.notifyObservers();
 		}
-		gameLoop();
+		if (modelStatut == ModelStatut.EndMapScreen && statutAvancement >= 200) {
+			setStatut(ModelStatut.WaitingNextMap);
+			chrono.start();
+		}
+		if(modelStatut == ModelStatut.Playing) {
+			if (map.won()) {
+				chrono.stop();
+				life+=getMap().getDiamond()-getMap().getDiamondNeeded();
+				setStatut(ModelStatut.EndMapScreen);
+			} else if (map.loose()) {
+				chrono.stop();
+				this.map = strMap.toRealMap(controllers);
+				chrono.start();
+				life--;
+			}
+//			if(loose()) {
+//				setStatut(ModelStatut.WaitingNextMap);
+//				
+//			}
+			gameLoop();
+		}
 		setChanged();
 		notifyObservers();
+	}
+
+	public StringMap getStrMap() {
+		return strMap;
 	}
 
 	public ModelStatut getModelStatut() {

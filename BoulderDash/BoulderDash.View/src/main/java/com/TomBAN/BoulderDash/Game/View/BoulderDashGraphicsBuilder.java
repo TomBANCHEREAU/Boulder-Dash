@@ -28,17 +28,17 @@ public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 	public BoulderDashGraphicsBuilder(BoulderDashModel model, int i) {
 		this.model = model;
 		this.playerId = i;
-//		currentCenterX=i.getxIndex()*TILE_SIZE;
-//		currentCenterY=i.getyIndex()*TILE_SIZE;
 	}
 
 	@Override
 	public void draw(Graphics2D graph, GraphicsObserver observer) {
 
-		if (model.getMap() == null) {
+		if (model.getModelStatut() == ModelStatut.StartLevelScreen
+				|| model.getModelStatut() == ModelStatut.WaitingStart) {
 			drawLoadingScreen(graph, observer);
 			return;
 		}
+
 		// TODO Auto-generated method stub
 		final double time = 30;
 		Player p = model.getPlayers().get(playerId);
@@ -67,31 +67,64 @@ public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 					(int) ((p.getY() + 0.5) * TILE_SIZE + observer.getHeight() / currentScale / 6));
 		}
 
-//		currentScale = constrain(currentScale, min, max)
-
 		final double scale = currentScale;
 		final int centerX = (int) (currentCenterX * scale);
 		final int centerY = (int) (currentCenterY * scale);
 		drawMap(graph, observer, model.getMap(), centerX, centerY, scale);
-
-		graph.setColor(Color.WHITE);
-		graph.fillRect(10, 10, 100, 100);
-		graph.setColor(Color.BLACK);
-		graph.setFont(new Font("", Font.BOLD, 30));
-		graph.drawString(model.getChrono().getTimeSinceStart() / 10 / 100.0 + "", 10, 50);
-		graph.drawString(model.getLife()+"", 10, 100);
+		showGUI(graph, observer);
 		return;
 	}
 
+	private void showGUI(Graphics2D graph, GraphicsObserver observer) {
+//		graph.scale(1.5, 1.5);
+		graph.setFont(new Font("",0,observer.getWidth()/30));
+		graph.drawImage(RessourceManager.getInstance().getImage("GUI/GUI_LIFE.png"), observer.getWidth() / 100,
+				observer.getHeight() / 100, observer.getWidth() / 7, observer.getHeight() / 7, observer);
+		
+		graph.drawString("x"+model.getLife(), observer.getWidth()*8 / 100, observer.getHeight() *10 / 100);
+		
+		
+
+		graph.setFont(new Font("",0,observer.getWidth()/40));
+		graph.drawImage(RessourceManager.getInstance().getImage("GUI/GUI_DIAMOND.png"), observer.getWidth() / 100,
+				observer.getHeight() / 100 + observer.getHeight() / 8, observer.getWidth() / 7,
+				observer.getHeight() / 7, observer);
+		
+		graph.drawString("x"+model.getMap().getDiamond()+"/"+model.getMap().getDiamondNeeded(), observer.getWidth()*6 / 100, observer.getHeight() *10 / 100 + observer.getHeight() / 8);
+		
+		
+		
+		graph.drawImage(RessourceManager.getInstance().getImage("GUI/GUI_TIME.png"),
+				observer.getWidth() * 99 / 100 - observer.getWidth() / 7, observer.getHeight() / 100,
+				observer.getWidth() / 7, observer.getHeight() / 7, observer);
+
+//		graph.setColor(Color.WHITE);
+//		graph.fillRect(10, 10, 100, 100);
+//		graph.setColor(Color.BLACK);
+//		graph.setFont(new Font("", Font.BOLD, 30));
+//		graph.drawString(model.getChrono().getTimeSinceStart() / 10 / 100.0 + "", 10, 50);
+//		graph.drawString(model.getLife() + "", 10, 100);
+	}
+
 	private void drawLoadingScreen(Graphics2D graph, GraphicsObserver observer) {
+
 		graph.setColor(Color.BLACK);
 		graph.fillRect(0, 0, observer.getWidth(), observer.getHeight());
 		graph.setFont(new Font("", Font.BOLD, 30));
 		graph.setColor(Color.WHITE);
-		final String str = RessourceManager.getInstance().getText("Loading")+"";
-		final int w = graph.getFontMetrics().stringWidth(str);
-		graph.drawString(str, observer.getWidth()/2-w/2, observer.getHeight()/2);
-		
+
+		if (model.getStrMap() == null) {
+			final String str = RessourceManager.getInstance().getText("Loading") + "";
+			final int w = graph.getFontMetrics().stringWidth(str);
+			graph.drawString(str, observer.getWidth() / 2 - w / 2, observer.getHeight() / 2);
+
+		} else {
+			final String str = model.getStrMap().getWorld() + " -  " + model.getStrMap().getLevel();
+			final int w = graph.getFontMetrics().stringWidth(str);
+			graph.drawString(str, observer.getWidth() / 2 - w / 2, observer.getHeight() / 2);
+
+		}
+
 	}
 
 	private static void drawMap(Graphics2D graph, GraphicsObserver observer, Map map, final int centerX,
