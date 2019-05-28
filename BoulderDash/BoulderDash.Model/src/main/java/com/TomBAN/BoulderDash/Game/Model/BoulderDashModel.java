@@ -57,7 +57,7 @@ public class BoulderDashModel extends Observable implements Tickable {
 
 	public void start() {
 		this.map = strMap.toRealMap(controllers);
-		setStatut(ModelStatut.StartLevelScreen);
+		setStatutWithoutNotify(ModelStatut.StartLevelScreen);
 		if (TickerManager.get(this) == null) {
 			TickerManager.addTicker(this);
 			TickerManager.get(this).setTickRate(20);
@@ -72,11 +72,17 @@ public class BoulderDashModel extends Observable implements Tickable {
 	public boolean loose() {
 		return 0 >= life;
 	}
+
 	private void setStatut(ModelStatut statut) {
-		this.modelStatut = statut;
-		this.statutAvancement = 0;
+		setStatutWithoutNotify(statut);
 		controller.notifyObservers();
 	}
+
+	private void setStatutWithoutNotify(ModelStatut statut) {
+		this.modelStatut = statut;
+		this.statutAvancement = 0;
+	}
+
 	@Override
 	public void tick() {
 		statutAvancement++;
@@ -84,25 +90,23 @@ public class BoulderDashModel extends Observable implements Tickable {
 			setStatut(ModelStatut.Playing);
 			chrono.start();
 		}
-		if (modelStatut == ModelStatut.EndMapScreen && statutAvancement >= 200) {
-			setStatut(ModelStatut.WaitingNextMap);
-			chrono.start();
-		}
-		if(modelStatut == ModelStatut.Playing) {
+		if (modelStatut == ModelStatut.Playing) {
 			if (map.won()) {
 				chrono.stop();
-				life+=getMap().getDiamond()-getMap().getDiamondNeeded();
+				life += getMap().getDiamond() - getMap().getDiamondNeeded();
 				setStatut(ModelStatut.EndMapScreen);
 			} else if (map.loose()) {
 				chrono.stop();
 				this.map = strMap.toRealMap(controllers);
 				chrono.start();
 				life--;
+				controller.notifyObservers();
 			}
-//			if(loose()) {
-//				setStatut(ModelStatut.WaitingNextMap);
-//				
-//			}
+		}
+		if (modelStatut == ModelStatut.EndMapScreen && statutAvancement >= 200) {
+			setStatut(ModelStatut.WaitingNextMap);
+		}
+		if (modelStatut == ModelStatut.EndMapScreen || modelStatut == ModelStatut.WaitingNextMap || modelStatut == ModelStatut.Playing) {
 			gameLoop();
 		}
 		setChanged();

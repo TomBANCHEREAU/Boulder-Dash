@@ -14,7 +14,6 @@ import com.TomBAN.BoulderDash.Frame.SimplyPanel;
 import com.TomBAN.BoulderDash.Game.Model.BoulderDashModel;
 import com.TomBAN.BoulderDash.Game.Model.ModelStatut;
 import com.TomBAN.BoulderDash.Game.Model.StringMap;
-import com.TomBAN.BoulderDash.Game.Model.BlockList.Player;
 import com.TomBAN.BoulderDash.Game.View.BoulderDashGraphicsBuilder;
 import com.TomBAN.BoulderDash.PlayerController.ArroKeyBoardController;
 import com.TomBAN.BoulderDash.PlayerController.IJKLKeyBoardController;
@@ -114,16 +113,19 @@ public class BoulderDashController implements Observer {
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		if (AllWaiting()) {
+		if (AllWaitingForNextMap()) {
 			if (AllLoose()) {
 				endScreen();
-			}else {
+			} else {
 				nextMap();
 			}
 		}
 	}
 
 	private void nextMap() {
+		if() {
+			
+		}
 		if (NextMapNumber < strMap.size()) {
 			for (BoulderDashModel model : models) {
 				switch (strMap.get(NextMapNumber).getWorld()) {
@@ -140,7 +142,6 @@ public class BoulderDashController implements Observer {
 				model.nextMap(strMap.get(NextMapNumber));
 			}
 			// TODO
-
 			NextMapNumber++;
 		} else {
 			endScreen();
@@ -149,17 +150,34 @@ public class BoulderDashController implements Observer {
 
 	private void endScreen() {
 		// TODO Auto-generated method stub
-		System.out.println("endSreen");
+		System.out.println("endScreen");
 	}
 
+	private void AddHighScore(BoulderDashModel model) {
+		
+	}
+	
+	
 	private ArrayList<StringMap> loadMapList(int playerPerMap) {
 		ArrayList<StringMap> out = new ArrayList<StringMap>();
 		try {
 			MySQL.Connect(URL, USER, PASSWORD);
 			ResultSet result = MySQL.getInstance().querySelect("call getMapListFromPlayerNumber(" + playerPerMap + ")");
 			while (result.next()) {
+
+				ResultSet highScore = MySQL.getInstance().querySelect("call getHighScore(" + result.getInt("MapID") + ")");
+				ArrayList<Integer> hs = new ArrayList<Integer>();
+				while (highScore.next()) {
+					hs.add(highScore.getInt("Score"));
+				}
+				int[] sharray = new int[hs.size()];
+				for (int i = 0; i < hs.size(); i++) {
+					sharray[i] = hs.get(i).intValue();
+				}
+
 				out.add(new StringMap(result.getInt("Width"), result.getInt("Height"), result.getInt("DiamondsNeeded"),
-						result.getInt("PlayerNumber"), result.getString("Content"), result.getInt("WorldNumber"), result.getInt("LevelNumber")));
+						result.getInt("PlayerNumber"), result.getString("Content"), result.getInt("WorldNumber"),
+						result.getInt("LevelNumber"), sharray,result.getInt("MapID")));
 			}
 			return out;
 		} catch (SQLException e) {
@@ -170,7 +188,7 @@ public class BoulderDashController implements Observer {
 		return null;
 	}
 
-	private boolean AllWaiting() {
+	private boolean AllWaitingForNextMap() {
 		for (BoulderDashModel model : models) {
 			if (model.getModelStatut() != ModelStatut.WaitingNextMap && !model.loose()) {
 				return false;

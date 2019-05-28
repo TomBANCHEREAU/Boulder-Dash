@@ -17,9 +17,11 @@ public class StringMap {
 	private int diamondNeeded;
 	private int playerCount;
 	private int world, level;
+	private int[] highScore;
+	private int id;
 
 	public StringMap(int width, int height, int diamondNeeded, int playerCount, String[] stringMap, int world,
-			int level) {
+			int level,int[] score,int id) {
 		setWidth(width);
 		setHeight(height);
 		setStringMap(stringMap);
@@ -27,11 +29,13 @@ public class StringMap {
 		setPlayerCount(playerCount);
 		this.world = world;
 		this.level = level;
+		this.highScore =score;
+		this.id = id;
 	}
 
 	public StringMap(int width, int height, int diamondNeeded, int playerCount, String stringMap, int world,
-			int level) {
-		this(width, height, diamondNeeded, playerCount, stringMap.split("\n"), world, level);
+			int level,int[] score, int id) {
+		this(width, height, diamondNeeded, playerCount, stringMap.split("\n"), world, level,score,id);
 	}
 
 	public int getWorld() {

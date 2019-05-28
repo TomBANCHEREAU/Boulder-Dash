@@ -70,40 +70,50 @@ public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 		final double scale = currentScale;
 		final int centerX = (int) (currentCenterX * scale);
 		final int centerY = (int) (currentCenterY * scale);
-		drawMap(graph, observer, model.getMap(), centerX, centerY, scale);
+		drawMap(graph, observer, centerX, centerY, scale);
 		showGUI(graph, observer);
+
+		if (model.getModelStatut() == ModelStatut.EndMapScreen
+				|| model.getModelStatut() == ModelStatut.WaitingNextMap) {
+			drawScoreScreen(graph, observer);
+		}
+
 		return;
 	}
 
+	private void drawScoreScreen(Graphics2D graph, GraphicsObserver observer) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	private void showGUI(Graphics2D graph, GraphicsObserver observer) {
-//		graph.scale(1.5, 1.5);
-		graph.setFont(new Font("",0,observer.getWidth()/30));
+		graph.setFont(new Font("", 0, observer.getWidth() / 30));
 		graph.drawImage(RessourceManager.getInstance().getImage("GUI/GUI_LIFE.png"), observer.getWidth() / 100,
-				observer.getHeight() / 100, observer.getWidth() / 7, observer.getHeight() / 7, observer);
-		
-		graph.drawString("x"+model.getLife(), observer.getWidth()*8 / 100, observer.getHeight() *10 / 100);
-		
-		
+				observer.getHeight() / 100, observer.getWidth() / 7, observer.getWidth() / 7 * 9 / 16, observer);
 
-		graph.setFont(new Font("",0,observer.getWidth()/40));
+		graph.drawString("x" + model.getLife(), observer.getWidth() * 8 / 100, observer.getWidth() * 6 / 100);
+
+		graph.setFont(new Font("", 0, observer.getWidth() / 40));
 		graph.drawImage(RessourceManager.getInstance().getImage("GUI/GUI_DIAMOND.png"), observer.getWidth() / 100,
-				observer.getHeight() / 100 + observer.getHeight() / 8, observer.getWidth() / 7,
-				observer.getHeight() / 7, observer);
-		
-		graph.drawString("x"+model.getMap().getDiamond()+"/"+model.getMap().getDiamondNeeded(), observer.getWidth()*6 / 100, observer.getHeight() *10 / 100 + observer.getHeight() / 8);
-		
-		
-		
-		graph.drawImage(RessourceManager.getInstance().getImage("GUI/GUI_TIME.png"),
-				observer.getWidth() * 99 / 100 - observer.getWidth() / 7, observer.getHeight() / 100,
-				observer.getWidth() / 7, observer.getHeight() / 7, observer);
+				observer.getHeight() / 100 + observer.getWidth() / 7 * 9 / 16, observer.getWidth() / 7,
+				observer.getWidth() / 7 * 9 / 16, observer);
 
-//		graph.setColor(Color.WHITE);
-//		graph.fillRect(10, 10, 100, 100);
-//		graph.setColor(Color.BLACK);
-//		graph.setFont(new Font("", Font.BOLD, 30));
-//		graph.drawString(model.getChrono().getTimeSinceStart() / 10 / 100.0 + "", 10, 50);
-//		graph.drawString(model.getLife() + "", 10, 100);
+		graph.drawString("x" + model.getMap().getDiamond() + "/" + model.getMap().getDiamondNeeded(),
+				observer.getWidth() * 6 / 100, observer.getWidth() * 11 / 200 + observer.getWidth() / 7 * 9 / 16);
+
+		graph.drawImage(RessourceManager.getInstance().getImage("GUI/GUI_TIME.png"),
+				observer.getWidth() * 99 / 100 - observer.getWidth() / 7, observer.getWidth() / 100,
+				observer.getWidth() / 7, observer.getWidth() / 7 * 9 / 16, observer);
+
+		final int sec0 = (int) ((model.getChrono().getTimeSinceStart()/1000L)%10);
+		final int sec1 = (int) ((model.getChrono().getTimeSinceStart()/10000L)%6);
+		final int min0 = (int) ((model.getChrono().getTimeSinceStart()/60000L));
+		
+		
+		graph.drawString(""+min0+":"+sec1+""+sec0,
+				observer.getWidth() * 99 / 100 - observer.getWidth() / 7 + observer.getWidth()/20,
+				observer.getWidth() * 6 / 100);
+
 	}
 
 	private void drawLoadingScreen(Graphics2D graph, GraphicsObserver observer) {
@@ -127,8 +137,8 @@ public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 
 	}
 
-	private static void drawMap(Graphics2D graph, GraphicsObserver observer, Map map, final int centerX,
-			final int centerY, final double scale) {
+	private void drawMap(Graphics2D graph, GraphicsObserver observer, final int centerX, final int centerY,
+			final double scale) {
 
 		final int originX = (centerX - observer.getWidth() / 2);
 		final int originY = (centerY - observer.getHeight() / 2);
@@ -147,12 +157,12 @@ public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 
 		for (int x = minX; x < maxX; x++) {
 			for (int y = minY; y < maxY; y++) {
-				graph.drawImage(map.getBackgroundImage(), x * TILE_SIZE, y * TILE_SIZE, observer);
+				graph.drawImage(model.getMap().getBackgroundImage(), x * TILE_SIZE, y * TILE_SIZE, observer);
 			}
 		}
 		for (int x = minX; x < maxX; x++) {
 			for (int y = minY; y < maxY; y++) {
-				final Block b = map.getBlockAt(x, y);
+				final Block b = model.getMap().getBlockAt(x, y);
 				if (b != null) {
 					final float bx = b.getX();
 					final float by = b.getY();

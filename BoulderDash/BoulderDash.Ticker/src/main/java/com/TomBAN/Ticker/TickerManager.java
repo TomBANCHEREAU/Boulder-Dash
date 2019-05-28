@@ -8,17 +8,18 @@ public final class TickerManager {
 	private static ArrayList<Ticker> allTickers = new ArrayList<Ticker>();
 	private static int LastTickerID = 0;
 
+	private TickerManager() {
+	}
+
 	public synchronized static void addTicker(Tickable newTickerInterface) throws NullPointerException {
 		addTicker(newTickerInterface, "Ticker" + (LastTickerID), new Object());
 	}
 
-	public synchronized static void addTicker(Tickable newTickerInterface, String name)
-			throws NullPointerException {
+	public synchronized static void addTicker(Tickable newTickerInterface, String name) throws NullPointerException {
 		addTicker(newTickerInterface, name, new Object());
 	}
 
-	public synchronized static void addTicker(Tickable newTickerInterface, Object syncKey)
-			throws NullPointerException {
+	public synchronized static void addTicker(Tickable newTickerInterface, Object syncKey) throws NullPointerException {
 		addTicker(newTickerInterface, "Ticker" + (LastTickerID), syncKey);
 	}
 
@@ -51,18 +52,19 @@ public final class TickerManager {
 			t.start();
 		}
 	}
+
 	public static void join(Tickable a) {
 		Ticker t = getTicker(a);
 		if (t != null) {
 			try {
 				t.getThread().join();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		
+
 	}
+
 	public synchronized static void stop(Tickable a) {
 		Ticker t = getTicker(a);
 		if (t != null) {

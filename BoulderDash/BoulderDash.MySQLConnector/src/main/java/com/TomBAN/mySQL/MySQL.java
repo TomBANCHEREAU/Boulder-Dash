@@ -15,7 +15,6 @@ public class MySQL {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			connection = DriverManager.getConnection(url, user, password);
-			statement = connection.createStatement();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -23,6 +22,7 @@ public class MySQL {
 
 	public ResultSet querySelect(final String request) {
 		try {
+			statement = connection.createStatement();
 			return statement.executeQuery(request);
 		} catch (SQLException e) {
 			e.printStackTrace();

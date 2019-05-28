@@ -4,7 +4,6 @@ import javax.swing.JFrame;
 
 import com.TomBAN.BoulderDash.Frame.BoulderDashFrame;
 import com.TomBAN.BoulderDash.Game.Controller.BoulderDashController;
-import com.TomBAN.BoulderDash.Game.Controller.GameMode;
 import com.TomBAN.BoulderDash.Game.Controller.GameOption;
 import com.TomBAN.BoulderDash.Ressource.RessourceManager;
 import com.TomBAN.BoulderDash.StartMenu.Controller.StartMenuController;
@@ -18,5 +17,4 @@ public class BoulderDash {
 		GameOption gameOption = StartMenuController.getGameOption(frame);
 		new BoulderDashController(frame, gameOption);
 	}
-
 }
