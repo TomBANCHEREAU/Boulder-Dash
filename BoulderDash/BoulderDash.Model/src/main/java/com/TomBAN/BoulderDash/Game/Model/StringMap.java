@@ -171,4 +171,8 @@ public class StringMap {
 		return stringMap;
 	}
 
+	public int getMapID() {
+		return id;
+	}
+
 }

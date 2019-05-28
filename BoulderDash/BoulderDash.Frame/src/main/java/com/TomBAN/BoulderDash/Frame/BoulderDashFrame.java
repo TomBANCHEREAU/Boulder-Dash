@@ -19,7 +19,7 @@ public class BoulderDashFrame extends JFrame implements Observer{
 		this.setTitle("BoulderDash");
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setResizable(false);
+//		this.setResizable(false);
 		this.setVisible(true);
 	}
 	public void update(Observable o, Object arg) {

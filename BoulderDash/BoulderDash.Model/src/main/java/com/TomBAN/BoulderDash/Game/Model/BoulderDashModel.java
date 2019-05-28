@@ -18,8 +18,9 @@ public class BoulderDashModel extends Observable implements Tickable {
 	private ModelStatut modelStatut = ModelStatut.WaitingStart;
 	private int statutAvancement = 0;
 	private Chrono chrono;
-
-	public BoulderDashModel(Observer observer, int life) {
+	private String playerName;
+	
+	public BoulderDashModel(Observer observer, int life,String playerName) {
 		controller = new Observable() {
 			@Override
 			public void notifyObservers() {
@@ -27,6 +28,7 @@ public class BoulderDashModel extends Observable implements Tickable {
 				super.notifyObservers();
 			}
 		};
+		this.playerName=playerName;
 		controller.addObserver(observer);
 		// TODO Auto-generated constructor stub
 		this.life = life;
@@ -124,5 +126,11 @@ public class BoulderDashModel extends Observable implements Tickable {
 	public int getLife() {
 		return life;
 	}
+	public String getPlayerName() {
+		return playerName;
+	}
 
+	public int getStatutAvancement() {
+		return statutAvancement;
+	}
 }

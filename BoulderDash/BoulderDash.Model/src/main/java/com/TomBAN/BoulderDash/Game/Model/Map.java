@@ -140,4 +140,8 @@ public class Map {
 	public int getDiamondNeeded() {
 		return diamondNeeded;
 	}
+	public int getScore() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

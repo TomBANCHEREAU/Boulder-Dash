@@ -73,7 +73,7 @@ public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 		drawMap(graph, observer, centerX, centerY, scale);
 		showGUI(graph, observer);
 
-		if (model.getModelStatut() == ModelStatut.EndMapScreen
+		if ((model.getModelStatut() == ModelStatut.EndMapScreen && model.getStatutAvancement()>50)
 				|| model.getModelStatut() == ModelStatut.WaitingNextMap) {
 			drawScoreScreen(graph, observer);
 		}
@@ -82,8 +82,26 @@ public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 	}
 
 	private void drawScoreScreen(Graphics2D graph, GraphicsObserver observer) {
-		// TODO Auto-generated method stub
+		final int HighScoreX = observer.getWidth()/20;
+		final int HighScoreH = observer.getWidth()/4;
+		final int HighScoreY = observer.getHeight()-HighScoreX-HighScoreH;
+		final int HighScoreW = observer.getWidth()*9/20;
 		
+		graph.setColor(new Color(255, 255, 255, 200));
+		graph.fillRoundRect(HighScoreX, HighScoreY, HighScoreW, HighScoreH, 10, 10);
+		graph.setColor(new Color(0, 0, 0));
+		graph.drawRoundRect(HighScoreX, HighScoreY, HighScoreW, HighScoreH, 10, 10);
+		
+		
+		final int ScoreX = observer.getWidth()/20;
+		final int ScoreH = observer.getWidth()/4;
+		final int ScoreY = observer.getHeight()-ScoreX-ScoreH;
+		final int ScoreW = observer.getWidth()*9/20;
+		
+		graph.setColor(new Color(255, 255, 255, 200));
+		graph.fillRoundRect(ScoreX, ScoreY, ScoreW, ScoreH, 10, 10);
+		graph.setColor(new Color(0, 0, 0));
+		graph.drawRoundRect(ScoreX, ScoreY, ScoreW, ScoreH, 10, 10);
 	}
 
 	private void showGUI(Graphics2D graph, GraphicsObserver observer) {
