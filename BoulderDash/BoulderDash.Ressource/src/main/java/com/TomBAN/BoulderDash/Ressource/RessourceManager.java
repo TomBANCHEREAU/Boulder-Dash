@@ -85,7 +85,7 @@ public class RessourceManager {
 		if(texts.containsKey(name)) {
 			return texts.get(name);
 		}
-		return null;
+		return name;
 	}
 
 	@SuppressWarnings("unchecked")

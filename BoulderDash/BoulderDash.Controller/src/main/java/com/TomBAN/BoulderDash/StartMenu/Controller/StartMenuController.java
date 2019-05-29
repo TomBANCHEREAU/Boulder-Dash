@@ -19,8 +19,9 @@ public class StartMenuController implements Controllable {
 	private Object object;
 	private KeyBoardController controller;
 	private StartMenuModel model;
-
+	private JFrame frame;
 	public StartMenuController(JFrame frame, Object object) {
+		this.frame=frame;
 		this.object = object;
 		model = new StartMenuModel();
 		frame.setContentPane(new SimplyPanel(new StartMenuGraphicsBuilder(model)));
@@ -44,6 +45,7 @@ public class StartMenuController implements Controllable {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		
 		return gameOption;
 	}
 
@@ -86,10 +88,11 @@ public class StartMenuController implements Controllable {
 		} else {
 			model.executeOrder(order);
 		}
-
+		
 	}
 	public void setGameOption(GameOption gameOption) {
 		StartMenuController.gameOption = gameOption;
+		frame.removeKeyListener(controller);
 		synchronized (object) {
 			object.notify();
 		}

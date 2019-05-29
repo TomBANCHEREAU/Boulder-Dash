@@ -153,7 +153,7 @@ public class BoulderDashController implements Observer, NewHighScoreListenner {
 	}
 
 	@Override
-	public void NewHighScoreEvent(Score score) {
+	public synchronized void NewHighScoreEvent(Score score) {
 		if (score != null) {
 			if(score.isNew()==true) {
 				try {
@@ -184,7 +184,7 @@ public class BoulderDashController implements Observer, NewHighScoreListenner {
 				while (highScore.next()) {
 					hs.add(new Score(highScore.getInt("Score"), highScore.getString("PlayerName")));
 				}
-				Score[] sharray = new Score[5];
+				Score[] sharray = new Score[10];
 				for (int i = 0; i < hs.size(); i++) {
 					sharray[i] = hs.get(i);
 				}

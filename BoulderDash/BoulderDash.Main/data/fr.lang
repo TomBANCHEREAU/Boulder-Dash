@@ -4,3 +4,7 @@ SinglePlayer;Mode un joueur
 MultiPlayerRace;Mode course multijoueur 
 MultiCoop;Mode multijoueur en coopération
 MultiCoopRace;Mode course multijoueur en coopération
+Loading;Chargement des niveaux
+Score;Score
+Level;Niveau
+Total;Total

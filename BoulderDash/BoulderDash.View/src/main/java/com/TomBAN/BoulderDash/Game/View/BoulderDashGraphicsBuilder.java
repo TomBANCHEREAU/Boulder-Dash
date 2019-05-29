@@ -118,19 +118,58 @@ public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 			}
 		}
 		
-		
 		final int MyScoreW = HighScoreW;
 		final int MyScoreH = HighScoreH;
 		final int MyScoreX = observer.getWidth() - HighScoreX - MyScoreW;
 		final int MyScoreY = HighScoreY;
-		
-		graph.setColor(new Color(255, 255, 255, 128));
+
+		graph.setColor(new Color(0, 0, 0, 220));
 		graph.fillRoundRect(MyScoreX, MyScoreY, MyScoreW, MyScoreH, 10, 10);
 		graph.setColor(new Color(0, 0, 0));
 		graph.drawRoundRect(MyScoreX, MyScoreY, MyScoreW, MyScoreH, 10, 10);
+		graph.setColor(Color.WHITE);
+		
+
+		graph.drawImage(RessourceManager.getInstance().getImage("GUI/HEART.png"), MyScoreX+MyScoreW/2-FontSize/2, MyScoreY+10,FontSize,FontSize, observer);
+		graph.drawString(RessourceManager.getInstance().getText("Score")+"", MyScoreX+MyScoreW*3/4, MyScoreY+10+FontSize);
+		
+		graph.drawLine(MyScoreX, MyScoreY + FontSize*2, MyScoreX+MyScoreW, MyScoreY + FontSize*2);
+		
+		graph.drawImage(RessourceManager.getInstance().getImage("Diamond/DIAMOND_0.png"), MyScoreX+10, MyScoreY+10+FontSize*2,FontSize,FontSize, observer);
+		graph.drawString(model.getMap().getDiamond()+" / "+model.getMap().getDiamondNeeded(), MyScoreX+10+FontSize*2, MyScoreY+10+FontSize*3);
+		graph.drawString("+"+(model.getMap().getDiamond()-model.getMap().getDiamondNeeded()), MyScoreX+MyScoreW/2, MyScoreY+10+FontSize*3);
+		graph.drawString("+"+model.getMap().getDiamond()*1000*model.getStrMap().getWorld()+"", MyScoreX+MyScoreW*3/4, MyScoreY+10+FontSize*3);
+		
+		graph.drawImage(RessourceManager.getInstance().getImage("GUI/HOURGLASS.png"), MyScoreX+10, MyScoreY+10+FontSize*4-FontSize/2,FontSize,FontSize, observer);
+		graph.drawString(getTimeToString(model.getChrono().getTimeSinceStart()), MyScoreX+10+FontSize*2, MyScoreY+10+FontSize*5-FontSize/2);
+//		graph.drawString("+"+(model.getMap().getDiamondNeeded()-model.getMap().getDiamond()), MyScoreX+MyScoreW/2, MyScoreY+10+FontSize*3);
+		graph.drawString("-"+ (int) (model.getChrono().getTimeSinceStart() / 10 /5*5), MyScoreX+MyScoreW*3/4, MyScoreY+10+FontSize*5-FontSize/2);
+		
+		graph.drawImage(RessourceManager.getInstance().getImage("GUI/HEART.png"), MyScoreX+10, MyScoreY+10+FontSize*5,FontSize,FontSize, observer);
+		graph.drawString(""+(model.getLife()-(model.getMap().getDiamond()-model.getMap().getDiamondNeeded())), MyScoreX+10+FontSize*2, MyScoreY+10+FontSize*6);
+		graph.drawString(""+(model.getLife()-(model.getMap().getDiamond()-model.getMap().getDiamondNeeded())), MyScoreX+MyScoreW/2, MyScoreY+10+FontSize*6);
+		graph.drawString("+"+(model.getLife()-(model.getMap().getDiamond()-model.getMap().getDiamondNeeded())), MyScoreX+MyScoreW*3/4, MyScoreY+10+FontSize*6);
+		
+		graph.drawLine(MyScoreX, MyScoreY + FontSize*13/2, MyScoreX+MyScoreW, MyScoreY + FontSize*13/2);
+		graph.drawString(RessourceManager.getInstance().getText("Level")+"",MyScoreX+10, MyScoreY+10+FontSize*15/2);
+		graph.drawString(""+model.getLife(), MyScoreX+MyScoreW/2, MyScoreY+10+FontSize*15/2);
+		graph.drawString(""+model.getScore().getScore(), MyScoreX+MyScoreW*3/4, MyScoreY+10+FontSize*15/2);
+//		graph.drawString("+"+(model.getLife()-(model.getMap().getDiamondNeeded()-model.getMap().getDiamond())), MyScoreX+MyScoreW*3/4, MyScoreY+10+FontSize*6);
+		
+		
+		
+		graph.drawLine(MyScoreX, MyScoreY + FontSize*16/2, MyScoreX+MyScoreW, MyScoreY + FontSize*16/2);
+		graph.drawString(RessourceManager.getInstance().getText("Total")+"",MyScoreX+10, MyScoreY+10+FontSize*18/2);
+		graph.drawString(""+model.getLife(), MyScoreX+MyScoreW/2, MyScoreY+10+FontSize*18/2);
+		graph.drawString(""+model.getTotalScore(), MyScoreX+MyScoreW*3/4, MyScoreY+10+FontSize*18/2);
 		
 	}
-
+	private String getTimeToString(long time) {
+		final int sec0 = (int) ((time/1000L)%10);
+		final int sec1 = (int) ((time/10000L)%6);
+		final int min0 = (int) ((time/60000L));
+		return ""+min0+":"+sec1+""+sec0;
+	}
 	private void showGUI(Graphics2D graph, GraphicsObserver observer) {
 		graph.setFont(new Font("", 0, observer.getWidth() / 30));
 		graph.drawImage(RessourceManager.getInstance().getImage("GUI/GUI_LIFE.png"), observer.getWidth() / 100,
@@ -150,12 +189,9 @@ public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 				observer.getWidth() * 99 / 100 - observer.getWidth() / 7, observer.getWidth() / 100,
 				observer.getWidth() / 7, observer.getWidth() / 7 * 9 / 16, observer);
 
-		final int sec0 = (int) ((model.getChrono().getTimeSinceStart()/1000L)%10);
-		final int sec1 = (int) ((model.getChrono().getTimeSinceStart()/10000L)%6);
-		final int min0 = (int) ((model.getChrono().getTimeSinceStart()/60000L));
 		
 		
-		graph.drawString(""+min0+":"+sec1+""+sec0,
+		graph.drawString(getTimeToString(model.getChrono().getTimeSinceStart()),
 				observer.getWidth() * 99 / 100 - observer.getWidth() / 7 + observer.getWidth()/20,
 				observer.getWidth() * 6 / 100);
 

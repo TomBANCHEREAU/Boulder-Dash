@@ -19,6 +19,7 @@ public class BoulderDashModel extends Observable implements Tickable {
 	private int statutAvancement = 0;
 	private Chrono chrono;
 	private String playerName;
+	private Score score;
 	private int totalScore = 0;
 
 	public BoulderDashModel(Observer observer, int life, String playerName, NewHighScoreListenner highScoreListenner) {
@@ -116,15 +117,23 @@ public class BoulderDashModel extends Observable implements Tickable {
 //		final long timeRemaining = getStrMap().getTimeToFinish() * 1000 - time;
 		final int world = getStrMap().getWorld();
 		// final int score = (int) (timeRemaining/10)+1000*Diamond;
-		final int score = world * 1000 * Diamond - (int) (time / 10);
+		final int score = world * 1000 * Diamond - (int) (time / 10 /5*5);
 		totalScore += score;
-		final Score newScore = new Score(score, getPlayerName(), getStrMap(), true);
-		getStrMap().addScore(newScore);
-		highScoreListenner.NewHighScoreEvent(newScore);
+		this.score = new Score(score, getPlayerName(), getStrMap(), true);
+		getStrMap().addScore(this.score);
+		highScoreListenner.NewHighScoreEvent(this.score);
 
 	}
 
 	// Getters
+
+	public int getTotalScore() {
+		return totalScore;
+	}
+
+	public Score getScore() {
+		return score;
+	}
 
 	public StringMap getStrMap() {
 		return strMap;
