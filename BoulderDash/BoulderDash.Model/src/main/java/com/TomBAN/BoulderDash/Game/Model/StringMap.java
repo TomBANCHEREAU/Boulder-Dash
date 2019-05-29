@@ -181,10 +181,15 @@ public class StringMap {
 		return id;
 	}
 
-
+	public Score[] getScores() {
+		return highScore;
+	}
 	public void addScore(Score newScore) {
 		for(int i=0;i<highScore.length;i++) {
-			if(newScore.getScore() > highScore[i].getScore()) {
+			if(highScore[i]==null) {
+				highScore[i] = newScore;
+				return;
+			}else if(newScore.getScore() > highScore[i].getScore()) {
 				Score tmp = highScore[i];
 				highScore[i] = newScore;
 				newScore = tmp;

@@ -184,7 +184,7 @@ public class BoulderDashController implements Observer, NewHighScoreListenner {
 				while (highScore.next()) {
 					hs.add(new Score(highScore.getInt("Score"), highScore.getString("PlayerName")));
 				}
-				Score[] sharray = new Score[hs.size()];
+				Score[] sharray = new Score[5];
 				for (int i = 0; i < hs.size(); i++) {
 					sharray[i] = hs.get(i);
 				}

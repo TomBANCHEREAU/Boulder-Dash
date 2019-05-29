@@ -12,6 +12,7 @@ import com.TomBAN.BoulderDash.Frame.SimplyPanel;
 import com.TomBAN.BoulderDash.Game.Model.Block;
 import com.TomBAN.BoulderDash.Game.Model.BoulderDashModel;
 import com.TomBAN.BoulderDash.Game.Model.ModelStatut;
+import com.TomBAN.BoulderDash.Game.Model.Score;
 import com.TomBAN.BoulderDash.Game.Model.BlockList.Player;
 import com.TomBAN.BoulderDash.Ressource.RessourceManager;
 
@@ -81,6 +82,8 @@ public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 	}
 
 	private void drawScoreScreen(Graphics2D graph, GraphicsObserver observer) {
+		final int FontSize = observer.getHeight()/20;
+		
 		final int HighScoreW = observer.getHeight()*8/10;
 		final int HighScoreH = observer.getHeight()/2;
 		final int HighScoreX = observer.getHeight()/10;
@@ -91,7 +94,18 @@ public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 		graph.setColor(new Color(0, 0, 0));
 		graph.drawRoundRect(HighScoreX, HighScoreY, HighScoreW, HighScoreH, 10, 10);
 		
-
+		graph.setFont(new Font("",Font.BOLD,FontSize));
+		graph.setColor(Color.BLACK);
+		final Score[] score = model.getStrMap().getScores();
+		for(int i=0;i<score.length;i++) {
+			if(score[i]!=null) {
+				final String str = (i+1)+" - "+score[i].getScore()+" "+score[i].getName() +(score[i].isNew()? "    * NEW *" : "");
+				graph.drawString(str, HighScoreX+10, HighScoreY+10 + (i+1)*FontSize);
+				
+			}
+		}
+		
+		
 		final int MyScoreW = HighScoreW;
 		final int MyScoreH = HighScoreH;
 		final int MyScoreX = observer.getWidth() - HighScoreX - MyScoreW;
@@ -101,6 +115,7 @@ public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 		graph.fillRoundRect(MyScoreX, MyScoreY, MyScoreW, MyScoreH, 10, 10);
 		graph.setColor(new Color(0, 0, 0));
 		graph.drawRoundRect(MyScoreX, MyScoreY, MyScoreW, MyScoreH, 10, 10);
+		
 	}
 
 	private void showGUI(Graphics2D graph, GraphicsObserver observer) {
