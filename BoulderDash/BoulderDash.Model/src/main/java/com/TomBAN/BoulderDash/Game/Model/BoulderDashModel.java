@@ -117,7 +117,7 @@ public class BoulderDashModel extends Observable implements Tickable {
 //		final long timeRemaining = getStrMap().getTimeToFinish() * 1000 - time;
 		final int world = getStrMap().getWorld();
 		// final int score = (int) (timeRemaining/10)+1000*Diamond;
-		final int score = world * 1000 * Diamond - (int) (time / 10 /5*5);
+		final int score = world * 1000 * Diamond - (int) (time / 10 /5*5) + life;
 		totalScore += score;
 		this.score = new Score(score, getPlayerName(), getStrMap(), true);
 		getStrMap().addScore(this.score);
