@@ -85,9 +85,11 @@ public class BoulderDashModel extends Observable implements Tickable {
 		if (modelStatut == ModelStatut.Playing) {
 			if (map.won()) {
 				chrono.stop();
-				life += getMap().getDiamond() - getMap().getDiamondNeeded();
 				setStatut(ModelStatut.EndMapScreen);
-				sendScore();
+				if(life>=0) {
+					life += getMap().getDiamond() - getMap().getDiamondNeeded();
+					sendScore();
+				}
 			} else if (map.loose()) {
 				chrono.stop();
 				this.map = strMap.toRealMap(controllers);
