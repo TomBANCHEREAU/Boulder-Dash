@@ -89,19 +89,32 @@ public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 		final int HighScoreX = observer.getHeight()/10;
 		final int HighScoreY = observer.getHeight()-HighScoreX-HighScoreH;
 		
-		graph.setColor(new Color(255, 255, 255, 128));
+		graph.setColor(new Color(0, 0, 0, 220));
 		graph.fillRoundRect(HighScoreX, HighScoreY, HighScoreW, HighScoreH, 10, 10);
 		graph.setColor(new Color(0, 0, 0));
 		graph.drawRoundRect(HighScoreX, HighScoreY, HighScoreW, HighScoreH, 10, 10);
 		
 		graph.setFont(new Font("",Font.BOLD,FontSize));
-		graph.setColor(Color.BLACK);
 		final Score[] score = model.getStrMap().getScores();
 		for(int i=0;i<score.length;i++) {
 			if(score[i]!=null) {
+				switch (i) {
+				case 0:
+					graph.setColor(Color.decode("#FFD700"));
+					break;
+				case 1:
+					graph.setColor(Color.decode("#C0C0C0"));
+					break;
+				case 2:
+					graph.setColor(Color.decode("#CD7F32"));
+					break;
+
+				default:
+					graph.setColor(Color.WHITE);
+					break;
+				}
 				final String str = (i+1)+" - "+score[i].getScore()+" "+score[i].getName() +(score[i].isNew()? "    * NEW *" : "");
 				graph.drawString(str, HighScoreX+10, HighScoreY+10 + (i+1)*FontSize);
-				
 			}
 		}
 		
