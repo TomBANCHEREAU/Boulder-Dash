@@ -171,25 +171,6 @@ public class BoulderDashController implements Observer, NewHighScoreListenner {
 		}
 	}
 
-//	private void AddHighScore() {
-//		if (NextMapNumber > 0) {
-//			for (BoulderDashModel model : models) {
-//				if (!model.loose()) {
-//					StringMap str = strMap.get(NextMapNumber - 1);
-//					try {
-//						MySQL.Connect(URL, USER, PASSWORD);
-//						MySQL.getInstance().queryUpdate("call addScore(" + str.getMapID() + ","
-//								+ model.getMap().getScore() + ",'" + model.getPlayerName() + "')");
-//					} catch (SQLException e) {
-//						e.printStackTrace();
-//					} finally {
-//						MySQL.closeConnection();
-//					}
-//				}
-//			}
-//		}
-//	}
-
 	private ArrayList<StringMap> loadMapList(int playerPerMap) {
 		ArrayList<StringMap> out = new ArrayList<StringMap>();
 		try {
