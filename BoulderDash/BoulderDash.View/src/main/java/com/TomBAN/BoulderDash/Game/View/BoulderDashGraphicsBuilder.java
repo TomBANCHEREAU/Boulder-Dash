@@ -49,9 +49,11 @@ public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 			if (timeSinceWin < time) {
 				timeSinceWin++;
 			}
+//			currentScale = Math.min(observer.getWidth() / (24F * TILE_SIZE), observer.getHeight() / (12F * TILE_SIZE));
+
 			currentScale = currentScale * (time - timeSinceWin) / time + Math.min(
-					(observer.getWidth() / (model.getMap().getWidth() * TILE_SIZE + 4)) * timeSinceWin / time,
-					(observer.getHeight() / (model.getMap().getHeight() * TILE_SIZE + 4)) * timeSinceWin / time);
+					(observer.getWidth() / (float)((model.getMap().getWidth() + 4) * TILE_SIZE)) * timeSinceWin / time,
+					(observer.getHeight() / (float)((model.getMap().getHeight() + 4) * TILE_SIZE)) * timeSinceWin / time);
 			currentCenterX = (int) (currentCenterX * (time - timeSinceWin) / time
 					+ (model.getMap().getWidth() / 2) * TILE_SIZE * timeSinceWin / time);
 			currentCenterY = (int) (currentCenterY * (time - timeSinceWin) / time
