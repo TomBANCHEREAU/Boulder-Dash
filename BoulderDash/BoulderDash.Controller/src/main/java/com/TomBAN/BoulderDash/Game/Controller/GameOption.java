@@ -24,27 +24,21 @@ public final class GameOption {
 		POSSIBLE_PLAYER_NUMBER_PER_GAMEMODE.put(GameMode.MultiCoopRace, new ArrayList<Integer>());
 		POSSIBLE_PLAYER_NUMBER_PER_GAMEMODE.get(GameMode.MultiCoopRace).add(4);
 	}
-	
-	
-	
+
 	private int playerNumber;
 	private GameMode gameMode;
 	private String language;
 	private boolean dualScreen = false;
-	
+
 	public GameOption(final int playerNumber, final GameMode gameMode, final String language) {
 		this(playerNumber, gameMode, language, false);
 	}
-	public GameOption(final int playerNumber, final GameMode gameMode, final String language,boolean dualScreen) {
-		setGameMode(gameMode,playerNumber);
+
+	public GameOption(final int playerNumber, final GameMode gameMode, final String language, boolean dualScreen) {
+		setGameMode(gameMode, playerNumber);
 		setLanguage(language);
 		setDualScreen(dualScreen);
 	}
-	
-	
-	
-	
-
 
 	public void setDualScreen(boolean dualScreen) {
 		if (gameMode == GameMode.SinglePlayer && dualScreen) {
@@ -53,7 +47,7 @@ public final class GameOption {
 		this.dualScreen = dualScreen;
 	}
 
-	private void setGameMode(final GameMode gameMode,int playerNumber) {
+	private void setGameMode(final GameMode gameMode, int playerNumber) {
 		if (gameMode == null) {
 			throw new RuntimeException("GameMode cannot be null");
 		}
@@ -61,31 +55,23 @@ public final class GameOption {
 			this.gameMode = gameMode;
 			this.playerNumber = playerNumber;
 		} else {
-			throw new RuntimeException("Invalid Player number for the " + gameMode + " GameMode : " + playerNumber + " != " + getPossiblePlayerNumber(gameMode));
+			throw new RuntimeException("Invalid Player number for the " + gameMode + " GameMode : " + playerNumber
+					+ " != " + getPossiblePlayerNumber(gameMode));
 		}
 	}
 
 	private void setLanguage(String language) {
-		if (RessourceManager.getInstance().getLanguageCodeList().contains(language)) {
-			this.language = language;
-		} else {
-			throw new RuntimeException("Unknown Language : \"" + language + "\"");
-		}
+		this.language = language;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
+
 	public static ArrayList<String> getPossibleLanguages() {
 		return RessourceManager.getInstance().getLanguageList();
 	}
+
 	public static ArrayList<Integer> getPossiblePlayerNumber(GameMode gameMode) {
 		return POSSIBLE_PLAYER_NUMBER_PER_GAMEMODE.get(gameMode);
 	}
+
 	public static ArrayList<GameMode> getPossibleGameMode(int playerNumber) {
 		ArrayList<GameMode> possibleGameMode = new ArrayList<GameMode>();
 		for (GameMode gameMode : GameMode.values()) {
@@ -95,47 +81,45 @@ public final class GameOption {
 		}
 		return possibleGameMode;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+	// Getters
 	public boolean isDualScreen() {
 		return dualScreen;
 	}
+
 	public String getLanguage() {
 		return language;
 	}
+
 	public GameMode getGameMode() {
 		return gameMode;
 	}
+
 	public int getPlayerNumber() {
 		return playerNumber;
 	}
+
 	public int getModelNumber() {
-		if(gameMode == GameMode.SinglePlayer || gameMode == GameMode.MultiCoop) {
+		if (gameMode == GameMode.SinglePlayer || gameMode == GameMode.MultiCoop) {
 			return 1;
 		}
-		if(gameMode == GameMode.MultiCoopRace) {
+		if (gameMode == GameMode.MultiCoopRace) {
 			return 2;
 		}
-		if(gameMode == GameMode.MultiPlayerRace) {
+		if (gameMode == GameMode.MultiPlayerRace) {
 			return playerNumber;
 		}
 		throw new NullPointerException();
 	}
+
 	public int getPlayerNumberPerMap() {
-		if(gameMode == GameMode.SinglePlayer || gameMode == GameMode.MultiPlayerRace) {
+		if (gameMode == GameMode.SinglePlayer || gameMode == GameMode.MultiPlayerRace) {
 			return 1;
 		}
-		if(gameMode == GameMode.MultiCoopRace) {
+		if (gameMode == GameMode.MultiCoopRace) {
 			return 2;
 		}
-		if(gameMode == GameMode.MultiCoop) {
+		if (gameMode == GameMode.MultiCoop) {
 			return playerNumber;
 		}
 		throw new NullPointerException();
