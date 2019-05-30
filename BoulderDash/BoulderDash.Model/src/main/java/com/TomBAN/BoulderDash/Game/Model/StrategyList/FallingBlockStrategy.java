@@ -2,10 +2,10 @@ package com.TomBAN.BoulderDash.Game.Model.StrategyList;
 
 import com.TomBAN.BoulderDash.Game.Model.Block;
 import com.TomBAN.BoulderDash.Game.Model.Direction;
-import com.TomBAN.BoulderDash.Game.Model.Instable;
-import com.TomBAN.BoulderDash.Game.Model.Killable;
 import com.TomBAN.BoulderDash.Game.Model.MovableBlock;
 import com.TomBAN.BoulderDash.Game.Model.Strategy;
+import com.TomBAN.BoulderDash.Game.Model.BlockInterface.Instable;
+import com.TomBAN.BoulderDash.Game.Model.BlockInterface.Killable;
 
 public class FallingBlockStrategy extends Strategy<MovableBlock> {
 	private boolean wasFalling = false;

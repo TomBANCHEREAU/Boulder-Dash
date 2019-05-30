@@ -1,8 +1,8 @@
 package com.TomBAN.BoulderDash.Game.Model.BlockList;
 
-import com.TomBAN.BoulderDash.Game.Model.Instable;
 import com.TomBAN.BoulderDash.Game.Model.MovableBlock;
-import com.TomBAN.BoulderDash.Game.Model.Pushable;
+import com.TomBAN.BoulderDash.Game.Model.BlockInterface.Instable;
+import com.TomBAN.BoulderDash.Game.Model.BlockInterface.Pushable;
 import com.TomBAN.BoulderDash.Game.Model.StrategyList.AnimationStrategy;
 import com.TomBAN.BoulderDash.Game.Model.StrategyList.FallingBlockStrategy;
 

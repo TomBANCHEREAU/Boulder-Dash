@@ -5,6 +5,7 @@ import java.awt.Image;
 import com.TomBAN.BoulderDash.Ressource.RessourceManager;
 
 public class Block {
+	@SuppressWarnings("rawtypes")
 	private Strategy strategy;
 	private Image[] images;
 	private Map map;
@@ -36,14 +37,16 @@ public class Block {
 	}
 
 	public void update(int update) {
-		if (strategy != null) {
-			if (lastUpdate != update) {
-				strategy.strategy();
-			}
+		if (lastUpdate != update) {
+			executeStrategy();
 			lastUpdate = update;
 		}
 	}
-
+	public void executeStrategy() {
+			if (strategy != null) {
+			strategy.strategy();
+		}
+	}
 	public Block getNextBlock(Direction d) {
 		int xGoal = this.getxIndex(), yGoal = this.getyIndex();
 		switch (d) {
@@ -125,11 +128,12 @@ public class Block {
 		return map;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public Strategy getStrategy() {
 		return strategy;
 	}
 
-	public void setStrategy(Strategy strategy) {
+	public void setStrategy(@SuppressWarnings("rawtypes") Strategy strategy) {
 		this.strategy = strategy;
 	}
 

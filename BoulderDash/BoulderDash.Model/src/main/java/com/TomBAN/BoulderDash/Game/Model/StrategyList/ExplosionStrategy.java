@@ -1,11 +1,10 @@
 package com.TomBAN.BoulderDash.Game.Model.StrategyList;
 
 import com.TomBAN.BoulderDash.Game.Model.Block;
-import com.TomBAN.BoulderDash.Game.Model.Breakable;
-import com.TomBAN.BoulderDash.Game.Model.Direction;
-import com.TomBAN.BoulderDash.Game.Model.Killable;
 import com.TomBAN.BoulderDash.Game.Model.Strategy;
-import com.TomBAN.BoulderDash.Game.Model.Unblowable;
+import com.TomBAN.BoulderDash.Game.Model.BlockInterface.Breakable;
+import com.TomBAN.BoulderDash.Game.Model.BlockInterface.Killable;
+import com.TomBAN.BoulderDash.Game.Model.BlockInterface.Unblowable;
 
 public class ExplosionStrategy extends Strategy<Block> {
 
@@ -15,27 +14,29 @@ public class ExplosionStrategy extends Strategy<Block> {
 
 	@Override
 	public void strategy() {
-		for(Direction d : Direction.values()) {
-			for(int i=1;i<3;i++) {
-				final Block goal = block.getNextBlock(d, i);
-				if(goal!=null) {
-					if(goal instanceof Unblowable) {
-						
-					}else if(goal instanceof Killable){
+		for (int i = -1; i < 2; i++) {
+			for (int j = -1; j < 2; j++) {
+				final Block goal = block.getNextBlock(i, j);
+				if (goal != null) {
+					if (goal instanceof Unblowable) {
+
+					} else if (goal instanceof Killable) {
 						((Killable) goal).getKilled();
-						block.getMap().removeBlock(goal);
-					}else if(goal instanceof Breakable){
+						blowBlock(goal);
+					} else if (goal instanceof Breakable) {
 						((Breakable) goal).getBroken();
-						block.getMap().removeBlock(goal);
-					}else {
-						block.getMap().removeBlock(goal);
+						blowBlock(goal);
+					} else {
+						blowBlock(goal);
 					}
-					break;
 				}
 			}
 		}
-		//block.getMap().removeBlock(this);
-		//block.getMap().moveBlock(b, x, y);
 	}
-	
+
+	public void blowBlock(Block goal) {
+		block.getMap().removeBlock(goal);
+
+	}
+
 }

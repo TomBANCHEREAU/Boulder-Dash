@@ -1,7 +1,7 @@
 package com.TomBAN.BoulderDash.Game.Model.BlockList;
 
 import com.TomBAN.BoulderDash.Game.Model.Block;
-import com.TomBAN.BoulderDash.Game.Model.Unblowable;
+import com.TomBAN.BoulderDash.Game.Model.BlockInterface.Unblowable;
 
 public class HardBoundary extends Block implements Unblowable{
 	private static final String[] IMAGE = {"HARDBOUNDARY.png"};

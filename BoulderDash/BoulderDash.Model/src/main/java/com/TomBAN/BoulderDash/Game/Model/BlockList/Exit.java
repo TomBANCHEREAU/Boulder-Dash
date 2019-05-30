@@ -1,8 +1,9 @@
 package com.TomBAN.BoulderDash.Game.Model.BlockList;
 
 import com.TomBAN.BoulderDash.Game.Model.Block;
+import com.TomBAN.BoulderDash.Game.Model.BlockInterface.Unblowable;
 
-public class Exit extends Block {
+public class Exit extends Block implements Unblowable{
 	private static final String[] IMAGE = { "Exit/EXIT_CLOSED.png","Exit/EXIT_0.png","Exit/EXIT_1.png","Exit/EXIT_2.png", "Exit/EXIT_OPENED.png" };
 	private int OpenUpdate=0;
 	public Exit(int x, int y) {

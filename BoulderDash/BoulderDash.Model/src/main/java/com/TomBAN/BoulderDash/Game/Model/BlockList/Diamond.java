@@ -3,10 +3,10 @@
  */
 package com.TomBAN.BoulderDash.Game.Model.BlockList;
 
-import com.TomBAN.BoulderDash.Game.Model.Breakable;
-import com.TomBAN.BoulderDash.Game.Model.Instable;
 import com.TomBAN.BoulderDash.Game.Model.MovableBlock;
-import com.TomBAN.BoulderDash.Game.Model.Unblowable;
+import com.TomBAN.BoulderDash.Game.Model.BlockInterface.Breakable;
+import com.TomBAN.BoulderDash.Game.Model.BlockInterface.Instable;
+import com.TomBAN.BoulderDash.Game.Model.BlockInterface.Unblowable;
 import com.TomBAN.BoulderDash.Game.Model.StrategyList.FallingBlockStrategy;
 
 /**

@@ -1,12 +1,12 @@
 package com.TomBAN.BoulderDash.Game.Model.StrategyList;
 
 import com.TomBAN.BoulderDash.Game.Model.Block;
-import com.TomBAN.BoulderDash.Game.Model.Breakable;
 import com.TomBAN.BoulderDash.Game.Model.Direction;
 import com.TomBAN.BoulderDash.Game.Model.MovableBlock;
 import com.TomBAN.BoulderDash.Game.Model.MovementOrder;
-import com.TomBAN.BoulderDash.Game.Model.Pushable;
 import com.TomBAN.BoulderDash.Game.Model.Strategy;
+import com.TomBAN.BoulderDash.Game.Model.BlockInterface.Breakable;
+import com.TomBAN.BoulderDash.Game.Model.BlockInterface.Pushable;
 import com.TomBAN.BoulderDash.Game.Model.BlockList.Exit;
 import com.TomBAN.BoulderDash.Game.Model.BlockList.Player;
 

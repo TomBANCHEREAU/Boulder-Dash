@@ -1,7 +1,7 @@
 package com.TomBAN.BoulderDash.Game.Model.BlockList;
 
-import com.TomBAN.BoulderDash.Game.Model.Breakable;
 import com.TomBAN.BoulderDash.Game.Model.MovableBlock;
+import com.TomBAN.BoulderDash.Game.Model.BlockInterface.Breakable;
 
 public class Dirt extends MovableBlock implements Breakable{
 	private static final String[] IMAGE = {"DIRT.png"};

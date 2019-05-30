@@ -50,6 +50,7 @@ public class BoulderDashModel extends Observable implements Tickable {
 
 	private void gameLoop() {
 		map.updateAllBlock();
+		map.updateNetwork();
 	}
 
 	public void start() {

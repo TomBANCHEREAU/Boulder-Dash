@@ -2,9 +2,9 @@ package com.TomBAN.BoulderDash.Game.Model.BlockList;
 
 import com.TomBAN.BoulderDash.Game.Model.Controllable;
 import com.TomBAN.BoulderDash.Game.Model.Direction;
-import com.TomBAN.BoulderDash.Game.Model.Killable;
 import com.TomBAN.BoulderDash.Game.Model.MovableBlock;
 import com.TomBAN.BoulderDash.Game.Model.MovementOrder;
+import com.TomBAN.BoulderDash.Game.Model.BlockInterface.Killable;
 import com.TomBAN.BoulderDash.Game.Model.StrategyList.AnimationStrategy;
 import com.TomBAN.BoulderDash.Game.Model.StrategyList.PlayerStrategy;
 
