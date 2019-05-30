@@ -1,17 +1,8 @@
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Observable;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JSplitPane;
-
-import com.TomBAN.BoulderDash.Frame.GraphicsBuilder;
-import com.TomBAN.BoulderDash.Frame.GraphicsObserver;
-import com.TomBAN.BoulderDash.Frame.SimplyPanel;
 
 public class Test extends Observable implements KeyListener {
 

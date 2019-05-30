@@ -18,6 +18,7 @@ import com.TomBAN.BoulderDash.Ressource.RessourceManager;
 
 public class BoulderDashGraphicsBuilder implements GraphicsBuilder {
 	private static final int TILE_SIZE = 16;
+	@SuppressWarnings("unused")
 	private SimplyPanel panel;
 	private final BoulderDashModel model;
 	private final int playerId;

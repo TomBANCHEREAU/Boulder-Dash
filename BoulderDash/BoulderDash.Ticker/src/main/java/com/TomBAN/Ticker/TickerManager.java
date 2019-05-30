@@ -91,6 +91,7 @@ public final class TickerManager {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	public synchronized static void kill(Tickable a) {
 		Ticker t = getTicker(a);
 		if (t != null) {

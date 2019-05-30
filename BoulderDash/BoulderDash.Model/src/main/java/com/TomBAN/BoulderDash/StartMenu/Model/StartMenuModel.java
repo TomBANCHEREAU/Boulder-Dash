@@ -7,14 +7,14 @@ import com.TomBAN.BoulderDash.Game.Model.Controllable;
 import com.TomBAN.BoulderDash.Game.Model.MovementOrder;
 
 public class StartMenuModel extends Observable implements Controllable {
-	ArrayList<LeftRightSelector> selectors;
+	ArrayList<LeftRightSelector<?>> selectors;
 
 	public StartMenuModel() {
-		selectors = new ArrayList<LeftRightSelector>();
+		selectors = new ArrayList<LeftRightSelector<?>>();
 		// TODO Auto-generated constructor stub
 	}
 
-	public void addSelector(LeftRightSelector a) {
+	public void addSelector(LeftRightSelector<?> a) {
 		selectors.add(a);
 	}
 
@@ -31,6 +31,8 @@ public class StartMenuModel extends Observable implements Controllable {
 			if(selectors.size()>1) {
 				selectors.remove(selectors.size() - 1);
 			}
+		default:
+			break;
 		}
 		notifyObservers();
 
@@ -46,7 +48,8 @@ public class StartMenuModel extends Observable implements Controllable {
 		return selectors.size();
 	}
 
-	public ArrayList<LeftRightSelector> getSelectors() {
-		return (ArrayList<LeftRightSelector>) selectors.clone();
+	@SuppressWarnings("unchecked")
+	public ArrayList<LeftRightSelector<?>> getSelectors() {
+		return (ArrayList<LeftRightSelector<?>>) selectors.clone();
 	}
 }
