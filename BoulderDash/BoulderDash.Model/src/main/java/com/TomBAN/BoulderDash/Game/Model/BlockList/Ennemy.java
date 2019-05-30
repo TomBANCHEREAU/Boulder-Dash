@@ -4,6 +4,7 @@ import com.TomBAN.BoulderDash.Game.Model.Direction;
 import com.TomBAN.BoulderDash.Game.Model.Killable;
 import com.TomBAN.BoulderDash.Game.Model.MovableBlock;
 import com.TomBAN.BoulderDash.Game.Model.StrategyList.ClockwiseEnnemyStrategy;
+import com.TomBAN.BoulderDash.Game.Model.StrategyList.ExplosionStrategy;
 import com.TomBAN.BoulderDash.Game.Model.StrategyList.RoundTripEnnemyStrategy;
 
 public class Ennemy extends MovableBlock implements Killable {
@@ -52,7 +53,9 @@ public class Ennemy extends MovableBlock implements Killable {
 
 	@Override
 	public void getKilled() {
+		new ExplosionStrategy(this).strategy();
 		getMap().removeBlock(this);
+		getMap().addBlock(new Diamond(getxIndex(), getyIndex()));
 	}
 
 }

@@ -25,6 +25,14 @@ public class Map {
 		this.diamondNeeded=diamondNeeded;
 		bindMapToBlocks();
 	}
+	
+	public void addBlock(Block b) {
+		if(b!=null) {
+			blocks[b.getxIndex()][b.getyIndex()] = b;
+			b.bindMap(this);
+		}
+	}
+	
 	private void bindMapToBlocks() {
 		for(Block[] blockList : blocks) {
 			for(Block block : blockList) {
@@ -48,43 +56,21 @@ public class Map {
 		}
 
 	}
-	
-	
-//	public void moveBlock(Block b, Direction d) {
-//		if (b instanceof MovableBlock) {
-//			switch (d) {
-//			case Up:
-//				moveBlock(b, b.getxIndex(), b.getyIndex() - 1);
-//				break;
-//			case Left:
-//				moveBlock(b, b.getxIndex(), b.getyIndex() - 1);
-//				break;
-//			case Down:
-//				moveBlock(b, b.getxIndex(), b.getyIndex() - 1);
-//				break;
-//			case Right:
-//				moveBlock(b, b.getxIndex(), b.getyIndex() - 1);
-//				break;
-//
-//			default:
-//				break;
-//			}
-//		}
-//
-//	}
 
 	public void moveBlock(Block b, int x, int y) {
-		if (x >= 0 && x < width && y >= 0 && y < height) {
-			blocks[b.getxIndex()][b.getyIndex()] = null;
-			blocks[x][y] = b;
-			b.setxIndex(x);
-			b.setyIndex(y);
+		if(getBlockAt(x, y) == null) {
+			if (x >= 0 && x < width && y >= 0 && y < height) {
+				blocks[b.getxIndex()][b.getyIndex()] = null;
+				blocks[x][y] = b;
+				b.setxIndex(x);
+				b.setyIndex(y);
+			}
 		}
 
 	}
 
 	public void removeBlock(Block b) {
-		if (blocks[b.getxIndex()][b.getyIndex()] == b) {
+		if (getBlockAt(b.getxIndex(), b.getyIndex()) == b) {
 			blocks[b.getxIndex()][b.getyIndex()] = null;
 		}
 	}

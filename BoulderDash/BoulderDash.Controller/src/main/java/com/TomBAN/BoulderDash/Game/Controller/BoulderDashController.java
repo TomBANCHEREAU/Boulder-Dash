@@ -156,15 +156,14 @@ public class BoulderDashController implements Observer, NewHighScoreListenner {
 	public synchronized void NewHighScoreEvent(Score score) {
 		if (score != null) {
 			if(score.isNew()==true) {
+
 				try {
-					System.out.println("call addScore(" + score.getStringMap().getMapID()+ ","
-							+ score.getScore() + ",'" + score.getName() + "')");
 					MySQL.Connect(URL, USER, PASSWORD);
 					MySQL.getInstance().queryUpdate("call addScore(" + score.getStringMap().getMapID()+ ","
 							+ score.getScore() + ",'" + score.getName() + "')");
-				} catch (SQLException e) {
-					e.printStackTrace();
-				} finally {
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(frames[0], e1.getMessage(), "Exception", JOptionPane.ERROR_MESSAGE);
+				}finally {
 					MySQL.closeConnection();
 				}
 			}
@@ -195,7 +194,8 @@ public class BoulderDashController implements Observer, NewHighScoreListenner {
 			}
 			return out;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(frames[0], e.getMessage(), "Exception", JOptionPane.ERROR_MESSAGE);
+			System.exit(0);
 		} finally {
 			MySQL.closeConnection();
 		}

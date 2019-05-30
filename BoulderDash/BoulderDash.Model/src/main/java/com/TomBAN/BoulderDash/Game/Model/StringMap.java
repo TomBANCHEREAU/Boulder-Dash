@@ -7,6 +7,7 @@ import com.TomBAN.BoulderDash.Game.Model.BlockList.Diamond;
 import com.TomBAN.BoulderDash.Game.Model.BlockList.Dirt;
 import com.TomBAN.BoulderDash.Game.Model.BlockList.Ennemy;
 import com.TomBAN.BoulderDash.Game.Model.BlockList.Exit;
+import com.TomBAN.BoulderDash.Game.Model.BlockList.HardBoundary;
 import com.TomBAN.BoulderDash.Game.Model.BlockList.Player;
 import com.TomBAN.BoulderDash.Game.Model.BlockList.Rock;
 
@@ -68,6 +69,9 @@ public class StringMap {
 					break;
 				case '@':
 					blocks[x][y] = new Boundary(x, y);
+					break;
+				case '!':
+					blocks[x][y] = new HardBoundary(x, y);
 					break;
 				case '$':
 					blocks[x][y] = new Exit(x, y);

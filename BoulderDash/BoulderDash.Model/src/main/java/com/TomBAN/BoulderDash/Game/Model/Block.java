@@ -10,22 +10,23 @@ public class Block {
 	private Map map;
 	private float x, y;
 	private int xIndex, yIndex;
-	private int lastUpdate=0;
+	private int lastUpdate = 0;
+
 	public Block(String[] image, int x, int y) {
 		this.images = new Image[image.length];
-		for(int i=0;i<image.length;i++) {
+		for (int i = 0; i < image.length; i++) {
 			this.images[i] = RessourceManager.getInstance().getImage(image[i]);
 		}
 		this.x = x;
 		this.y = y;
-		this.xIndex=x;
-		this.yIndex=y;
+		this.xIndex = x;
+		this.yIndex = y;
 	}
-	
+
 	public int getImageId() {
-		return lastUpdate%images.length;
+		return lastUpdate % images.length;
 	}
-	
+
 	public void setX(float x) {
 		this.x = x;
 	}
@@ -35,12 +36,57 @@ public class Block {
 	}
 
 	public void update(int update) {
-		if(strategy!=null) {
-			if(lastUpdate!=update) {				
+		if (strategy != null) {
+			if (lastUpdate != update) {
 				strategy.strategy();
 			}
 			lastUpdate = update;
 		}
+	}
+
+	public Block getNextBlock(Direction d) {
+		int xGoal = this.getxIndex(), yGoal = this.getyIndex();
+		switch (d) {
+		case Up:
+			yGoal -= 1;
+			break;
+		case Left:
+			xGoal -= 1;
+			break;
+		case Down:
+			yGoal += 1;
+			break;
+		case Right:
+			xGoal += 1;
+			break;
+		}
+		return getMap().getBlockAt(xGoal, yGoal);
+	}
+
+	public Block getNextBlock(Direction d, int dist) {
+		int xGoal = this.getxIndex(), yGoal = this.getyIndex();
+		switch (d) {
+		case Up:
+			yGoal -= dist;
+			break;
+		case Left:
+			xGoal -= dist;
+			break;
+		case Down:
+			yGoal += dist;
+			break;
+		case Right:
+			xGoal += dist;
+			break;
+		}
+		return getMap().getBlockAt(xGoal, yGoal);
+	}
+
+	public Block getNextBlock(int dx, int dy) {
+		int xGoal = this.getxIndex(), yGoal = this.getyIndex();
+		yGoal += dx;
+		xGoal += dy;
+		return getMap().getBlockAt(xGoal, yGoal);
 	}
 
 	public float getX() {
@@ -52,7 +98,7 @@ public class Block {
 	}
 
 	public Image getImage() {
-		return images[getImageId()%images.length];
+		return images[getImageId() % images.length];
 	}
 
 	public int getxIndex() {
@@ -86,6 +132,7 @@ public class Block {
 	public void setStrategy(Strategy strategy) {
 		this.strategy = strategy;
 	}
+
 	public int getLastUpdate() {
 		return lastUpdate;
 	}

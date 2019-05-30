@@ -36,6 +36,8 @@ public class PlayerStrategy extends Strategy<Player> {
 			break;
 		case StopMovement:
 			return;
+		default:
+			break;
 		}
 
 		final Block goal = block.getMap().getBlockAt(xGoal, yGoal);
@@ -44,8 +46,9 @@ public class PlayerStrategy extends Strategy<Player> {
 			block.move(Direction.values()[block.getCurrentOrder().ordinal()], 4);
 		} else {
 			if (goal instanceof Breakable) {
-				block.move(Direction.values()[block.getCurrentOrder().ordinal()], 4);
 				((Breakable) goal).getBroken();
+				block.getMap().removeBlock(goal);
+				block.move(Direction.values()[block.getCurrentOrder().ordinal()], 4);
 			} else if (goal instanceof Pushable) {
 
 				final Block nextBlock = block.getMap().getBlockAt(xGoal * 2 - block.getxIndex(),
