@@ -59,6 +59,12 @@ public class StringMap {
 		for (int y = 0; y < height; y++) {
 //			if (stringMap[y].length() >= width) {// TODO
 			for (int x = 0, i = 0; x < width && i < stringMap[y].length(); x++, i++) {
+				int networkID = 0;
+				if(i+1 < stringMap[y].length()) {
+					networkID=(int)stringMap[y].charAt(i+1)-48;
+				}
+				
+				
 				switch (stringMap[y].charAt(i)) {
 				case 'O':
 					blocks[x][y] = new Rock(x, y);
@@ -96,13 +102,15 @@ public class StringMap {
 					blocks[x][y] = new Ennemy(x, y, 'D');
 					break;
 				case '_':
-					Network n=getNetwork((int)stringMap[y].charAt(i+1)-48);
-					blocks[x][y] = new PressurePlate(x,y,n);
+					blocks[x][y] = new PressurePlate(x,y,getNetwork(networkID));
 					i++;
 					break;
 				case ']':
-					Network n2=getNetwork((int)stringMap[y].charAt(i+1)-48);
-					blocks[x][y] = new Door(x, y, n2);
+					blocks[x][y] = new Door(x, y, getNetwork(networkID),false);
+					i++;
+					break;
+				case '[':
+					blocks[x][y] = new Door(x, y, getNetwork(networkID),true);
 					i++;
 					break;
 				default:

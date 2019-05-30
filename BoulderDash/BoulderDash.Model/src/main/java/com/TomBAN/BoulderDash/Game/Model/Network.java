@@ -30,12 +30,10 @@ public class Network {
 	public void update() {
 		if (activated != (activators.size() > 0)) {
 			if (!activated) {
-				System.out.println("disact");
 				for (Activable activable : activables) {
 					activable.activate();
 				}
 			} else {
-				System.out.println("act");
 				for (Activable activable : activables) {
 					activable.disactivate();
 				}

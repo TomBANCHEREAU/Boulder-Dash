@@ -12,11 +12,13 @@ public class Door extends Block implements Unblowable, Activable {
 //	private Network network;
 	private int activationState;
 	private boolean closing;
+	private boolean inverted;
 
-	public Door(int x, int y, Network network) {
+	public Door(int x, int y, Network network,boolean inverted) {
 		super(IMAGE, x, y);
 		activationState = 0;
-		closing=true;
+		closing=!inverted;
+		this.inverted=inverted;
 //		this.network = network;
 		network.addActivable(this);
 		// TODO Auto-generated constructor stub
@@ -43,11 +45,25 @@ public class Door extends Block implements Unblowable, Activable {
 
 	@Override
 	public void activate() {
-		closing = false;
+		if(!inverted){
+			open();
+		}else {
+			close();
+		}
 	}
 
 	@Override
 	public void disactivate() {
+		if(inverted){
+			open();
+		}else {
+			close();
+		}
+	}
+	private void open() {
+		closing = false;
+	}
+	private void close() {
 		Block here = getMap().getBlockAt(getxIndex(), getyIndex());
 		if (here != this) {
 			if (here instanceof Killable) {
