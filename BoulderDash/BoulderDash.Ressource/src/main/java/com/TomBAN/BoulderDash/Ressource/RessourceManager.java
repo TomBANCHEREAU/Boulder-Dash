@@ -35,7 +35,13 @@ public class RessourceManager {
 			BufferedReader buff = new BufferedReader(new FileReader(new File("data/Images.index")));
 			String line = buff.readLine();
 			while(line!=null) {
-				images.put(line, ImageIO.read(new File("data/"+directory+"/"+line)));
+				try {
+					images.put(line, ImageIO.read(new File("data/"+directory+"/"+line)));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					System.err.println("data/"+directory+"/"+line);
+					e.printStackTrace();
+				}
 				line = buff.readLine();
 			}	
 			buff.close();
