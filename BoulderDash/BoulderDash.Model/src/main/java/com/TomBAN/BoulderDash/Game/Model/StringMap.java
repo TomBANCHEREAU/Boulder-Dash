@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import com.TomBAN.BoulderDash.Game.Model.BlockList.Boundary;
 import com.TomBAN.BoulderDash.Game.Model.BlockList.Diamond;
 import com.TomBAN.BoulderDash.Game.Model.BlockList.Dirt;
+import com.TomBAN.BoulderDash.Game.Model.BlockList.Door;
 import com.TomBAN.BoulderDash.Game.Model.BlockList.Ennemy;
 import com.TomBAN.BoulderDash.Game.Model.BlockList.Exit;
 import com.TomBAN.BoulderDash.Game.Model.BlockList.HardBoundary;
 import com.TomBAN.BoulderDash.Game.Model.BlockList.Player;
+import com.TomBAN.BoulderDash.Game.Model.BlockList.PressurePlate;
 import com.TomBAN.BoulderDash.Game.Model.BlockList.Rock;
 
 public class StringMap {
@@ -21,6 +23,7 @@ public class StringMap {
 	private Score[] highScore;
 	private int id;
 	private int timeToFinish;
+	private ArrayList<Network> networks;
 
 	public StringMap(int width, int height, int diamondNeeded, int playerCount, String[] stringMap, int world,
 			int level,Score[] score,int time,int id) {
@@ -29,22 +32,26 @@ public class StringMap {
 		setStringMap(stringMap);
 		setDiamondNeeded(diamondNeeded);
 		setPlayerCount(playerCount);
+		networks = new ArrayList<Network>();
 		this.world = world;
 		this.level = level;
 		this.highScore =score;
 		this.id = id;
 		this.timeToFinish=time;
 	}
-
-
 	public StringMap(int width, int height, int diamondNeeded, int playerCount, String stringMap, int world,
 			int level,Score[] score,int time, int id) {
 		this(width, height, diamondNeeded, playerCount, stringMap.split("\n"), world, level,score,time,id);
 	}
 
-	public int getWorld() {
-		return world;
-	}
+
+
+	
+	
+	
+	
+	
+
 
 	public Map toRealMap(ArrayList<ControllableController> controllers) {
 		final Block[][] blocks = new Block[width][height];
@@ -88,6 +95,16 @@ public class StringMap {
 				case 'D':
 					blocks[x][y] = new Ennemy(x, y, 'D');
 					break;
+				case '_':
+					Network n=getNetwork((int)stringMap[y].charAt(i+1)-48);
+					blocks[x][y] = new PressurePlate(x,y,n);
+					i++;
+					break;
+				case ']':
+					Network n2=getNetwork((int)stringMap[y].charAt(i+1)-48);
+					blocks[x][y] = new Door(x, y, n2);
+					i++;
+					break;
 				default:
 					System.err.println("unknown Block : (char:'" + stringMap[y].charAt(i) + "',int: "
 							+ (int) stringMap[y].charAt(i) + ",hex: " + Integer.toHexString(stringMap[y].charAt(i))
@@ -103,18 +120,39 @@ public class StringMap {
 		for (int i = 0; i < controllers.size(); i++) {
 			controllers.get(i).bindControllable(players.get(i));
 		}
-		return new Map(width, height, blocks, players, diamondNeeded);
+		return new Map(width, height, blocks, players, diamondNeeded,networks);
 
 	}
 
-	public int getTimeToFinish() {
-		return timeToFinish;
+	public void addScore(Score newScore) {
+		for(int i=0;i<highScore.length;i++) {
+			if(highScore[i]==null) {
+				highScore[i] = newScore;
+				return;
+			}else if(newScore.getScore() > highScore[i].getScore()) {
+				Score tmp = highScore[i];
+				highScore[i] = newScore;
+				newScore = tmp;
+			}
+		}
 	}
 	
-	public int getLevel() {
-		return level;
+	private Network getNetwork(int id) {
+		for(Network network : networks) {
+			if(network.getId() == id) {
+				return network;
+			}
+		}
+		Network n = new Network(id);
+		networks.add(n);
+		return n;
 	}
-
+	
+	
+	
+	
+	// Setters
+	
 	private void setWidth(int width) {
 		if (width <= 0) {
 			throw new RuntimeException("The width of the map cannot be less or equals than 0 : " + width + " ! > 0");
@@ -140,7 +178,6 @@ public class StringMap {
 
 		this.stringMap = stringMap;
 	}
-
 	private void setDiamondNeeded(int diamondNeeded) {
 		if (diamondNeeded < 0) {
 			throw new RuntimeException(
@@ -160,7 +197,19 @@ public class StringMap {
 		// TODO
 		this.playerCount = playerCount;
 	}
-
+	
+	
+	//Getters
+	public int getTimeToFinish() {
+		return timeToFinish;
+	}
+	
+	public int getLevel() {
+		return level;
+	}
+	public int getWorld() {
+		return world;
+	}
 	public int getDiamondNeeded() {
 		return diamondNeeded;
 	}
@@ -188,16 +237,5 @@ public class StringMap {
 	public Score[] getScores() {
 		return highScore;
 	}
-	public void addScore(Score newScore) {
-		for(int i=0;i<highScore.length;i++) {
-			if(highScore[i]==null) {
-				highScore[i] = newScore;
-				return;
-			}else if(newScore.getScore() > highScore[i].getScore()) {
-				Score tmp = highScore[i];
-				highScore[i] = newScore;
-				newScore = tmp;
-			}
-		}
-	}
+
 }

@@ -14,15 +14,17 @@ public class Map {
 	private Image background = RessourceManager.getInstance().getImage("BACKGROUND.png");
 	private int diamond = 0;
 	private int diamondNeeded;
+	private ArrayList<Network> networks;
 
 
 
-	public Map(int width, int height, Block[][] blocks, ArrayList<Player> players,int diamondNeeded) {
+	public Map(int width, int height, Block[][] blocks, ArrayList<Player> players,int diamondNeeded,ArrayList<Network> networks) {
 		this.width = width;
 		this.height = height;
 		this.blocks = blocks;
 		this.players = players;
 		this.diamondNeeded=diamondNeeded;
+		this.networks = networks;
 		bindMapToBlocks();
 	}
 	
@@ -42,7 +44,22 @@ public class Map {
 			}
 		}
 	}
-
+	public void updateNetwork() {
+		for (Network network : networks) {
+			network.update();
+		}
+		
+	}
+//	private Network getNetwork(int id) {
+//		for(Network network : networks) {
+//			if(network.getId() == id) {
+//				return network;
+//			}
+//		}
+//		Network n = new Network(id);
+//		networks.add(n);
+//		return n;
+//	}
 	
 	public void updateAllBlock() {
 		update++;
@@ -127,4 +144,6 @@ public class Map {
 	public int getDiamondNeeded() {
 		return diamondNeeded;
 	}
+
+
 }
