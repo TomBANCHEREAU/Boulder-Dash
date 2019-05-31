@@ -18,6 +18,7 @@ import com.TomBAN.BoulderDash.Game.Model.NewHighScoreListenner;
 import com.TomBAN.BoulderDash.Game.Model.Score;
 import com.TomBAN.BoulderDash.Game.Model.StringMap;
 import com.TomBAN.BoulderDash.Game.View.BoulderDashGraphicsBuilder;
+import com.TomBAN.BoulderDash.Game.View.EndScreenPanel;
 import com.TomBAN.BoulderDash.PlayerController.ArroKeyBoardController;
 import com.TomBAN.BoulderDash.PlayerController.IJKLKeyBoardController;
 import com.TomBAN.BoulderDash.PlayerController.KeyBoardController;
@@ -26,6 +27,10 @@ import com.TomBAN.BoulderDash.PlayerController.ZQSDKeyBoardController;
 import com.TomBAN.BoulderDash.Ressource.RessourceManager;
 import com.TomBAN.mySQL.MySQL;
 
+/**
+ * @author TomBAN
+ *
+ */
 public class BoulderDashController implements Observer, NewHighScoreListenner {
 	private static final String URL = "jdbc:mysql://localhost:3306/a1-project5?useSSL=false&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC";
 	private static final String USER = "root";
@@ -37,6 +42,10 @@ public class BoulderDashController implements Observer, NewHighScoreListenner {
 	private final GameOption gameOption;
 	private int NextMapNumber = 0;
 
+	/**
+	 * @param frame
+	 * @param gameOption
+	 */
 	public BoulderDashController(JFrame frame, GameOption gameOption) {
 		this.frames = new BoulderDashFrame[(gameOption.isDualScreen()) ? 2 : 1];
 		frames[0] = frame;
@@ -50,7 +59,7 @@ public class BoulderDashController implements Observer, NewHighScoreListenner {
 		this.models = new BoulderDashModel[gameOption.getModelNumber()];
 		for (int i = 0; i < models.length; i++) {
 			models[i] = new BoulderDashModel(this, 5,
-					JOptionPane.showInputDialog(RessourceManager.getInstance().getText("Name" + i)),this);
+					JOptionPane.showInputDialog(RessourceManager.getInstance().getText("Name" + i)), this);
 			for (int j = i * gameOption.getPlayerNumberPerMap(); j < (i + 1)
 					* gameOption.getPlayerNumberPerMap(); j++) {
 				models[i].addController(controllers[j]);
@@ -113,8 +122,13 @@ public class BoulderDashController implements Observer, NewHighScoreListenner {
 		// TODO Auto-generated constructor stub
 	}
 
+	/**
+	 *
+	 * @param observable
+	 * @param arg0
+	 */
 	@Override
-	public void update(Observable arg0, Object arg1) {
+	public void update(Observable observable, Object arg0) {
 		if (AllWaitingForNextMap()) {
 			if (AllLoose()) {
 				endScreen();
@@ -134,13 +148,14 @@ public class BoulderDashController implements Observer, NewHighScoreListenner {
 				case 2:
 					RessourceManager.getInstance().loadImages("World2");
 					break;
-
+				case 3:
+					RessourceManager.getInstance().loadImages("World3");
+					break;
 				default:
 					break;
 				}
 				model.nextMap(strMap.get(NextMapNumber));
 			}
-			// TODO
 			NextMapNumber++;
 		} else {
 			endScreen();
@@ -148,22 +163,27 @@ public class BoulderDashController implements Observer, NewHighScoreListenner {
 	}
 
 	private void endScreen() {
-		// TODO Auto-generated method stub
-		System.out.println("endScreen");
+		for (JFrame jFrame : frames) {
+			jFrame.setContentPane(new EndScreenPanel(models));
+		}
 	}
 
+	/**
+	 *
+	 * @param score
+	 */
 	@Override
 	public synchronized void NewHighScoreEvent(Score score) {
 		if (score != null) {
-			if(score.isNew()==true) {
+			if (score.isNew() == true) {
 
 				try {
 					MySQL.Connect(URL, USER, PASSWORD);
-					MySQL.getInstance().queryUpdate("call addScore(" + score.getStringMap().getMapID()+ ","
+					MySQL.getInstance().queryUpdate("call addScore(" + score.getStringMap().getMapID() + ","
 							+ score.getScore() + ",'" + score.getName() + "')");
 				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(frames[0], e1.getMessage(), "Exception", JOptionPane.ERROR_MESSAGE);
-				}finally {
+				} finally {
 					MySQL.closeConnection();
 				}
 			}
@@ -187,10 +207,14 @@ public class BoulderDashController implements Observer, NewHighScoreListenner {
 				for (int i = 0; i < hs.size(); i++) {
 					sharray[i] = hs.get(i);
 				}
-
-				out.add(new StringMap(result.getInt("Width"), result.getInt("Height"), result.getInt("DiamondsNeeded"),
-						result.getInt("PlayerNumber"), result.getString("Content"), result.getInt("WorldNumber"),
-						result.getInt("LevelNumber"), sharray, result.getInt("TimeToFinish"), result.getInt("MapID")));
+				try {
+					out.add(new StringMap(result.getInt("Width"), result.getInt("Height"),
+							result.getInt("DiamondsNeeded"), result.getInt("PlayerNumber"), result.getString("Content"),
+							result.getInt("WorldNumber"), result.getInt("LevelNumber"), sharray,
+							result.getInt("TimeToFinish"), result.getInt("MapID")));
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(frames[0], e.getMessage() +"\nOn map "+result.getInt("WorldNumber")+"-"+ result.getInt("LevelNumber"), "Exception", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 			return out;
 		} catch (SQLException e) {

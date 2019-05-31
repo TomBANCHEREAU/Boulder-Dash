@@ -67,14 +67,13 @@ public class StringMap {
 
 	public StringMap(int width, int height, int diamondNeeded, int playerCount, String stringMap, int world, int level,
 			Score[] score, int time, int id) {
-		this(width, height, diamondNeeded, playerCount, stringMap.split("\n"), world, level, score, time, id);
+		this(width, height, diamondNeeded, playerCount, stringMap.split("\r?\n"), world, level, score, time, id);
 	}
 
 	public Map toRealMap(ArrayList<ControllableController> controllers) {
 		final Block[][] blocks = new Block[width][height];
 		final ArrayList<Player> players = new ArrayList<Player>();
 		for (int y = 0; y < height; y++) {
-//			if (stringMap[y].length() >= width) {// TODO
 			for (int x = 0, i = 0; x < width && i < stringMap[y].length(); x++, i++) {
 				Network network = null;
 				if (specialChar.contains(stringMap[y].charAt(i))) {
@@ -134,9 +133,6 @@ public class StringMap {
 					i++;
 				}
 			}
-//			} else {
-//				throw new RuntimeException("invalid map width " + line[y].length() + " != " + width);// TODO
-//			}
 		}
 		for (int i = 0; i < controllers.size(); i++) {
 			controllers.get(i).bindControllable(players.get(i));
@@ -190,54 +186,56 @@ public class StringMap {
 			throw new RuntimeException("The specified height does not fit with the String Array (Specified height = "
 					+ height + " String Array height = " + stringMap.length);
 		}
-		int playerCount=0;
-		int diamondCount=0;
-		boolean haveExit=false;
+		int playerCount = 0;
+		int diamondCount = 0;
+		boolean haveExit = false;
 		for (int y = 0; y < height; y++) {
-			int i,x;
-			for (x = 0,i = 0;i < stringMap[y].length(); x++, i++) {
-				if(DiamondChar.contains(stringMap[y].charAt(i))) {
+			int i, x;
+			for (x = 0, i = 0; i < stringMap[y].length(); x++, i++) {
+				if (DiamondChar.contains(stringMap[y].charAt(i))) {
 					diamondCount++;
 				}
-				if(basicChar.contains(stringMap[y].charAt(i))) {
+				if (basicChar.contains(stringMap[y].charAt(i))) {
 					switch (stringMap[y].charAt(i)) {
 					case 'A':
 						playerCount++;
 						break;
 					case '$':
-						haveExit=true;
+						haveExit = true;
 						break;
 
 					default:
 						break;
 					}
-				}else if (specialChar.contains(stringMap[y].charAt(i))) {
+				} else if (specialChar.contains(stringMap[y].charAt(i))) {
 					i++;
-				}else {
+				} else {
 					throw new RuntimeException("unknown Block : (char:'" + stringMap[y].charAt(i) + "',int: "
 							+ (int) stringMap[y].charAt(i) + ",hex: " + Integer.toHexString(stringMap[y].charAt(i))
 							+ ")");
 				}
 			}
-			
+
 			if (this.width != x) {
 				throw new RuntimeException("The specified width does not fit with the String length (Specified width = "
-						+ this.width + " String width = " + x + " at line : " +y+")"); //TODO
+						+ this.width + " String width = " + x + " at line : " + y + ")");
 			}
 		}
-		
-		if(!haveExit) {
+
+		if (!haveExit) {
 			throw new RuntimeException("The map does not have an Exit");
 		}
-		if(playerCount!=this.playerCount) {
-			throw new RuntimeException("The specified player count does not fit with the player count present on the map (Specified player count = "
-					+ this.playerCount + " map player count = " + playerCount);
+		if (playerCount != this.playerCount) {
+			throw new RuntimeException(
+					"The specified player count does not fit with the player count present on the map (Specified player count = "
+							+ this.playerCount + " map player count = " + playerCount);
 		}
-		if(this.diamondNeeded>diamondCount) {
-			throw new RuntimeException("The specified diamondNeeded does not fit with the diamond count on the map (Specified diamondNeeded = "
-					+ this.diamondNeeded + " map diamond count = " + diamondCount);
+		if (this.diamondNeeded > diamondCount) {
+			throw new RuntimeException(
+					"The specified diamondNeeded does not fit with the diamond count on the map (Specified diamondNeeded = "
+							+ this.diamondNeeded + " map diamond count = " + diamondCount);
 		}
-		
+
 		this.stringMap = stringMap;
 	}
 
@@ -284,10 +282,6 @@ public class StringMap {
 
 	public int getHeight() {
 		return height;
-	}
-
-	public String[] getStringMap() {
-		return stringMap;
 	}
 
 	public int getMapID() {

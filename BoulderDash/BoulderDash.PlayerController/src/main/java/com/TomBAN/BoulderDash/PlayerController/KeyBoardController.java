@@ -7,11 +7,23 @@ import com.TomBAN.BoulderDash.Game.Model.Controllable;
 import com.TomBAN.BoulderDash.Game.Model.ControllableController;
 import com.TomBAN.BoulderDash.Game.Model.MovementOrder;
 
+/**
+ * @author Tom BANCHEREAU
+ *
+ *
+**/
 public class KeyBoardController implements KeyListener, ControllableController {
 	private int keyUp, keyLeft, keyDown, keyRight, keyReset;
 	private int lastKeyPressed;
 	private Controllable controllable;
 
+	/**
+	 * @param keyUp
+	 * @param keyLeft
+	 * @param keyDown
+	 * @param keyRight
+	 * @param keyReset
+	 */
 	public KeyBoardController(int keyUp, int keyLeft, int keyDown, int keyRight, int keyReset) {
 		this.keyUp = keyUp;
 		this.keyLeft = keyLeft;
@@ -20,6 +32,9 @@ public class KeyBoardController implements KeyListener, ControllableController {
 		this.keyReset=keyReset;
 	}
 
+	/**
+	 * @param controllable
+	 */
 	@Override
 	public void bindControllable(Controllable controllable) {
 		this.controllable = controllable;
