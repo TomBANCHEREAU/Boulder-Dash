@@ -14,13 +14,17 @@ import com.TomBAN.BoulderDash.StartMenu.Model.LeftRightSelector;
 import com.TomBAN.BoulderDash.StartMenu.Model.StartMenuModel;
 import com.TomBAN.BoulderDash.StartMenu.View.StartMenuGraphicsBuilder;
 
+/**
+ * @author TomBANCHEREAU
+ * this class permit to select the gameOption
+ */
 public class StartMenuController implements Controllable {
 	private static GameOption gameOption; 
 	private Object object;
 	private KeyBoardController controller;
 	private StartMenuModel model;
 	private JFrame frame;
-	public StartMenuController(JFrame frame, Object object) {
+	private StartMenuController(JFrame frame, Object object) {
 		this.frame=frame;
 		this.object = object;
 		model = new StartMenuModel();
@@ -34,6 +38,13 @@ public class StartMenuController implements Controllable {
 
 	}
 
+	/**
+	 * this static methods will show the start menu and return the selected gameOption
+	 * @param frame
+	 * frame were the menu will be drown
+	 * @return
+	 * return the selected gameOption
+	 */
 	public static GameOption getGameOption(JFrame frame) {
 		Object object = new Object();
 		new StartMenuController(frame, object);
@@ -90,7 +101,7 @@ public class StartMenuController implements Controllable {
 		}
 		
 	}
-	public void setGameOption(GameOption gameOption) {
+	private void setGameOption(GameOption gameOption) {
 		StartMenuController.gameOption = gameOption;
 		frame.removeKeyListener(controller);
 		synchronized (object) {

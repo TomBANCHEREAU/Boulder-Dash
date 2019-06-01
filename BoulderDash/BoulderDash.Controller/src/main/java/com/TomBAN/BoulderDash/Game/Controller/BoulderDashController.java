@@ -28,8 +28,13 @@ import com.TomBAN.BoulderDash.Ressource.RessourceManager;
 import com.TomBAN.mySQL.MySQL;
 
 /**
- * @author TomBAN
- *
+ * @author TomBANCHEREAU
+ * This class control all the game :
+ * - Set up the view system
+ * - Load maps from mySQL using the MySQL class
+ * - Create all models needed
+ * - Instantiate and bind player controllers
+ * - Save all new score in mySQL
  */
 public class BoulderDashController implements Observer, NewHighScoreListenner {
 	private static final String URL = "jdbc:mysql://localhost:3306/a1-project5?useSSL=false&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC";
@@ -43,8 +48,13 @@ public class BoulderDashController implements Observer, NewHighScoreListenner {
 	private int NextMapNumber = 0;
 
 	/**
+	 * Create a new BoulderDash Controller which will start the game on the specified JFrame
+	 * 
 	 * @param frame
+	 * JFrame where the game will be show
+	 * 
 	 * @param gameOption
+	 * GameOption containing the different option (PlayerNumber,GameMode ...)
 	 */
 	public BoulderDashController(JFrame frame, GameOption gameOption) {
 		this.frames = new BoulderDashFrame[(gameOption.isDualScreen()) ? 2 : 1];
@@ -173,7 +183,7 @@ public class BoulderDashController implements Observer, NewHighScoreListenner {
 	 * @param score
 	 */
 	@Override
-	public synchronized void NewHighScoreEvent(Score score) {
+	public synchronized void newHighScoreEvent(Score score) {
 		if (score != null) {
 			if (score.isNew() == true) {
 
