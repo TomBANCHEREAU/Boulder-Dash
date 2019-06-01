@@ -6,6 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * @author TomBANCHEREAU
+ * This class permit a basic access to mySQL using the cj.jdbc Driver
+ */
 public class MySQL {
 	private static MySQL MYSQL;
 	private Connection connection;
@@ -20,6 +24,13 @@ public class MySQL {
 		}
 	}
 
+	/**
+	 * Do a query on a mySQL server
+	 * @param request
+	 * the query (Exemple:"SELECT * FROM 'tableName'")
+	 * @return
+	 * The ResultSet of the query
+	 */
 	public ResultSet querySelect(final String request) {
 		try {
 			statement = connection.createStatement();
@@ -29,6 +40,11 @@ public class MySQL {
 			return null;
 		}
 	}
+	/**
+	 * Do a update type query on a mySQL server
+	 * @param request
+	 * @return
+	 */
 	public int queryUpdate(final String request) {
 		try {
 			statement = connection.createStatement();
@@ -38,6 +54,16 @@ public class MySQL {
 			return -1;
 		}
 	}
+	/**
+	 * Connect to a mySQL server (and close the previous connection)
+	 * @param url
+	 * url of the server
+	 * @param user
+	 * your username
+	 * @param password
+	 * your password
+	 * @throws SQLException
+	 */
 	public static void Connect(final String url, final String user, final String password) throws SQLException{
 		if (MYSQL != null) {
 			closeConnection();
@@ -45,6 +71,9 @@ public class MySQL {
 		MYSQL = new MySQL(url, user, password);
 	}
 
+	/**
+	 * Close the current connection
+	 */
 	public static void closeConnection() {
 		if(MYSQL!=null) {
 			try {
@@ -57,6 +86,10 @@ public class MySQL {
 		}
 	}
 
+	/**
+	 * return an instance of this class to do queries
+	 * @return
+	 */
 	public static MySQL getInstance() {
 		return MYSQL;
 	}
