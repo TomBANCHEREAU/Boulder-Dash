@@ -9,7 +9,7 @@ import com.TomBAN.BoulderDash.Game.Model.MovementOrder;
 
 /**
  * @author Tom BANCHEREAU
- *
+ * this class is a keyListener which send MovementOrder to a specified Controllable
  *
 **/
 public class KeyBoardController implements KeyListener, ControllableController {
@@ -18,6 +18,7 @@ public class KeyBoardController implements KeyListener, ControllableController {
 	private Controllable controllable;
 
 	/**
+	 * Create a new KeyBoardController with the specified keys
 	 * @param keyUp
 	 * @param keyLeft
 	 * @param keyDown

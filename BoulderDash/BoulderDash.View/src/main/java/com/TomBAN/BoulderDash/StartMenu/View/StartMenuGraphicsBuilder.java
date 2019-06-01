@@ -54,11 +54,11 @@ public class StartMenuGraphicsBuilder implements GraphicsBuilder {
 		// TODO Auto-generated method stub
 		return model;
 	}
-
-	@Override
-	public void setPanel(SimplyPanel panel) {
-		// TODO Auto-generated method stub
-		
-	}
+//
+//	@Override
+//	public void setPanel(SimplyPanel panel) {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 }
