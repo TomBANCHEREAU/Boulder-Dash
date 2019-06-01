@@ -8,8 +8,16 @@ import com.TomBAN.BoulderDash.Game.Controller.GameOption;
 import com.TomBAN.BoulderDash.Ressource.RessourceManager;
 import com.TomBAN.BoulderDash.StartMenu.Controller.StartMenuController;
 
+/**
+ * @author TomBANCHEREAU
+ *	This class is just... the main.
+ */
 public class BoulderDash {
 
+	/**
+	 * With a main methods
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		RessourceManager.getInstance().loadLanguageList();
 		JFrame frame = new BoulderDashFrame(1280, 720);
