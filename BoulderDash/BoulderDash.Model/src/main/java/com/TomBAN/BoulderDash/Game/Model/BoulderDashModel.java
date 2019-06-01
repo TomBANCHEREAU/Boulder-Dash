@@ -122,7 +122,7 @@ public class BoulderDashModel extends Observable implements Tickable {
 		totalScore += score;
 		this.score = new Score(score, getPlayerName(), getStrMap(), true);
 		getStrMap().addScore(this.score);
-		highScoreListenner.NewHighScoreEvent(this.score);
+		highScoreListenner.newHighScoreEvent(this.score);
 
 	}
 
