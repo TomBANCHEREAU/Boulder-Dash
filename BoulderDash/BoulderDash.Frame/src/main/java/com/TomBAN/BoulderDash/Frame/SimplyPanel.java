@@ -7,6 +7,10 @@ import java.util.Observer;
 
 import javax.swing.JPanel;
 
+/**
+ * @author TomBANCHEREAU
+ * The panel used with the graphicsBuilder interface to draw a frame 
+ */
 public class SimplyPanel extends JPanel implements GraphicsObserver,Observer{
 	private static final long serialVersionUID = -8980161293106213468L;
 	private GraphicsBuilder graphicsBuilder;
@@ -19,9 +23,18 @@ public class SimplyPanel extends JPanel implements GraphicsObserver,Observer{
 		graphicsBuilder.draw((Graphics2D) g, this);
 	}
 	public void setGraphicsBuilder(GraphicsBuilder graphicsBuilder) {
+		if(this.graphicsBuilder!=null) {
+			if(this.graphicsBuilder.getObservable()!=null) {
+				this.graphicsBuilder.getObservable().deleteObserver(this);
+			}
+		}
 		this.graphicsBuilder = graphicsBuilder;
-		graphicsBuilder.getObservable().addObserver(this);
-		graphicsBuilder.setPanel(this);
+		if(graphicsBuilder.getObservable()!=null) {
+			graphicsBuilder.getObservable().addObserver(this);
+		}
+	}
+	public GraphicsBuilder getGraphicsBuilder() {
+		return graphicsBuilder;
 	}
 
 	@Override
