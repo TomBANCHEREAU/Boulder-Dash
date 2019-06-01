@@ -48,7 +48,6 @@ public class StringMap {
 	private Score[] highScore;
 	private int id;
 	private int timeToFinish;
-	private ArrayList<Network> networks;
 
 	public StringMap(int width, int height, int diamondNeeded, int playerCount, String[] stringMap, int world,
 			int level, Score[] score, int time, int id) {
@@ -57,7 +56,6 @@ public class StringMap {
 		setDiamondNeeded(diamondNeeded);
 		setPlayerCount(playerCount);
 		setStringMap(stringMap);
-		networks = new ArrayList<Network>();
 		this.world = world;
 		this.level = level;
 		this.highScore = score;
@@ -73,11 +71,12 @@ public class StringMap {
 	public Map toRealMap(ArrayList<ControllableController> controllers) {
 		final Block[][] blocks = new Block[width][height];
 		final ArrayList<Player> players = new ArrayList<Player>();
+		final ArrayList<Network> networks = new ArrayList<Network>();
 		for (int y = 0; y < height; y++) {
 			for (int x = 0, i = 0; x < width && i < stringMap[y].length(); x++, i++) {
 				Network network = null;
 				if (specialChar.contains(stringMap[y].charAt(i))) {
-					network = getNetwork((int) stringMap[y].charAt(i + 1) - 48);
+					network = getNetwork(networks,(int) stringMap[y].charAt(i + 1) - 48);
 				}
 
 				switch (stringMap[y].charAt(i)) {
@@ -154,7 +153,7 @@ public class StringMap {
 		}
 	}
 
-	private Network getNetwork(int id) {
+	private Network getNetwork(ArrayList<Network> networks,int id) {
 		for (Network network : networks) {
 			if (network.getId() == id) {
 				return network;
