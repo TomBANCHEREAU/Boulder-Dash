@@ -7,4 +7,5 @@
   </parent>
   <artifactId>BoulderDash.MySQLConnector</artifactId>
   <name>MySQLConnector</name>
+  <description>The goal on this module is to offer an easy connection to MySQL</description>
 </project>

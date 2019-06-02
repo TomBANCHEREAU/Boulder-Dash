@@ -19,4 +19,5 @@
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   </dependencies>
+  <description>This module is here to do all the calculation of the game (enemy movement ...)</description>
 </project>

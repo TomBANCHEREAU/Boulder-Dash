@@ -7,4 +7,5 @@
   </parent>
   <artifactId>BoulderDash.Frame</artifactId>
   <name>Frame</name>
+  <description>This module is here to manage the frames and the panels</description>
 </project>

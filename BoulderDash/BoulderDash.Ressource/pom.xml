@@ -7,4 +7,5 @@
   </parent>
   <artifactId>BoulderDash.Ressource</artifactId>
   <name>Ressource</name>
+  <description>This module is in charge of loading all Images and texts</description>
 </project>

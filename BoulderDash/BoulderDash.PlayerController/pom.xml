@@ -14,4 +14,5 @@
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   </dependencies>
+  <description>This module contains the KeyBoardController class which listen users inputs and send order to players</description>
 </project>

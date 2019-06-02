@@ -29,4 +29,5 @@
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   </dependencies>
+  <description>The controller's module is here to manage everything (start the model(s),load maps from mysql...)</description>
 </project>

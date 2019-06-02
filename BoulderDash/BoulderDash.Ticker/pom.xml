@@ -7,4 +7,5 @@
   </parent>
   <artifactId>BoulderDash.Ticker</artifactId>
   <name>Ticker</name>
+  <description>The Ticker module bring a way to easily execute code periodically </description>
 </project>
