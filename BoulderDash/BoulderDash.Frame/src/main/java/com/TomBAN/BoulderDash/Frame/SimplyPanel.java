@@ -29,8 +29,10 @@ public class SimplyPanel extends JPanel implements GraphicsObserver,Observer{
 			}
 		}
 		this.graphicsBuilder = graphicsBuilder;
-		if(graphicsBuilder.getObservable()!=null) {
-			graphicsBuilder.getObservable().addObserver(this);
+		if(graphicsBuilder!=null) {			
+			if(graphicsBuilder.getObservable()!=null) {
+				graphicsBuilder.getObservable().addObserver(this);
+			}
 		}
 	}
 	public GraphicsBuilder getGraphicsBuilder() {

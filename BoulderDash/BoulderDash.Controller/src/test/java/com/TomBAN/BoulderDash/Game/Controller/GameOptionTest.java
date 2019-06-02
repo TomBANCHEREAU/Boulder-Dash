@@ -1,3 +1,4 @@
+package com.TomBAN.BoulderDash.Game.Controller;
 import static org.junit.Assert.fail;
 
 import org.junit.After;
