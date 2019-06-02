@@ -4,8 +4,8 @@ import java.awt.Graphics2D;
 import java.util.Observable;
 
 /**
- * @author TomBANCHEREAU
  * interface used with the SimplyPanel to draw on it
+ * @author TomBANCHEREAU
  */
 public interface GraphicsBuilder {
 	public void draw(final Graphics2D graph,final GraphicsObserver observer);

@@ -8,8 +8,8 @@ import com.TomBAN.BoulderDash.Game.Model.ControllableController;
 import com.TomBAN.BoulderDash.Game.Model.MovementOrder;
 
 /**
- * @author Tom BANCHEREAU
  * this class is a keyListener which send MovementOrder to a specified Controllable
+ * @author Tom BANCHEREAU
  *
 **/
 public class KeyBoardController implements KeyListener, ControllableController {

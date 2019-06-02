@@ -9,8 +9,8 @@ import com.TomBAN.BoulderDash.Ressource.RessourceManager;
 import com.TomBAN.BoulderDash.StartMenu.Controller.StartMenuController;
 
 /**
+ * This class is just... the main.
  * @author TomBANCHEREAU
- *	This class is just... the main.
  */
 public class BoulderDash {
 

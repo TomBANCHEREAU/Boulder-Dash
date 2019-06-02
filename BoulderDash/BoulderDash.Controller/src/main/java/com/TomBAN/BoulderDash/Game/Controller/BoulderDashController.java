@@ -28,13 +28,13 @@ import com.TomBAN.BoulderDash.Ressource.RessourceManager;
 import com.TomBAN.mySQL.MySQL;
 
 /**
- * @author TomBANCHEREAU
  * This class control all the game :
  * - Set up the view system
  * - Load maps from mySQL using the MySQL class
  * - Create all models needed
  * - Instantiate and bind player controllers
  * - Save all new score in mySQL
+ * @author TomBANCHEREAU
  */
 public class BoulderDashController implements Observer, NewHighScoreListenner {
 	private static final String URL = "jdbc:mysql://localhost:3306/a1-project5?useSSL=false&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC";

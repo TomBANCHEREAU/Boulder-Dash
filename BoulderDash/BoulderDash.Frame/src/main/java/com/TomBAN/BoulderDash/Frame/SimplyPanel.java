@@ -8,8 +8,8 @@ import java.util.Observer;
 import javax.swing.JPanel;
 
 /**
+ * The panel used with the graphicsBuilder interface to draw on a frame 
  * @author TomBANCHEREAU
- * The panel used with the graphicsBuilder interface to draw a frame 
  */
 public class SimplyPanel extends JPanel implements GraphicsObserver,Observer{
 	private static final long serialVersionUID = -8980161293106213468L;

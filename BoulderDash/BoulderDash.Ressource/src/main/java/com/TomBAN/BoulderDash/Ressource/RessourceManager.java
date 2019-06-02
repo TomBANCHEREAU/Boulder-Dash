@@ -10,6 +10,11 @@ import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
+/**
+ * this class is here to load all ressources
+ * @author TomBANCHEREAU
+ *
+ */
 public class RessourceManager {
 	private static RessourceManager currentInstance;
 	private HashMap<String, Image> images;

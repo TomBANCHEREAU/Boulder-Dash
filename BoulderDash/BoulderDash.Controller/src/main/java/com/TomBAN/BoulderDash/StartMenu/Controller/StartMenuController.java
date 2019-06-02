@@ -15,8 +15,8 @@ import com.TomBAN.BoulderDash.StartMenu.Model.StartMenuModel;
 import com.TomBAN.BoulderDash.StartMenu.View.StartMenuGraphicsBuilder;
 
 /**
- * @author TomBANCHEREAU
  * this class permit to select the gameOption
+ * @author TomBANCHEREAU
  */
 public class StartMenuController implements Controllable {
 	private static GameOption gameOption; 

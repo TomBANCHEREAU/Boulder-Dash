@@ -6,8 +6,8 @@ import java.util.HashMap;
 import com.TomBAN.BoulderDash.Ressource.RessourceManager;
 
 /**
- * @author TomBANCHEREAU
  * This class permit to save all game Option
+ * @author TomBANCHEREAU
  */
 public final class GameOption {
 	private final static HashMap<GameMode, ArrayList<Integer>> POSSIBLE_PLAYER_NUMBER_PER_GAMEMODE;

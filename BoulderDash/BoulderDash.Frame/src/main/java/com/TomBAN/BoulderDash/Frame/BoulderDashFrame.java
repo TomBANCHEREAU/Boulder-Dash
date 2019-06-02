@@ -9,8 +9,8 @@ import java.util.Observer;
 import javax.swing.JFrame;
 
 /**
- * @author Tom BANCHEREAU
  * A basic JFrame implementing the Observer interface
+ * @author Tom BANCHEREAU
  */
 public class BoulderDashFrame extends JFrame implements Observer{
 	private static final long serialVersionUID = -1116924846179363004L;

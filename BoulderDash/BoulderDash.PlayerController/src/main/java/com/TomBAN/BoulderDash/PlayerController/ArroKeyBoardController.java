@@ -3,8 +3,8 @@ package com.TomBAN.BoulderDash.PlayerController;
 import java.awt.event.KeyEvent;
 
 /**
- * @author TomBANCHEREAU This class is a specialization of the
- *         KeyBoardController class with preselected controls
+ * This class is a specialization of the KeyBoardController class with preselected controls
+ * @author TomBANCHEREAU 
  */
 public class ArroKeyBoardController extends KeyBoardController {
 	/**

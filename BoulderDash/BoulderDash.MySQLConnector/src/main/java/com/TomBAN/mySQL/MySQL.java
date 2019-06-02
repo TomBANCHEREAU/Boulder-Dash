@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * @author TomBANCHEREAU
  * This class permit a basic access to mySQL using the cj.jdbc Driver
+ * @author TomBANCHEREAU
  */
 public class MySQL {
 	private static MySQL MYSQL;
