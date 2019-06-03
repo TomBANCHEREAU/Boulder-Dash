@@ -4,13 +4,13 @@ import com.TomBAN.BoulderDash.Game.Model.MovableBlock;
 import com.TomBAN.BoulderDash.Game.Model.Strategy;
 
 public class AnimationStrategy extends Strategy<MovableBlock> {
-	private final Strategy<?> next;
+	private final Strategy next;
 	private final int xGoal,yGoal;
 	private int time;
 
 
 
-	public AnimationStrategy(MovableBlock block, Strategy<?> next, int xGoal, int yGoal, int time) {
+	public AnimationStrategy(MovableBlock block, Strategy next, int xGoal, int yGoal, int time) {
 		super(block);
 		this.next = next;
 		this.xGoal = xGoal;
