@@ -175,6 +175,7 @@ public class BoulderDashController implements Observer, NewHighScoreListenner {
 	private void endScreen() {
 		for (JFrame jFrame : frames) {
 			jFrame.setContentPane(new EndScreenPanel(models));
+			jFrame.repaint();
 		}
 	}
 
